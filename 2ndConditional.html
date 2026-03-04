@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writing Practice: 2nd Conditional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            900: '#134e4a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen p-4 md:p-8 font-sans text-slate-800">
+
+    <div class="max-w-5xl mx-auto bg-white rounded-[2rem] shadow-xl overflow-hidden border border-slate-200">
+        
+        <!-- HEADER -->
+        <div class="bg-gradient-to-r from-teal-500 to-blue-600 p-8 text-center text-white relative">
+            <div class="absolute top-4 left-4 opacity-20">
+                <i class="fas fa-envelope text-8xl"></i>
+            </div>
+            <div class="relative z-10">
+                <span class="bg-white/20 text-teal-50 px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-widest inline-flex items-center gap-2 mb-4 backdrop-blur-sm">
+                    <i class="fas fa-pen-nib text-sm"></i> Writing Practice
+                </span>
+                <h1 class="text-4xl md:text-5xl font-black mb-3 drop-shadow-md">Los 2 Rectángulos 📝</h1>
+                <p class="text-xl font-medium text-blue-100">Practice the Intro and the Main Body using Conditionals</p>
+                <div class="mt-4 inline-block bg-white text-blue-600 px-6 py-2 rounded-full font-bold shadow-md">
+                    Target: 2nd Conditional
+                </div>
+            </div>
+        </div>
+
+        <div class="p-6 md:p-8 space-y-8">
+            
+            <!-- THE PROMPT -->
+            <section class="bg-yellow-50 rounded-3xl p-6 border-2 border-yellow-200 shadow-sm relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 opacity-10 transform rotate-12">
+                    <i class="fas fa-comment-dots text-9xl text-yellow-500"></i>
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-xl font-bold text-yellow-800 mb-2 flex items-center gap-2">
+                        <i class="fas fa-envelope text-yellow-600"></i>
+                        Your friend's email: Crazy Dreams
+                    </h2>
+                    <div class="bg-white p-5 rounded-2xl border border-yellow-200 text-slate-700 font-medium italic shadow-inner text-lg">
+                        "Hi! We are talking about dreams in class today. What would you do if you won a million dollars? And if you could have any superpower, what would you choose? Write back soon!"
+                    </div>
+                </div>
+            </section>
+
+            <!-- EDITORS FOR THE RECTANGLES -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- RECTÁNGULO 1: LA INTRO -->
+                <div class="flex flex-col gap-3">
+                    <div class="bg-blue-50 rounded-2xl p-5 border-2 border-blue-200 h-full flex flex-col">
+                        <h3 class="text-lg font-bold text-blue-800 flex items-center gap-2 mb-2">
+                            <span class="bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">1</span>
+                            El Primer Rectángulo (La Intro)
+                        </h3>
+                        <p class="text-sm text-blue-900 mb-4 flex-grow">
+                            Say hello, ask how they are, and explain <strong>why</strong> you are writing.
+                        </p>
+                        <div class="bg-white/60 p-3 rounded-xl border border-blue-100 text-sm font-bold text-blue-800">
+                            💡 Hints:
+                            <ul class="font-normal text-blue-700 mt-1 ml-4 list-disc">
+                                <li>How are you doing? / I hope you're ok.</li>
+                                <li>I'm writing to you because...</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <textarea id="rect1" placeholder="Write your greeting and reason here..." class="custom-scrollbar w-full h-48 p-5 rounded-2xl border-2 border-blue-200 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 resize-none text-slate-700 text-lg shadow-sm transition-shadow"></textarea>
+                </div>
+
+                <!-- RECTÁNGULO 2: LA CHICHA -->
+                <div class="flex flex-col gap-3">
+                    <div class="bg-indigo-50 border-indigo-200 rounded-2xl p-5 border-2 h-full flex flex-col">
+                        <h3 class="text-lg font-bold text-indigo-800 flex items-center gap-2 mb-2">
+                            <span class="bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">2</span>
+                            El Segundo Rectángulo ("La Chicha")
+                        </h3>
+                        <p class="text-sm text-indigo-900 mb-4 flex-grow">
+                            Answer the email talking about <strong>unlikely situations in the present or future</strong> using the <strong>2nd Conditional</strong>.
+                        </p>
+                        
+                        <!-- FORMULA -->
+                        <div class="bg-white p-3 rounded-lg border shadow-sm mt-auto">
+                            <span class="font-bold text-slate-800 block mb-1 flex items-center gap-2">
+                                <i class="fas fa-lightbulb text-amber-500"></i>
+                                2nd Conditional Formula:
+                            </span>
+                            <span class="text-sm text-slate-700">If + Past Simple, Subject + would + verb infinitive</span>
+                        </div>
+                    </div>
+                    <textarea id="rect2" placeholder="Write your main answer here..." class="custom-scrollbar w-full h-48 p-5 rounded-2xl border-2 border-indigo-200 focus:outline-none focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 resize-none text-slate-700 text-lg shadow-sm transition-shadow"></textarea>
+                </div>
+
+            </div>
+
+            <!-- CHECKLIST & CONTROLS -->
+            <section class="bg-slate-100 rounded-3xl p-6 border-2 border-slate-200 flex flex-col md:flex-row gap-8">
+                
+                <div class="flex-1 space-y-3">
+                    <h4 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <i class="far fa-check-square text-teal-600 text-xl"></i>
+                        Checklist del Alumno
+                    </h4>
+                    
+                    <label class="flex items-start gap-3 cursor-pointer group">
+                        <div class="relative flex items-center pt-0.5">
+                            <input type="checkbox" class="peer sr-only" onchange="toggleCheck(this, 'check1-text')">
+                            <div class="w-5 h-5 border-2 border-slate-400 rounded peer-checked:bg-teal-500 peer-checked:border-teal-500 transition-colors flex items-center justify-center">
+                                <i class="fas fa-check text-white text-xs hidden peer-checked:block"></i>
+                            </div>
+                        </div>
+                        <span id="check1-text" class="text-sm select-none transition-colors text-slate-700 font-medium">
+                            I said hello and asked "How are you doing?". 👋
+                        </span>
+                    </label>
+
+                    <label class="flex items-start gap-3 cursor-pointer group">
+                        <div class="relative flex items-center pt-0.5">
+                            <input type="checkbox" class="peer sr-only" onchange="toggleCheck(this, 'check2-text')">
+                            <div class="w-5 h-5 border-2 border-slate-400 rounded peer-checked:bg-teal-500 peer-checked:border-teal-500 transition-colors flex items-center justify-center">
+                                <i class="fas fa-check text-white text-xs hidden peer-checked:block"></i>
+                            </div>
+                        </div>
+                        <span id="check2-text" class="text-sm select-none transition-colors text-slate-700 font-medium">
+                            I explained why I am writing. 🎯
+                        </span>
+                    </label>
+
+                    <label class="flex items-start gap-3 cursor-pointer group">
+                        <div class="relative flex items-center pt-0.5">
+                            <input type="checkbox" class="peer sr-only" onchange="toggleCheck(this, 'check3-text')">
+                            <div class="w-5 h-5 border-2 border-slate-400 rounded peer-checked:bg-teal-500 peer-checked:border-teal-500 transition-colors flex items-center justify-center">
+                                <i class="fas fa-check text-white text-xs hidden peer-checked:block"></i>
+                            </div>
+                        </div>
+                        <span id="check3-text" class="text-sm select-none transition-colors text-slate-700 font-medium">
+                            I used the formula for the <strong>2nd Conditional</strong> correctly. ⚙️
+                        </span>
+                    </label>
+
+                    <label class="flex items-start gap-3 cursor-pointer group">
+                        <div class="relative flex items-center pt-0.5">
+                            <input type="checkbox" class="peer sr-only" onchange="toggleCheck(this, 'check4-text')">
+                            <div class="w-5 h-5 border-2 border-slate-400 rounded peer-checked:bg-teal-500 peer-checked:border-teal-500 transition-colors flex items-center justify-center">
+                                <i class="fas fa-check text-white text-xs hidden peer-checked:block"></i>
+                            </div>
+                        </div>
+                        <span id="check4-text" class="text-sm select-none transition-colors text-slate-700 font-medium">
+                            I checked capital letters and punctuation. 🔍
+                        </span>
+                    </label>
+                </div>
+
+                <div class="flex-1 flex flex-col justify-end gap-3 mt-6 md:mt-0">
+                    
+                    <button id="showExampleBtn" onclick="toggleCorrection()" class="w-full bg-white hover:bg-green-50 text-green-700 border-green-200 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm border">
+                        <i class="fas fa-sync-alt" id="refreshIcon"></i> 
+                        <span id="exampleBtnText">Show Example Answer</span>
+                    </button>
+
+                    <button onclick="copyFullText()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-md">
+                        <i class="far fa-copy"></i> Merge and Copy My Text
+                    </button>
+
+                    <button onclick="clearTexts()" class="w-full bg-white hover:bg-red-50 text-red-600 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 border border-red-200 transition-colors">
+                        <i class="far fa-trash-alt"></i> Clear Everything
+                    </button>
+                </div>
+                
+            </section>
+
+            <!-- AUTO-CORRECTION SECTION -->
+            <div id="correctionSection" class="hidden bg-green-50 border-2 border-green-200 rounded-2xl p-6 transition-all duration-300">
+                <h3 class="text-xl font-bold text-green-800 mb-4 flex items-center gap-2">
+                    <i class="fas fa-sparkles text-green-600"></i>
+                    Ejemplo de Respuesta (Autocorrección)
+                </h3>
+                <p class="text-green-700 mb-4 text-sm">
+                    Compare your text with this example. It doesn't have to be exactly the same, but the structure and grammar should be similar!
+                </p>
+                <div class="space-y-4">
+                    <div class="bg-white p-4 rounded-xl border border-green-200 shadow-sm">
+                        <span class="text-xs font-bold text-green-600 uppercase tracking-wider mb-1 block">Rectángulo 1 (Intro)</span>
+                        <p class="text-slate-700 italic">Hi Sarah! How are you doing? I hope you're ok. I am writing to you because of your email about your class and your dreams.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-green-200 shadow-sm">
+                        <span class="text-xs font-bold text-green-600 uppercase tracking-wider mb-1 block">Rectángulo 2 (Main Body - 2nd Conditional)</span>
+                        <p class="text-slate-700 italic">If I won a million dollars, I would buy a big house for my family. Also, if I could choose a superpower, I would fly everywhere!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Alert Modal (instead of alert()) -->
+            <div id="alertModal" class="fixed inset-0 bg-slate-900/50 flex items-center justify-center hidden z-50 backdrop-blur-sm">
+                <div class="bg-white p-6 rounded-2xl shadow-2xl max-w-sm w-full mx-4 text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-check text-2xl text-green-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Copied!</h3>
+                    <p class="text-slate-600 mb-6">Your full text has been copied to the clipboard.</p>
+                    <button onclick="closeAlert()" class="w-full bg-slate-800 text-white font-bold py-2 rounded-xl hover:bg-slate-700 transition-colors">OK</button>
+                </div>
+            </div>
+
+            <!-- Custom Confirm Modal -->
+            <div id="confirmModal" class="fixed inset-0 bg-slate-900/50 flex items-center justify-center hidden z-50 backdrop-blur-sm">
+                <div class="bg-white p-6 rounded-2xl shadow-2xl max-w-sm w-full mx-4 text-center">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-exclamation-triangle text-2xl text-red-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Are you sure?</h3>
+                    <p class="text-slate-600 mb-6">Do you want to clear all your text?</p>
+                    <div class="flex gap-3">
+                        <button onclick="closeConfirm(false)" class="flex-1 bg-slate-200 text-slate-800 font-bold py-2 rounded-xl hover:bg-slate-300 transition-colors">Cancel</button>
+                        <button onclick="closeConfirm(true)" class="flex-1 bg-red-600 text-white font-bold py-2 rounded-xl hover:bg-red-700 transition-colors">Clear</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Checklist logic
+        function toggleCheck(checkbox, textId) {
+            const textElement = document.getElementById(textId);
+            if (checkbox.checked) {
+                textElement.classList.remove('text-slate-700', 'font-medium');
+                textElement.classList.add('text-slate-400', 'line-through');
+            } else {
+                textElement.classList.add('text-slate-700', 'font-medium');
+                textElement.classList.remove('text-slate-400', 'line-through');
+            }
+        }
+
+        // Example Toggle Logic
+        let correctionVisible = false;
+        function toggleCorrection() {
+            correctionVisible = !correctionVisible;
+            const section = document.getElementById('correctionSection');
+            const btn = document.getElementById('showExampleBtn');
+            const btnText = document.getElementById('exampleBtnText');
+            const icon = document.getElementById('refreshIcon');
+
+            if (correctionVisible) {
+                section.classList.remove('hidden');
+                btn.classList.replace('bg-white', 'bg-green-100');
+                btn.classList.replace('text-green-700', 'text-green-800');
+                btn.classList.replace('border-green-200', 'border-green-300');
+                btn.classList.replace('hover:bg-green-50', 'hover:bg-green-200');
+                btnText.textContent = 'Hide Example';
+            } else {
+                section.classList.add('hidden');
+                btn.classList.replace('bg-green-100', 'bg-white');
+                btn.classList.replace('text-green-800', 'text-green-700');
+                btn.classList.replace('border-green-300', 'border-green-200');
+                btn.classList.replace('hover:bg-green-200', 'hover:bg-green-50');
+                btnText.textContent = 'Show Example Answer';
+            }
+        }
+
+        // Copy Logic
+        function copyFullText() {
+            const rect1 = document.getElementById('rect1').value;
+            const rect2 = document.getElementById('rect2').value;
+            
+            if(!rect1 && !rect2) return;
+
+            const fullText = `${rect1}\n\n${rect2}`;
+            
+            // Clipboard API (Fallback for older browsers)
+            const textArea = document.createElement("textarea");
+            textArea.value = fullText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                document.getElementById('alertModal').classList.remove('hidden');
+            } catch (err) {
+                console.error('Unable to copy', err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function closeAlert() {
+            document.getElementById('alertModal').classList.add('hidden');
+        }
+
+        // Clear Logic
+        function clearTexts() {
+            const rect1 = document.getElementById('rect1').value;
+            const rect2 = document.getElementById('rect2').value;
+            if(rect1 || rect2) {
+                document.getElementById('confirmModal').classList.remove('hidden');
+            }
+        }
+
+        function closeConfirm(shouldClear) {
+            document.getElementById('confirmModal').classList.add('hidden');
+            if (shouldClear) {
+                document.getElementById('rect1').value = '';
+                document.getElementById('rect2').value = '';
+                
+                // Uncheck all boxes
+                document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                    if(cb.checked) {
+                        cb.click(); // Trigger change event
+                    }
+                });
+
+                if(correctionVisible) toggleCorrection();
+            }
+        }
+    </script>
+</body>
+</html>
