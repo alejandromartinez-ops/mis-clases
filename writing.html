@@ -1,297 +1,483 @@
-import React, { useState } from 'react';
-import { Mail, PenTool, CheckSquare, Sparkles, MessageSquare, Copy, Trash2, Lightbulb, RefreshCcw } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writing Practice: Conditionals</title>
+    <style>
+        /* =========================================
+           VARIABLES Y RESETEO BÁSICO
+           ========================================= */
+        :root {
+            --font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --bg-color: #f1f5f9;
+            --text-main: #334155;
+            --white: #ffffff;
+            
+            --teal-gradient: linear-gradient(135deg, #14b8a6, #2563eb);
+            --tab-bg: #e2e8f0;
+            --tab-active: #ffffff;
+            --tab-active-text: #0f766e;
+            
+            --yellow-bg: #fefce8; --yellow-border: #fef08a; --yellow-text: #854d0e;
+            --blue-bg: #eff6ff; --blue-border: #bfdbfe; --blue-text: #1e3a8a;
+            --indigo-bg: #eef2ff; --indigo-border: #c7d2fe; --indigo-text: #312e81;
+            --purple-bg: #faf5ff; --purple-border: #e9d5ff; --purple-text: #581c87;
+            --green-bg: #f0fdf4; --green-border: #bbf7d0; --green-text: #166534;
+            --gray-bg: #f8fafc; --gray-border: #e2e8f0; --gray-text: #475569;
+        }
 
-export default function App() {
-  const [activePrompt, setActivePrompt] = useState(1);
-  const [rect1, setRect1] = useState('');
-  const [rect2, setRect2] = useState('');
-  const [showCorrection, setShowCorrection] = useState(false);
-  
-  const [checklist, setChecklist] = useState({
-    greeting: false,
-    reason: false,
-    conditional: false,
-    punctuation: false
-  });
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-  const prompts = {
-    1: {
-      title: "Crazy Dreams (2nd Conditional)",
-      text: "Hi! We are talking about dreams in class today. What would you do if you won a million dollars? And if you could have any superpower, what would you choose? Write back soon!",
-      targetConditional: "2nd Conditional",
-      context: "unlikely situations in the present or future",
-      formula: "If + Past Simple, Subject + would + verb infinitive",
-      correction: {
-        rect1: "Hi Sarah! How are you doing? I hope you're ok. I am writing to you because of your email about your class and your dreams.",
-        rect2: "If I won a million dollars, I would buy a big house for my family. Also, if I could choose a superpower, I would fly everywhere!"
-      }
-    },
-    2: {
-      title: "The English Test (3rd Conditional)",
-      text: "Hi! I feel terrible. I failed my English test last week because I played video games all weekend and I didn't study. Now my parents are angry. What do you think?",
-      targetConditional: "3rd Conditional",
-      context: "past regrets and imaginary situations in the past",
-      formula: "If + Past Perfect (had/hadn't + V3), Subject + would have + Past Participle (V3)",
-      correction: {
-        rect1: "Hi David! How are you doing? I hope you're ok. I am writing to you because of your email about your English test.",
-        rect2: "I am sorry to hear that! If you had studied for the test, you would have passed it. Also, if you hadn't played video games all weekend, your parents wouldn't have been angry. Next time, study more!"
-      }
-    }
-  };
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+            line-height: 1.5;
+        }
 
-  const handleCheck = (id) => {
-    setChecklist(prev => ({ ...prev, [id]: !prev[id] }));
-  };
+        /* =========================================
+           ESTRUCTURA PRINCIPAL
+           ========================================= */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--white);
+            border-radius: 24px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
 
-  const clearTexts = () => {
-    if (window.confirm('Are you sure you want to clear all your text?')) {
-      setRect1('');
-      setRect2('');
-      setChecklist({ greeting: false, reason: false, conditional: false, punctuation: false });
-      setShowCorrection(false);
-    }
-  };
+        .header {
+            background: var(--teal-gradient);
+            color: var(--white);
+            padding: 40px 20px;
+            text-align: center;
+        }
 
-  const copyFullText = () => {
-    const fullText = `${rect1}\n\n${rect2}`;
-    navigator.clipboard.writeText(fullText);
-    alert('Full text copied to clipboard!');
-  };
+        .header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .header p { font-size: 1.2rem; opacity: 0.9; }
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
 
-  const switchPrompt = (id) => {
-    if (rect1 || rect2) {
-      if (!window.confirm('You are changing the exercise. Do you want to clear what you have written?')) {
-        return;
-      }
-    }
-    setActivePrompt(id);
-    setRect1('');
-    setRect2('');
-    setChecklist({ greeting: false, reason: false, conditional: false, punctuation: false });
-    setShowCorrection(false);
-  };
+        /* =========================================
+           PESTAÑAS (TABS)
+           ========================================= */
+        .tabs {
+            display: flex;
+            background-color: var(--tab-bg);
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: none;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab-btn:hover { background-color: #cbd5e1; }
+        .tab-btn.active {
+            background-color: var(--tab-active);
+            color: var(--tab-active-text);
+            border-bottom: 4px solid var(--tab-active-text);
+        }
 
-  return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-8 font-sans text-slate-800">
-      <div className="max-w-5xl mx-auto bg-white rounded-[2rem] shadow-xl overflow-hidden border border-slate-200">
+        .tab-content { display: none; padding: 30px; }
+        .tab-content.active { display: block; }
+
+        /* =========================================
+           CAJAS Y CONTENIDOS
+           ========================================= */
+        .box {
+            padding: 20px;
+            border-radius: 16px;
+            border: 2px solid;
+            margin-bottom: 24px;
+        }
         
-        {/* HEADER */}
-        <div className="bg-gradient-to-r from-teal-500 to-blue-600 p-8 text-center text-white relative">
-          <div className="absolute top-4 left-4 opacity-20">
-            <Mail className="w-24 h-24" />
-          </div>
-          <div className="relative z-10">
-            <span className="bg-white/20 text-teal-50 px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-widest inline-flex items-center gap-2 mb-4 backdrop-blur-sm">
-              <PenTool className="w-4 h-4" /> Writing Practice
-            </span>
-            <h1 className="text-4xl md:text-5xl font-black mb-3 drop-shadow-md">Los 2 Rectángulos 📝</h1>
-            <p className="text-xl font-medium text-blue-100">Practice the Intro and the Main Body using Conditionals</p>
-          </div>
+        .prompt-box { background: var(--yellow-bg); border-color: var(--yellow-border); color: var(--yellow-text); }
+        .prompt-inner { background: var(--white); padding: 15px; border-radius: 12px; margin-top: 10px; font-style: italic; border: 1px solid var(--yellow-border); }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        @media(min-width: 768px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+
+        .rect-card { display: flex; flex-direction: column; height: 100%; }
+        .rect-info {
+            padding: 20px; border-radius: 16px; border: 2px solid; margin-bottom: 12px; flex-grow: 1; display: flex; flex-direction: column;
+        }
+        .rect1-info { background: var(--blue-bg); border-color: var(--blue-border); color: var(--blue-text); }
+        .rect2a-info { background: var(--indigo-bg); border-color: var(--indigo-border); color: var(--indigo-text); }
+        .rect2b-info { background: var(--purple-bg); border-color: var(--purple-border); color: var(--purple-text); }
+
+        .hints { background: rgba(255,255,255,0.6); padding: 10px; border-radius: 8px; font-size: 0.9rem; margin-top: auto; }
+        .hints ul { margin-left: 20px; margin-top: 5px; }
+
+        textarea {
+            width: 100%; height: 180px; padding: 15px; border-radius: 16px; border: 2px solid;
+            font-family: inherit; font-size: 1rem; resize: vertical; outline: none; transition: border-color 0.3s;
+        }
+        textarea.ta-blue { border-color: var(--blue-border); }
+        textarea.ta-blue:focus { border-color: #60a5fa; box-shadow: 0 0 0 3px #dbeafe; }
+        textarea.ta-indigo { border-color: var(--indigo-border); }
+        textarea.ta-indigo:focus { border-color: #818cf8; box-shadow: 0 0 0 3px #e0e7ff; }
+        textarea.ta-purple { border-color: var(--purple-border); }
+        textarea.ta-purple:focus { border-color: #c084fc; box-shadow: 0 0 0 3px #f3e8ff; }
+
+        /* =========================================
+           CHECKLIST Y CONTROLES
+           ========================================= */
+        .controls-section { background: var(--gray-bg); border: 2px solid var(--gray-border); padding: 24px; border-radius: 16px; display: flex; flex-direction: column; gap: 24px; margin-bottom: 24px; }
+        @media(min-width: 768px) { .controls-section { flex-direction: row; } }
+
+        .checklist { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+        .check-item { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+        .check-item input { margin-top: 5px; width: 18px; height: 18px; cursor: pointer; }
+        .check-text { font-size: 0.95rem; font-weight: 500; transition: color 0.3s; }
+        .check-item input:checked + .check-text { text-decoration: line-through; color: #94a3b8; }
+
+        .buttons-group { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; }
+        .btn {
+            width: 100%; padding: 12px 20px; border-radius: 12px; font-weight: bold; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; border: none; transition: all 0.2s; font-family: inherit;
+        }
+        .btn-example { background: var(--white); color: #15803d; border: 1px solid #bbf7d0; }
+        .btn-example:hover { background: #dcfce7; }
+        .btn-copy { background: #1e293b; color: var(--white); }
+        .btn-copy:hover { background: #334155; }
+        .btn-clear { background: var(--white); color: #dc2626; border: 1px solid #fecaca; }
+        .btn-clear:hover { background: #fee2e2; }
+
+        /* =========================================
+           CORRECCIÓN Y MODALES
+           ========================================= */
+        .correction-box { background: var(--green-bg); border: 2px solid var(--green-border); padding: 20px; border-radius: 16px; display: none; }
+        .correction-box.show { display: block; }
+        .correction-item { background: var(--white); padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--green-border); }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); display: none; align-items: center; justify-content: center; z-index: 1000; }
+        .modal-overlay.show { display: flex; }
+        .modal-content { background: var(--white); padding: 30px; border-radius: 20px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .modal-icon { font-size: 3rem; margin-bottom: 15px; }
+        .modal-title { font-size: 1.5rem; margin-bottom: 10px; color: var(--text-main); }
+        .modal-text { color: var(--gray-text); margin-bottom: 20px; }
+        .modal-btns { display: flex; gap: 10px; }
+        .modal-btns .btn { flex: 1; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="badge">✍️ Writing Practice</div>
+            <h1>Los 2 Rectángulos</h1>
+            <p>Practice the Intro and the Main Body using Conditionals</p>
         </div>
 
-        {/* PROMPT SELECTOR */}
-        <div className="bg-slate-100 p-4 border-b border-slate-200 flex flex-wrap justify-center gap-4">
-          <button 
-            onClick={() => switchPrompt(1)}
-            className={`px-6 py-3 rounded-xl font-bold transition-all shadow-sm flex items-center gap-2 ${activePrompt === 1 ? 'bg-blue-600 text-white scale-105' : 'bg-white text-slate-600 hover:bg-slate-50'}`}
-          >
-            <span className="bg-white/20 w-6 h-6 rounded-full flex items-center justify-center text-sm">A</span>
-            Unlikely Dreams (2nd Cond)
-          </button>
-          <button 
-            onClick={() => switchPrompt(2)}
-            className={`px-6 py-3 rounded-xl font-bold transition-all shadow-sm flex items-center gap-2 ${activePrompt === 2 ? 'bg-purple-600 text-white scale-105' : 'bg-white text-slate-600 hover:bg-slate-50'}`}
-          >
-            <span className="bg-white/20 w-6 h-6 rounded-full flex items-center justify-center text-sm">B</span>
-            Past Regrets (3rd Cond)
-          </button>
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('tab-A', this)">Opción A: 2nd Conditional</button>
+            <button class="tab-btn" onclick="switchTab('tab-B', this)">Opción B: 3rd Conditional</button>
         </div>
 
-        <div className="p-6 md:p-8 space-y-8">
-          
-          {/* THE PROMPT */}
-          <section className="bg-yellow-50 rounded-3xl p-6 border-2 border-yellow-200 shadow-sm relative overflow-hidden transition-all duration-300">
-            <div className="absolute -right-4 -top-4 opacity-10 transform rotate-12">
-              <MessageSquare className="w-32 h-32 text-yellow-500" />
-            </div>
-            <div className="relative z-10">
-              <h2 className="text-xl font-bold text-yellow-800 mb-2 flex items-center gap-2">
-                <Mail className="w-6 h-6 text-yellow-600" />
-                Your friend's email: {prompts[activePrompt].title}
-              </h2>
-              <div className="bg-white p-5 rounded-2xl border border-yellow-200 text-slate-700 font-medium italic shadow-inner text-lg">
-                "{prompts[activePrompt].text}"
-              </div>
-            </div>
-          </section>
-
-          {/* EDITORS FOR THE RECTANGLES */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- ==========================================
+             OPCIÓN A: UNLIKELY DREAMS (2ND CONDITIONAL)
+             ========================================== -->
+        <div id="tab-A" class="tab-content active">
             
-            {/* RECTÁNGULO 1: LA INTRO */}
-            <div className="flex flex-col gap-3">
-              <div className="bg-blue-50 rounded-2xl p-5 border-2 border-blue-200 h-full flex flex-col">
-                <h3 className="text-lg font-bold text-blue-800 flex items-center gap-2 mb-2">
-                  <span className="bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">1</span>
-                  El Primer Rectángulo (La Intro)
-                </h3>
-                <p className="text-sm text-blue-900 mb-4 flex-grow">
-                  Say hello, ask how they are, and explain <strong>why</strong> you are writing.
-                </p>
-                <div className="bg-white/60 p-3 rounded-xl border border-blue-100 text-sm font-bold text-blue-800">
-                  💡 Hints:
-                  <ul className="font-normal text-blue-700 mt-1 ml-4 list-disc">
-                    <li>How are you doing? / I hope you're ok.</li>
-                    <li>I'm writing to you because...</li>
-                  </ul>
+            <div class="box prompt-box">
+                <h2>📨 Your friend's email: Crazy Dreams</h2>
+                <div class="prompt-inner">
+                    "Hi! We are talking about dreams in class today. What would you do if you won a million dollars? And if you could have any superpower, what would you choose? Write back soon!"
                 </div>
-              </div>
-              <textarea
-                value={rect1}
-                onChange={(e) => setRect1(e.target.value)}
-                placeholder="Write your greeting and reason here..."
-                className="w-full h-48 p-5 rounded-2xl border-2 border-blue-200 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 resize-none text-slate-700 text-lg shadow-sm transition-shadow"
-              ></textarea>
             </div>
 
-            {/* RECTÁNGULO 2: LA CHICHA */}
-            <div className="flex flex-col gap-3">
-              <div className={`rounded-2xl p-5 border-2 h-full flex flex-col ${activePrompt === 1 ? 'bg-indigo-50 border-indigo-200' : 'bg-purple-50 border-purple-200'}`}>
-                <h3 className={`text-lg font-bold flex items-center gap-2 mb-2 ${activePrompt === 1 ? 'text-indigo-800' : 'text-purple-800'}`}>
-                  <span className={`text-white w-6 h-6 rounded-full flex items-center justify-center text-sm ${activePrompt === 1 ? 'bg-indigo-600' : 'bg-purple-600'}`}>2</span>
-                  El Segundo Rectángulo ("La Chicha")
-                </h3>
-                <p className={`text-sm mb-4 flex-grow ${activePrompt === 1 ? 'text-indigo-900' : 'text-purple-900'}`}>
-                  Answer the email talking about <strong>{prompts[activePrompt].context}</strong> using the <strong>{prompts[activePrompt].targetConditional}</strong>.
-                </p>
-                
-                {/* FORMULA */}
-                <div className="bg-white p-3 rounded-lg border shadow-sm mt-auto">
-                  <span className="font-bold text-slate-800 block mb-1 flex items-center gap-2">
-                    <Lightbulb className="w-4 h-4 text-amber-500" />
-                    {prompts[activePrompt].targetConditional} Formula:
-                  </span>
-                  <span className="text-sm text-slate-700">{prompts[activePrompt].formula}</span>
+            <div class="grid-2">
+                <!-- Rect 1 -->
+                <div class="rect-card">
+                    <div class="rect-info rect1-info">
+                        <h3>1️⃣ El Primer Rectángulo (La Intro)</h3>
+                        <p>Say hello, ask how they are, and explain <strong>why</strong> you are writing.</p>
+                        <div class="hints">
+                            <strong>💡 Hints:</strong>
+                            <ul>
+                                <li>How are you doing? / I hope you're ok.</li>
+                                <li>I'm writing to you because...</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <textarea id="rect1A" class="ta-blue" placeholder="Write your greeting and reason here..."></textarea>
                 </div>
-              </div>
-              <textarea
-                value={rect2}
-                onChange={(e) => setRect2(e.target.value)}
-                placeholder="Write your main answer here..."
-                className={`w-full h-48 p-5 rounded-2xl border-2 focus:outline-none focus:ring-4 resize-none text-slate-700 text-lg shadow-sm transition-shadow ${activePrompt === 1 ? 'border-indigo-200 focus:ring-indigo-100 focus:border-indigo-400' : 'border-purple-200 focus:ring-purple-100 focus:border-purple-400'}`}
-              ></textarea>
+
+                <!-- Rect 2 -->
+                <div class="rect-card">
+                    <div class="rect-info rect2a-info">
+                        <h3>2️⃣ El Segundo Rectángulo ("La Chicha")</h3>
+                        <p>Answer the email talking about <strong>unlikely situations</strong> using the <strong>2nd Conditional</strong>.</p>
+                        <div class="hints mt-auto" style="margin-top:auto;">
+                            <strong>⚙️ Formula:</strong><br>
+                            If + Past Simple, Subject + would + infinitive
+                        </div>
+                    </div>
+                    <textarea id="rect2A" class="ta-indigo" placeholder="Write your main answer here..."></textarea>
+                </div>
             </div>
 
-          </div>
-
-          {/* CHECKLIST & CONTROLS */}
-          <section className="bg-slate-100 rounded-3xl p-6 border-2 border-slate-200 flex flex-col md:flex-row gap-8">
-            
-            <div className="flex-1 space-y-3">
-              <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                <CheckSquare className="w-5 h-5 text-teal-600" />
-                Checklist del Alumno
-              </h4>
-              
-              <label className="flex items-start gap-3 cursor-pointer group">
-                <div className="relative flex items-center pt-0.5">
-                  <input type="checkbox" checked={checklist.greeting} onChange={() => handleCheck('greeting')} className="peer sr-only" />
-                  <div className="w-5 h-5 border-2 border-slate-400 rounded peer-checked:bg-teal-500 peer-checked:border-teal-500 transition-colors"></div>
-                  {checklist.greeting && <CheckSquare className="absolute -top-0.5 -left-0.5 w-6 h-6 text-white pointer-events-none" />}
+            <div class="controls-section">
+                <div class="checklist">
+                    <h3>📋 Checklist del Alumno</h3>
+                    <label class="check-item"><input type="checkbox"><span class="check-text">I said hello and asked "How are you doing?". 👋</span></label>
+                    <label class="check-item"><input type="checkbox"><span class="check-text">I explained why I am writing. 🎯</span></label>
+                    <label class="check-item"><input type="checkbox"><span class="check-text">I used the formula for the <strong>2nd Conditional</strong> correctly. ⚙️</span></label>
+                    <label class="check-item"><input type="checkbox"><span class="check-text">I checked capital letters and punctuation. 🔍</span></label>
                 </div>
-                <span className={`text-sm select-none transition-colors ${checklist.greeting ? 'text-slate-400 line-through' : 'text-slate-700 font-medium'}`}>
-                  I said hello and asked "How are you doing?". 👋
-                </span>
-              </label>
-
-              <label className="flex items-start gap-3 cursor-pointer group">
-                <div className="relative flex items-center pt-0.5">
-                  <input type="checkbox" checked={checklist.reason} onChange={() => handleCheck('reason')} className="peer sr-only" />
-                  <div className="w-5 h-5 border-2 border-slate-400 rounded peer-checked:bg-teal-500 peer-checked:border-teal-500 transition-colors"></div>
-                  {checklist.reason && <CheckSquare className="absolute -top-0.5 -left-0.5 w-6 h-6 text-white pointer-events-none" />}
+                <div class="buttons-group">
+                    <button class="btn btn-example" onclick="toggleCorrection('A')">✨ <span id="btnTextA">Show Example Answer</span></button>
+                    <button class="btn btn-copy" onclick="copyText('A')">📋 Merge and Copy My Text</button>
+                    <button class="btn btn-clear" onclick="requestClear('A')">🗑️ Clear Everything</button>
                 </div>
-                <span className={`text-sm select-none transition-colors ${checklist.reason ? 'text-slate-400 line-through' : 'text-slate-700 font-medium'}`}>
-                  I explained why I am writing. 🎯
-                </span>
-              </label>
-
-              <label className="flex items-start gap-3 cursor-pointer group">
-                <div className="relative flex items-center pt-0.5">
-                  <input type="checkbox" checked={checklist.conditional} onChange={() => handleCheck('conditional')} className="peer sr-only" />
-                  <div className="w-5 h-5 border-2 border-slate-400 rounded peer-checked:bg-teal-500 peer-checked:border-teal-500 transition-colors"></div>
-                  {checklist.conditional && <CheckSquare className="absolute -top-0.5 -left-0.5 w-6 h-6 text-white pointer-events-none" />}
-                </div>
-                <span className={`text-sm select-none transition-colors ${checklist.conditional ? 'text-slate-400 line-through' : 'text-slate-700 font-medium'}`}>
-                  I used the formula for the <strong>{prompts[activePrompt].targetConditional}</strong> correctly. ⚙️
-                </span>
-              </label>
-
-              <label className="flex items-start gap-3 cursor-pointer group">
-                <div className="relative flex items-center pt-0.5">
-                  <input type="checkbox" checked={checklist.punctuation} onChange={() => handleCheck('punctuation')} className="peer sr-only" />
-                  <div className="w-5 h-5 border-2 border-slate-400 rounded peer-checked:bg-teal-500 peer-checked:border-teal-500 transition-colors"></div>
-                  {checklist.punctuation && <CheckSquare className="absolute -top-0.5 -left-0.5 w-6 h-6 text-white pointer-events-none" />}
-                </div>
-                <span className={`text-sm select-none transition-colors ${checklist.punctuation ? 'text-slate-400 line-through' : 'text-slate-700 font-medium'}`}>
-                  I checked capital letters and punctuation. 🔍
-                </span>
-              </label>
             </div>
 
-            <div className="flex-1 flex flex-col justify-end gap-3 mt-6 md:mt-0">
-              
-              <button 
-                onClick={() => setShowCorrection(!showCorrection)}
-                className={`w-full font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm border ${showCorrection ? 'bg-green-100 text-green-800 border-green-300' : 'bg-white hover:bg-green-50 text-green-700 border-green-200'}`}
-              >
-                <RefreshCcw className={`w-5 h-5 ${showCorrection ? 'animate-spin-once' : ''}`} /> 
-                {showCorrection ? 'Hide Example' : 'Show Example Answer'}
-              </button>
-
-              <button 
-                onClick={copyFullText}
-                className="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={!rect1 && !rect2}
-              >
-                <Copy className="w-5 h-5" /> Merge and Copy My Text
-              </button>
-
-              <button 
-                onClick={clearTexts}
-                className="w-full bg-white hover:bg-red-50 text-red-600 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 border border-red-200 transition-colors"
-                disabled={!rect1 && !rect2}
-              >
-                <Trash2 className="w-5 h-5" /> Clear Everything
-              </button>
-            </div>
-            
-          </section>
-
-          {/* AUTO-CORRECTION SECTION - Moved below buttons for better flow when opening */}
-          {showCorrection && (
-            <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-6 animate-in fade-in slide-in-from-top-4 duration-500">
-              <h3 className="text-xl font-bold text-green-800 mb-4 flex items-center gap-2">
-                <Sparkles className="w-6 h-6 text-green-600" />
-                Ejemplo de Respuesta (Autocorrección)
-              </h3>
-              <p className="text-green-700 mb-4 text-sm">
-                Compare your text with this example. It doesn't have to be exactly the same, but the structure and grammar should be similar!
-              </p>
-              <div className="space-y-4">
-                <div className="bg-white p-4 rounded-xl border border-green-200 shadow-sm">
-                  <span className="text-xs font-bold text-green-600 uppercase tracking-wider mb-1 block">Rectángulo 1 (Intro)</span>
-                  <p className="text-slate-700 italic">{prompts[activePrompt].correction.rect1}</p>
+            <div id="correctionA" class="box correction-box">
+                <h3 style="color:#166534; margin-bottom:10px;">✨ Ejemplo de Respuesta</h3>
+                <p style="font-size:0.9rem; margin-bottom:15px; color:#15803d;">Compare your text with this example. It doesn't have to be exactly the same, but the structure and grammar should be similar!</p>
+                <div class="correction-item">
+                    <strong style="color:#16a34a; font-size:0.8rem; text-transform:uppercase;">Rectángulo 1 (Intro)</strong>
+                    <p>Hi Sarah! How are you doing? I hope you're ok. I am writing to you because of your email about your class and your dreams.</p>
                 </div>
-                <div className="bg-white p-4 rounded-xl border border-green-200 shadow-sm">
-                  <span className="text-xs font-bold text-green-600 uppercase tracking-wider mb-1 block">Rectángulo 2 (Main Body - {prompts[activePrompt].targetConditional})</span>
-                  <p className="text-slate-700 italic">{prompts[activePrompt].correction.rect2}</p>
+                <div class="correction-item">
+                    <strong style="color:#16a34a; font-size:0.8rem; text-transform:uppercase;">Rectángulo 2 (Main Body)</strong>
+                    <p>If I won a million dollars, I would buy a big house for my family. Also, if I could choose a superpower, I would fly everywhere!</p>
                 </div>
-              </div>
             </div>
-          )}
-
         </div>
-      </div>
+
+        <!-- ==========================================
+             OPCIÓN B: THE ENGLISH TEST (3RD CONDITIONAL)
+             ========================================== -->
+        <div id="tab-B" class="tab-content">
+            
+            <div class="box prompt-box">
+                <h2>📨 Your friend's email: The English Test</h2>
+                <div class="prompt-inner">
+                    "Hi! I feel terrible. I failed my English test last week because I played video games all weekend and I didn't study. Now my parents are angry. What do you think?"
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <!-- Rect 1 -->
+                <div class="rect-card">
+                    <div class="rect-info rect1-info">
+                        <h3>1️⃣ El Primer Rectángulo (La Intro)</h3>
+                        <p>Say hello, ask how they are, and explain <strong>why</strong> you are writing.</p>
+                        <div class="hints">
+                            <strong>💡 Hints:</strong>
+                            <ul>
+                                <li>How are you doing? / I hope you're ok.</li>
+                                <li>I'm writing to you because...</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <textarea id="rect1B" class="ta-blue" placeholder="Write your greeting and reason here..."></textarea>
+                </div>
+
+                <!-- Rect 2 -->
+                <div class="rect-card">
+                    <div class="rect-info rect2b-info">
+                        <h3>2️⃣ El Segundo Rectángulo ("La Chicha")</h3>
+                        <p>Answer the email talking about <strong>past regrets</strong> using the <strong>3rd Conditional</strong>.</p>
+                        <div class="hints mt-auto" style="margin-top:auto;">
+                            <strong>⚙️ Formula:</strong><br>
+                            If + Past Perfect (had/hadn't + V3), Subject + would have + V3
+                        </div>
+                    </div>
+                    <textarea id="rect2B" class="ta-purple" placeholder="Write your main answer here..."></textarea>
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <div class="checklist">
+                    <h3>📋 Checklist del Alumno</h3>
+                    <label class="check-item"><input type="checkbox"><span class="check-text">I said hello and asked "How are you doing?". 👋</span></label>
+                    <label class="check-item"><input type="checkbox"><span class="check-text">I explained why I am writing. 🎯</span></label>
+                    <label class="check-item"><input type="checkbox"><span class="check-text">I used the formula for the <strong>3rd Conditional</strong> correctly. ⚙️</span></label>
+                    <label class="check-item"><input type="checkbox"><span class="check-text">I checked capital letters and punctuation. 🔍</span></label>
+                </div>
+                <div class="buttons-group">
+                    <button class="btn btn-example" onclick="toggleCorrection('B')">✨ <span id="btnTextB">Show Example Answer</span></button>
+                    <button class="btn btn-copy" onclick="copyText('B')">📋 Merge and Copy My Text</button>
+                    <button class="btn btn-clear" onclick="requestClear('B')">🗑️ Clear Everything</button>
+                </div>
+            </div>
+
+            <div id="correctionB" class="box correction-box">
+                <h3 style="color:#166534; margin-bottom:10px;">✨ Ejemplo de Respuesta</h3>
+                <p style="font-size:0.9rem; margin-bottom:15px; color:#15803d;">Compare your text with this example. It doesn't have to be exactly the same, but the structure and grammar should be similar!</p>
+                <div class="correction-item">
+                    <strong style="color:#16a34a; font-size:0.8rem; text-transform:uppercase;">Rectángulo 1 (Intro)</strong>
+                    <p>Hi David! How are you doing? I hope you're ok. I am writing to you because of your email about your English test.</p>
+                </div>
+                <div class="correction-item">
+                    <strong style="color:#16a34a; font-size:0.8rem; text-transform:uppercase;">Rectángulo 2 (Main Body)</strong>
+                    <p>I am sorry to hear that! If you had studied for the test, you would have passed it. Also, if you hadn't played video games all weekend, your parents wouldn't have been angry. Next time, study more!</p>
+                </div>
+            </div>
+        </div>
+
     </div>
-  );
-}
+
+    <!-- ==========================================
+         MODALES PERSONALIZADOS (ALERTS & CONFIRMS)
+         ========================================== -->
+    
+    <!-- Modal Copiado -->
+    <div id="modalAlert" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-icon">✅</div>
+            <h3 class="modal-title">¡Copiado!</h3>
+            <p class="modal-text">Tu texto completo ha sido copiado al portapapeles.</p>
+            <button class="btn btn-copy" onclick="closeAlert()">Aceptar</button>
+        </div>
+    </div>
+
+    <!-- Modal Confirmar Borrado -->
+    <div id="modalConfirm" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-icon">⚠️</div>
+            <h3 class="modal-title">¿Estás seguro?</h3>
+            <p class="modal-text">Se borrará todo el texto y las casillas que hayas marcado.</p>
+            <div class="modal-btns">
+                <button class="btn" style="background:#e2e8f0; color:#475569;" onclick="closeConfirm(false)">Cancelar</button>
+                <button class="btn" style="background:#ef4444; color:white;" onclick="closeConfirm(true)">Borrar Todo</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // LÓGICA DE LA APLICACIÓN
+        // ==========================================
+
+        let activeOptionToClear = null;
+
+        // Cambiar entre pestañas
+        function switchTab(tabId, btnElement) {
+            // Ocultar todos los contenidos
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Quitar clase active a todos los botones
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Mostrar la pestaña seleccionada
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        // Mostrar/Ocultar el ejemplo de corrección
+        function toggleCorrection(option) {
+            const box = document.getElementById('correction' + option);
+            const textSpan = document.getElementById('btnText' + option);
+            
+            if (box.classList.contains('show')) {
+                box.classList.remove('show');
+                textSpan.innerText = 'Show Example Answer';
+            } else {
+                box.classList.add('show');
+                textSpan.innerText = 'Hide Example';
+            }
+        }
+
+        // Unir y copiar texto
+        function copyText(option) {
+            const rect1 = document.getElementById('rect1' + option).value.trim();
+            const rect2 = document.getElementById('rect2' + option).value.trim();
+            
+            if (!rect1 && !rect2) return; // No copiar si está vacío
+
+            const fullText = rect1 + "\n\n" + rect2;
+            
+            // Método compatible con todos los navegadores
+            const textArea = document.createElement("textarea");
+            textArea.value = fullText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                document.getElementById('modalAlert').classList.add('show');
+            } catch (err) {
+                console.error('No se pudo copiar el texto', err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function closeAlert() {
+            document.getElementById('modalAlert').classList.remove('show');
+        }
+
+        // Lógica de borrado (solicitar confirmación)
+        function requestClear(option) {
+            const rect1 = document.getElementById('rect1' + option).value.trim();
+            const rect2 = document.getElementById('rect2' + option).value.trim();
+            
+            // Si hay algo escrito, mostrar el aviso
+            if (rect1 || rect2) {
+                activeOptionToClear = option;
+                document.getElementById('modalConfirm').classList.add('show');
+            } else {
+                // Si está vacío, solo limpiar los checkboxes
+                executeClear(option); 
+            }
+        }
+
+        function closeConfirm(confirmado) {
+            document.getElementById('modalConfirm').classList.remove('show');
+            if (confirmado && activeOptionToClear) {
+                executeClear(activeOptionToClear);
+            }
+            activeOptionToClear = null;
+        }
+
+        // Ejecutar el borrado real de una pestaña concreta
+        function executeClear(option) {
+            // Borrar textareas
+            document.getElementById('rect1' + option).value = '';
+            document.getElementById('rect2' + option).value = '';
+            
+            // Desmarcar checkboxes de esa pestaña
+            const tabContainer = document.getElementById('tab-' + option);
+            const checkboxes = tabContainer.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = false);
+
+            // Ocultar ejemplo si estaba abierto
+            const correctionBox = document.getElementById('correction' + option);
+            if (correctionBox.classList.contains('show')) {
+                toggleCorrection(option);
+            }
+        }
+    </script>
+</body>
+</html>
