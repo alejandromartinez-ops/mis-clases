@@ -1,0 +1,297 @@
+import React, { useState } from 'react';
+import { Mail, PenTool, CheckSquare, Sparkles, MessageSquare, Copy, Trash2, Lightbulb, RefreshCcw } from 'lucide-react';
+
+export default function App() {
+  const [activePrompt, setActivePrompt] = useState(1);
+  const [rect1, setRect1] = useState('');
+  const [rect2, setRect2] = useState('');
+  const [showCorrection, setShowCorrection] = useState(false);
+  
+  const [checklist, setChecklist] = useState({
+    greeting: false,
+    reason: false,
+    conditional: false,
+    punctuation: false
+  });
+
+  const prompts = {
+    1: {
+      title: "Crazy Dreams (2nd Conditional)",
+      text: "Hi! We are talking about dreams in class today. What would you do if you won a million dollars? And if you could have any superpower, what would you choose? Write back soon!",
+      targetConditional: "2nd Conditional",
+      context: "unlikely situations in the present or future",
+      formula: "If + Past Simple, Subject + would + verb infinitive",
+      correction: {
+        rect1: "Hi Sarah! How are you doing? I hope you're ok. I am writing to you because of your email about your class and your dreams.",
+        rect2: "If I won a million dollars, I would buy a big house for my family. Also, if I could choose a superpower, I would fly everywhere!"
+      }
+    },
+    2: {
+      title: "The English Test (3rd Conditional)",
+      text: "Hi! I feel terrible. I failed my English test last week because I played video games all weekend and I didn't study. Now my parents are angry. What do you think?",
+      targetConditional: "3rd Conditional",
+      context: "past regrets and imaginary situations in the past",
+      formula: "If + Past Perfect (had/hadn't + V3), Subject + would have + Past Participle (V3)",
+      correction: {
+        rect1: "Hi David! How are you doing? I hope you're ok. I am writing to you because of your email about your English test.",
+        rect2: "I am sorry to hear that! If you had studied for the test, you would have passed it. Also, if you hadn't played video games all weekend, your parents wouldn't have been angry. Next time, study more!"
+      }
+    }
+  };
+
+  const handleCheck = (id) => {
+    setChecklist(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const clearTexts = () => {
+    if (window.confirm('Are you sure you want to clear all your text?')) {
+      setRect1('');
+      setRect2('');
+      setChecklist({ greeting: false, reason: false, conditional: false, punctuation: false });
+      setShowCorrection(false);
+    }
+  };
+
+  const copyFullText = () => {
+    const fullText = `${rect1}\n\n${rect2}`;
+    navigator.clipboard.writeText(fullText);
+    alert('Full text copied to clipboard!');
+  };
+
+  const switchPrompt = (id) => {
+    if (rect1 || rect2) {
+      if (!window.confirm('You are changing the exercise. Do you want to clear what you have written?')) {
+        return;
+      }
+    }
+    setActivePrompt(id);
+    setRect1('');
+    setRect2('');
+    setChecklist({ greeting: false, reason: false, conditional: false, punctuation: false });
+    setShowCorrection(false);
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 p-4 md:p-8 font-sans text-slate-800">
+      <div className="max-w-5xl mx-auto bg-white rounded-[2rem] shadow-xl overflow-hidden border border-slate-200">
+        
+        {/* HEADER */}
+        <div className="bg-gradient-to-r from-teal-500 to-blue-600 p-8 text-center text-white relative">
+          <div className="absolute top-4 left-4 opacity-20">
+            <Mail className="w-24 h-24" />
+          </div>
+          <div className="relative z-10">
+            <span className="bg-white/20 text-teal-50 px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-widest inline-flex items-center gap-2 mb-4 backdrop-blur-sm">
+              <PenTool className="w-4 h-4" /> Writing Practice
+            </span>
+            <h1 className="text-4xl md:text-5xl font-black mb-3 drop-shadow-md">Los 2 Rectángulos 📝</h1>
+            <p className="text-xl font-medium text-blue-100">Practice the Intro and the Main Body using Conditionals</p>
+          </div>
+        </div>
+
+        {/* PROMPT SELECTOR */}
+        <div className="bg-slate-100 p-4 border-b border-slate-200 flex flex-wrap justify-center gap-4">
+          <button 
+            onClick={() => switchPrompt(1)}
+            className={`px-6 py-3 rounded-xl font-bold transition-all shadow-sm flex items-center gap-2 ${activePrompt === 1 ? 'bg-blue-600 text-white scale-105' : 'bg-white text-slate-600 hover:bg-slate-50'}`}
+          >
+            <span className="bg-white/20 w-6 h-6 rounded-full flex items-center justify-center text-sm">A</span>
+            Unlikely Dreams (2nd Cond)
+          </button>
+          <button 
+            onClick={() => switchPrompt(2)}
+            className={`px-6 py-3 rounded-xl font-bold transition-all shadow-sm flex items-center gap-2 ${activePrompt === 2 ? 'bg-purple-600 text-white scale-105' : 'bg-white text-slate-600 hover:bg-slate-50'}`}
+          >
+            <span className="bg-white/20 w-6 h-6 rounded-full flex items-center justify-center text-sm">B</span>
+            Past Regrets (3rd Cond)
+          </button>
+        </div>
+
+        <div className="p-6 md:p-8 space-y-8">
+          
+          {/* THE PROMPT */}
+          <section className="bg-yellow-50 rounded-3xl p-6 border-2 border-yellow-200 shadow-sm relative overflow-hidden transition-all duration-300">
+            <div className="absolute -right-4 -top-4 opacity-10 transform rotate-12">
+              <MessageSquare className="w-32 h-32 text-yellow-500" />
+            </div>
+            <div className="relative z-10">
+              <h2 className="text-xl font-bold text-yellow-800 mb-2 flex items-center gap-2">
+                <Mail className="w-6 h-6 text-yellow-600" />
+                Your friend's email: {prompts[activePrompt].title}
+              </h2>
+              <div className="bg-white p-5 rounded-2xl border border-yellow-200 text-slate-700 font-medium italic shadow-inner text-lg">
+                "{prompts[activePrompt].text}"
+              </div>
+            </div>
+          </section>
+
+          {/* EDITORS FOR THE RECTANGLES */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            {/* RECTÁNGULO 1: LA INTRO */}
+            <div className="flex flex-col gap-3">
+              <div className="bg-blue-50 rounded-2xl p-5 border-2 border-blue-200 h-full flex flex-col">
+                <h3 className="text-lg font-bold text-blue-800 flex items-center gap-2 mb-2">
+                  <span className="bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">1</span>
+                  El Primer Rectángulo (La Intro)
+                </h3>
+                <p className="text-sm text-blue-900 mb-4 flex-grow">
+                  Say hello, ask how they are, and explain <strong>why</strong> you are writing.
+                </p>
+                <div className="bg-white/60 p-3 rounded-xl border border-blue-100 text-sm font-bold text-blue-800">
+                  💡 Hints:
+                  <ul className="font-normal text-blue-700 mt-1 ml-4 list-disc">
+                    <li>How are you doing? / I hope you're ok.</li>
+                    <li>I'm writing to you because...</li>
+                  </ul>
+                </div>
+              </div>
+              <textarea
+                value={rect1}
+                onChange={(e) => setRect1(e.target.value)}
+                placeholder="Write your greeting and reason here..."
+                className="w-full h-48 p-5 rounded-2xl border-2 border-blue-200 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 resize-none text-slate-700 text-lg shadow-sm transition-shadow"
+              ></textarea>
+            </div>
+
+            {/* RECTÁNGULO 2: LA CHICHA */}
+            <div className="flex flex-col gap-3">
+              <div className={`rounded-2xl p-5 border-2 h-full flex flex-col ${activePrompt === 1 ? 'bg-indigo-50 border-indigo-200' : 'bg-purple-50 border-purple-200'}`}>
+                <h3 className={`text-lg font-bold flex items-center gap-2 mb-2 ${activePrompt === 1 ? 'text-indigo-800' : 'text-purple-800'}`}>
+                  <span className={`text-white w-6 h-6 rounded-full flex items-center justify-center text-sm ${activePrompt === 1 ? 'bg-indigo-600' : 'bg-purple-600'}`}>2</span>
+                  El Segundo Rectángulo ("La Chicha")
+                </h3>
+                <p className={`text-sm mb-4 flex-grow ${activePrompt === 1 ? 'text-indigo-900' : 'text-purple-900'}`}>
+                  Answer the email talking about <strong>{prompts[activePrompt].context}</strong> using the <strong>{prompts[activePrompt].targetConditional}</strong>.
+                </p>
+                
+                {/* FORMULA */}
+                <div className="bg-white p-3 rounded-lg border shadow-sm mt-auto">
+                  <span className="font-bold text-slate-800 block mb-1 flex items-center gap-2">
+                    <Lightbulb className="w-4 h-4 text-amber-500" />
+                    {prompts[activePrompt].targetConditional} Formula:
+                  </span>
+                  <span className="text-sm text-slate-700">{prompts[activePrompt].formula}</span>
+                </div>
+              </div>
+              <textarea
+                value={rect2}
+                onChange={(e) => setRect2(e.target.value)}
+                placeholder="Write your main answer here..."
+                className={`w-full h-48 p-5 rounded-2xl border-2 focus:outline-none focus:ring-4 resize-none text-slate-700 text-lg shadow-sm transition-shadow ${activePrompt === 1 ? 'border-indigo-200 focus:ring-indigo-100 focus:border-indigo-400' : 'border-purple-200 focus:ring-purple-100 focus:border-purple-400'}`}
+              ></textarea>
+            </div>
+
+          </div>
+
+          {/* CHECKLIST & CONTROLS */}
+          <section className="bg-slate-100 rounded-3xl p-6 border-2 border-slate-200 flex flex-col md:flex-row gap-8">
+            
+            <div className="flex-1 space-y-3">
+              <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <CheckSquare className="w-5 h-5 text-teal-600" />
+                Checklist del Alumno
+              </h4>
+              
+              <label className="flex items-start gap-3 cursor-pointer group">
+                <div className="relative flex items-center pt-0.5">
+                  <input type="checkbox" checked={checklist.greeting} onChange={() => handleCheck('greeting')} className="peer sr-only" />
+                  <div className="w-5 h-5 border-2 border-slate-400 rounded peer-checked:bg-teal-500 peer-checked:border-teal-500 transition-colors"></div>
+                  {checklist.greeting && <CheckSquare className="absolute -top-0.5 -left-0.5 w-6 h-6 text-white pointer-events-none" />}
+                </div>
+                <span className={`text-sm select-none transition-colors ${checklist.greeting ? 'text-slate-400 line-through' : 'text-slate-700 font-medium'}`}>
+                  I said hello and asked "How are you doing?". 👋
+                </span>
+              </label>
+
+              <label className="flex items-start gap-3 cursor-pointer group">
+                <div className="relative flex items-center pt-0.5">
+                  <input type="checkbox" checked={checklist.reason} onChange={() => handleCheck('reason')} className="peer sr-only" />
+                  <div className="w-5 h-5 border-2 border-slate-400 rounded peer-checked:bg-teal-500 peer-checked:border-teal-500 transition-colors"></div>
+                  {checklist.reason && <CheckSquare className="absolute -top-0.5 -left-0.5 w-6 h-6 text-white pointer-events-none" />}
+                </div>
+                <span className={`text-sm select-none transition-colors ${checklist.reason ? 'text-slate-400 line-through' : 'text-slate-700 font-medium'}`}>
+                  I explained why I am writing. 🎯
+                </span>
+              </label>
+
+              <label className="flex items-start gap-3 cursor-pointer group">
+                <div className="relative flex items-center pt-0.5">
+                  <input type="checkbox" checked={checklist.conditional} onChange={() => handleCheck('conditional')} className="peer sr-only" />
+                  <div className="w-5 h-5 border-2 border-slate-400 rounded peer-checked:bg-teal-500 peer-checked:border-teal-500 transition-colors"></div>
+                  {checklist.conditional && <CheckSquare className="absolute -top-0.5 -left-0.5 w-6 h-6 text-white pointer-events-none" />}
+                </div>
+                <span className={`text-sm select-none transition-colors ${checklist.conditional ? 'text-slate-400 line-through' : 'text-slate-700 font-medium'}`}>
+                  I used the formula for the <strong>{prompts[activePrompt].targetConditional}</strong> correctly. ⚙️
+                </span>
+              </label>
+
+              <label className="flex items-start gap-3 cursor-pointer group">
+                <div className="relative flex items-center pt-0.5">
+                  <input type="checkbox" checked={checklist.punctuation} onChange={() => handleCheck('punctuation')} className="peer sr-only" />
+                  <div className="w-5 h-5 border-2 border-slate-400 rounded peer-checked:bg-teal-500 peer-checked:border-teal-500 transition-colors"></div>
+                  {checklist.punctuation && <CheckSquare className="absolute -top-0.5 -left-0.5 w-6 h-6 text-white pointer-events-none" />}
+                </div>
+                <span className={`text-sm select-none transition-colors ${checklist.punctuation ? 'text-slate-400 line-through' : 'text-slate-700 font-medium'}`}>
+                  I checked capital letters and punctuation. 🔍
+                </span>
+              </label>
+            </div>
+
+            <div className="flex-1 flex flex-col justify-end gap-3 mt-6 md:mt-0">
+              
+              <button 
+                onClick={() => setShowCorrection(!showCorrection)}
+                className={`w-full font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm border ${showCorrection ? 'bg-green-100 text-green-800 border-green-300' : 'bg-white hover:bg-green-50 text-green-700 border-green-200'}`}
+              >
+                <RefreshCcw className={`w-5 h-5 ${showCorrection ? 'animate-spin-once' : ''}`} /> 
+                {showCorrection ? 'Hide Example' : 'Show Example Answer'}
+              </button>
+
+              <button 
+                onClick={copyFullText}
+                className="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={!rect1 && !rect2}
+              >
+                <Copy className="w-5 h-5" /> Merge and Copy My Text
+              </button>
+
+              <button 
+                onClick={clearTexts}
+                className="w-full bg-white hover:bg-red-50 text-red-600 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 border border-red-200 transition-colors"
+                disabled={!rect1 && !rect2}
+              >
+                <Trash2 className="w-5 h-5" /> Clear Everything
+              </button>
+            </div>
+            
+          </section>
+
+          {/* AUTO-CORRECTION SECTION - Moved below buttons for better flow when opening */}
+          {showCorrection && (
+            <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-6 animate-in fade-in slide-in-from-top-4 duration-500">
+              <h3 className="text-xl font-bold text-green-800 mb-4 flex items-center gap-2">
+                <Sparkles className="w-6 h-6 text-green-600" />
+                Ejemplo de Respuesta (Autocorrección)
+              </h3>
+              <p className="text-green-700 mb-4 text-sm">
+                Compare your text with this example. It doesn't have to be exactly the same, but the structure and grammar should be similar!
+              </p>
+              <div className="space-y-4">
+                <div className="bg-white p-4 rounded-xl border border-green-200 shadow-sm">
+                  <span className="text-xs font-bold text-green-600 uppercase tracking-wider mb-1 block">Rectángulo 1 (Intro)</span>
+                  <p className="text-slate-700 italic">{prompts[activePrompt].correction.rect1}</p>
+                </div>
+                <div className="bg-white p-4 rounded-xl border border-green-200 shadow-sm">
+                  <span className="text-xs font-bold text-green-600 uppercase tracking-wider mb-1 block">Rectángulo 2 (Main Body - {prompts[activePrompt].targetConditional})</span>
+                  <p className="text-slate-700 italic">{prompts[activePrompt].correction.rect2}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+        </div>
+      </div>
+    </div>
+  );
+}
