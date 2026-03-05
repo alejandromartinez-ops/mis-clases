@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Detectives de Palabras! - Análisis Gramatical</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f8fafc;
+            background-image: radial-gradient(#94a3b8 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .level-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .level-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .dotted-line {
+            border-left: 4px dashed #64748b;
+        }
+        select, input[type="text"] {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="py-10 px-4 sm:px-6 lg:px-8">
+
+    <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border-4 border-slate-800 relative">
+        
+        <!-- Marcador -->
+        <div id="score-card" class="fixed bottom-4 right-4 sm:top-4 sm:bottom-auto z-50 bg-amber-300 border-4 border-slate-800 rounded-2xl p-3 sm:p-4 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] transition-transform duration-300 flex items-center gap-3">
+            <span class="text-3xl sm:text-4xl drop-shadow-md">🔍</span>
+            <div>
+                <p class="text-xs sm:text-sm font-black text-slate-800 uppercase tracking-wider">Pistas Halladas</p>
+                <p class="text-xl sm:text-2xl font-black text-slate-800"><span id="score-display">0</span> <span class="text-lg text-slate-600">/ 22</span></p>
+            </div>
+        </div>
+
+        <!-- Cabecera -->
+        <header class="bg-gradient-to-r from-indigo-800 via-blue-700 to-indigo-900 p-8 text-center text-white relative border-b-4 border-slate-800">
+            <div class="absolute top-4 left-4 text-5xl hidden sm:block opacity-80">🕵️‍♀️</div>
+            <div class="absolute top-4 right-4 text-5xl hidden sm:block opacity-80">🕵️‍♂️</div>
+            <h1 class="text-4xl sm:text-5xl font-black mb-3 drop-shadow-lg tracking-wide uppercase text-amber-300">Agencia de Detectives</h1>
+            <p class="text-xl sm:text-2xl font-semibold bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20">Análisis Morfosintáctico - 4º Primaria</p>
+            <p class="mt-4 text-sm sm:text-base font-medium max-w-2xl mx-auto text-blue-100">Coge tu lupa y tu libreta. Completa los casos aislando a los sospechosos (sintaxis) e identificando sus perfiles (morfología). ¡Escribe con tildes!</p>
+        </header>
+
+        <!-- Contenido Principal -->
+        <div class="p-4 sm:p-10 relative bg-slate-50">
+            
+            <div class="hidden sm:block absolute top-10 bottom-10 left-1/2 transform -translate-x-1/2 dotted-line"></div>
+
+            <!-- NIVEL 1: Sujeto y Predicado -->
+            <div class="relative flex flex-col sm:flex-row items-center justify-between mb-16">
+                <div class="w-full sm:w-5/12 level-card bg-blue-50 border-4 border-blue-400 rounded-2xl p-6 relative z-10">
+                    <span class="absolute -top-5 -left-5 bg-blue-600 text-white w-12 h-12 flex items-center justify-center rounded-full font-black text-xl border-4 border-white shadow-lg">L1</span>
+                    <h2 class="text-xl font-black text-blue-800 mb-2 flex items-center gap-2">🔍 La Escena del Crimen</h2>
+                    <p class="text-blue-900 text-sm font-bold mb-3">Sintaxis: Sujeto y Predicado</p>
+                    <div class="bg-white p-3 rounded-lg border-2 border-blue-200 mb-4 text-center font-bold text-lg text-slate-700 shadow-inner">
+                        "El intrépido detective busca pistas."
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-sm font-bold text-slate-700 block mb-1">¿Quién realiza la acción? (Sujeto):</label>
+                            <input type="text" id="l1-q1" placeholder="Escribe aquí..." class="w-full p-2 text-center font-bold border-2 border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="text-sm font-bold text-slate-700 block mb-1">¿Qué hace? (Predicado):</label>
+                            <input type="text" id="l1-q2" placeholder="Escribe aquí..." class="w-full p-2 text-center font-bold border-2 border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none">
+                        </div>
+                        <button onclick="checkNivel(1)" class="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white font-black py-2 rounded-lg shadow-md active:scale-95 transition-all">¡Resolver Nivel 1!</button>
+                        <p id="msg-l1" class="text-center font-bold text-sm hidden mt-2"></p>
+                    </div>
+                </div>
+                <div class="hidden sm:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-blue-500 border-4 border-white rounded-full z-20 items-center justify-center shadow-md"></div>
+                <div class="w-full sm:w-5/12 hidden sm:block"></div>
+            </div>
+
+            <!-- NIVEL 2: Complementos -->
+            <div class="relative flex flex-col sm:flex-row items-center justify-between mb-16">
+                <div class="w-full sm:w-5/12 hidden sm:block text-right pr-8 text-6xl opacity-80">🗺️</div>
+                <div class="hidden sm:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-indigo-500 border-4 border-white rounded-full z-20 items-center justify-center shadow-md"></div>
+                
+                <div class="w-full sm:w-5/12 level-card bg-indigo-50 border-4 border-indigo-400 rounded-2xl p-6 relative z-10">
+                    <span class="absolute -top-5 -right-5 sm:-left-5 bg-indigo-600 text-white w-12 h-12 flex items-center justify-center rounded-full font-black text-xl border-4 border-white shadow-lg">L2</span>
+                    <h2 class="text-xl font-black text-indigo-800 mb-2 flex items-center gap-2">🧩 Encajando las Piezas</h2>
+                    <p class="text-indigo-900 text-sm font-bold mb-3">Sintaxis: CD, CCL, CCM, CCT</p>
+                    <div class="bg-white p-3 rounded-lg border-2 border-indigo-200 mb-4 text-center font-bold text-[15px] text-slate-700 shadow-inner">
+                        "Ayer la espía escondió el mapa cuidadosamente en el cajón."
+                    </div>
+                    
+                    <div class="space-y-3 bg-white p-3 rounded-xl border-2 border-indigo-100">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                            <label class="text-sm font-bold text-slate-700">C. Directo (¿Qué?):</label>
+                            <input type="text" id="l2-q1" class="w-full sm:w-32 p-1 text-center font-bold border-2 border-slate-300 rounded focus:border-indigo-500 focus:outline-none">
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                            <label class="text-sm font-bold text-slate-700">C.C. Tiempo (¿Cuándo?):</label>
+                            <input type="text" id="l2-q2" class="w-full sm:w-32 p-1 text-center font-bold border-2 border-slate-300 rounded focus:border-indigo-500 focus:outline-none">
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                            <label class="text-sm font-bold text-slate-700">C.C. Modo (¿Cómo?):</label>
+                            <input type="text" id="l2-q3" class="w-full sm:w-32 p-1 text-center font-bold border-2 border-slate-300 rounded focus:border-indigo-500 focus:outline-none">
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                            <label class="text-sm font-bold text-slate-700">C.C. Lugar (¿Dónde?):</label>
+                            <input type="text" id="l2-q4" class="w-full sm:w-32 p-1 text-center font-bold border-2 border-slate-300 rounded focus:border-indigo-500 focus:outline-none">
+                        </div>
+                        <button onclick="checkNivel(2)" class="w-full mt-2 bg-indigo-600 hover:bg-indigo-700 text-white font-black py-2 rounded-lg shadow-md active:scale-95 transition-all">¡Resolver Nivel 2!</button>
+                        <p id="msg-l2" class="text-center font-bold text-sm hidden mt-2"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NIVEL 3: Morfología I -->
+            <div class="relative flex flex-col sm:flex-row items-center justify-between mb-16">
+                <div class="w-full sm:w-5/12 level-card bg-emerald-50 border-4 border-emerald-400 rounded-2xl p-6 relative z-10">
+                    <span class="absolute -top-5 -left-5 bg-emerald-600 text-white w-12 h-12 flex items-center justify-center rounded-full font-black text-xl border-4 border-white shadow-lg">L3</span>
+                    <h2 class="text-xl font-black text-emerald-800 mb-2 flex items-center gap-2">📁 Fichas Policiales</h2>
+                    <p class="text-emerald-900 text-sm font-bold mb-3">Morfología: Determinantes, Nombres y Adjetivos</p>
+                    <div class="bg-white p-3 rounded-lg border-2 border-emerald-200 mb-4 text-center font-bold text-lg text-slate-700 shadow-inner">
+                        "Unos perros grandísimos..."
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <!-- Unos -->
+                        <div class="bg-emerald-100 p-2 rounded-lg border border-emerald-300">
+                            <span class="font-black text-emerald-800 block mb-1">Unos</span>
+                            <select id="l3-q1" class="w-full p-1 text-sm font-bold border-2 border-slate-300 rounded">
+                                <option value="">Tipo de palabra...</option>
+                                <option value="nombre">Nombre Común</option>
+                                <option value="determinante">Determinante</option>
+                                <option value="adjetivo">Adjetivo</option>
+                            </select>
+                        </div>
+                        <!-- Perros -->
+                        <div class="bg-emerald-100 p-2 rounded-lg border border-emerald-300">
+                            <span class="font-black text-emerald-800 block mb-1">perros</span>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <select id="l3-q2" class="p-1 text-sm font-bold border-2 border-slate-300 rounded">
+                                    <option value="">Tipo...</option>
+                                    <option value="nombre_comun">N. Común</option>
+                                    <option value="nombre_propio">N. Propio</option>
+                                </select>
+                                <select id="l3-q3" class="p-1 text-sm font-bold border-2 border-slate-300 rounded">
+                                    <option value="">Género...</option>
+                                    <option value="masculino">Masculino</option>
+                                    <option value="femenino">Femenino</option>
+                                </select>
+                                <select id="l3-q4" class="p-1 text-sm font-bold border-2 border-slate-300 rounded">
+                                    <option value="">Número...</option>
+                                    <option value="singular">Singular</option>
+                                    <option value="plural">Plural</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Grandísimos -->
+                        <div class="bg-emerald-100 p-2 rounded-lg border border-emerald-300">
+                            <span class="font-black text-emerald-800 block mb-1">grandísimos</span>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <select id="l3-q5" class="p-1 text-sm font-bold border-2 border-slate-300 rounded">
+                                    <option value="">Tipo...</option>
+                                    <option value="adjetivo">Adjetivo</option>
+                                    <option value="verbo">Verbo</option>
+                                </select>
+                                <select id="l3-q6" class="p-1 text-sm font-bold border-2 border-slate-300 rounded">
+                                    <option value="">Grado...</option>
+                                    <option value="positivo">Positivo</option>
+                                    <option value="comparativo">Comparativo</option>
+                                    <option value="superlativo">Superlativo</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button onclick="checkNivel(3)" class="w-full mt-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black py-2 rounded-lg shadow-md active:scale-95 transition-all">¡Resolver Nivel 3!</button>
+                        <p id="msg-l3" class="text-center font-bold text-sm hidden mt-2"></p>
+                    </div>
+                </div>
+                <div class="hidden sm:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-emerald-500 border-4 border-white rounded-full z-20 items-center justify-center shadow-md"></div>
+                <div class="w-full sm:w-5/12 hidden sm:block pl-8 text-6xl opacity-80">🗂️</div>
+            </div>
+
+            <!-- NIVEL 4: Morfología II -->
+            <div class="relative flex flex-col sm:flex-row items-center justify-between mb-16">
+                <div class="w-full sm:w-5/12 hidden sm:block text-right pr-8 text-6xl opacity-80">🔗</div>
+                <div class="hidden sm:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-amber-500 border-4 border-white rounded-full z-20 items-center justify-center shadow-md"></div>
+                
+                <div class="w-full sm:w-5/12 level-card bg-amber-50 border-4 border-amber-400 rounded-2xl p-6 relative z-10">
+                    <span class="absolute -top-5 -right-5 sm:-left-5 bg-amber-600 text-white w-12 h-12 flex items-center justify-center rounded-full font-black text-xl border-4 border-white shadow-lg">L4</span>
+                    <h2 class="text-xl font-black text-amber-800 mb-2 flex items-center gap-2">🔌 Las Conexiones</h2>
+                    <p class="text-amber-900 text-sm font-bold mb-3">Morfología: Verbos, Preposiciones y Conjunciones</p>
+                    <div class="bg-white p-3 rounded-lg border-2 border-amber-200 mb-4 text-center font-bold text-lg text-slate-700 shadow-inner">
+                        "...corrieron hacia París y..."
+                    </div>
+                    
+                    <div class="space-y-3 bg-white p-4 rounded-xl border-2 border-amber-100">
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-sm font-bold text-slate-700 w-20">corrieron</label>
+                            <select id="l4-q1" class="flex-1 p-1 text-sm font-bold border-2 border-slate-300 rounded focus:border-amber-500">
+                                <option value="">Elige...</option>
+                                <option value="verbo">Verbo</option>
+                                <option value="nombre">Nombre</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-sm font-bold text-slate-700 w-20">hacia</label>
+                            <select id="l4-q2" class="flex-1 p-1 text-sm font-bold border-2 border-slate-300 rounded focus:border-amber-500">
+                                <option value="">Elige...</option>
+                                <option value="preposicion">Preposición</option>
+                                <option value="conjuncion">Conjunción</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-sm font-bold text-slate-700 w-20">París</label>
+                            <select id="l4-q3" class="flex-1 p-1 text-sm font-bold border-2 border-slate-300 rounded focus:border-amber-500">
+                                <option value="">Elige...</option>
+                                <option value="nombre_comun">Nombre Común</option>
+                                <option value="nombre_propio">Nombre Propio</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-sm font-bold text-slate-700 w-20">y</label>
+                            <select id="l4-q4" class="flex-1 p-1 text-sm font-bold border-2 border-slate-300 rounded focus:border-amber-500">
+                                <option value="">Elige...</option>
+                                <option value="preposicion">Preposición</option>
+                                <option value="conjuncion">Conjunción</option>
+                            </select>
+                        </div>
+                        
+                        <button onclick="checkNivel(4)" class="w-full mt-3 bg-amber-500 hover:bg-amber-600 text-white font-black py-2 rounded-lg shadow-md active:scale-95 transition-all">¡Resolver Nivel 4!</button>
+                        <p id="msg-l4" class="text-center font-bold text-sm hidden mt-2"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NIVEL 5: Boss Level -->
+            <div class="relative flex flex-col sm:flex-row items-center justify-between mt-16">
+                <div class="hidden sm:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-purple-600 border-4 border-purple-300 rounded-full z-20 items-center justify-center shadow-[0_0_15px_rgba(147,51,234,0.6)] animate-pulse"></div>
+                
+                <div class="w-full sm:w-8/12 mx-auto level-card bg-slate-900 border-4 border-purple-500 rounded-2xl p-6 relative z-10 shadow-[0_0_20px_rgba(147,51,234,0.3)]">
+                    <span class="absolute -top-5 -left-5 bg-purple-600 text-white w-12 h-12 flex items-center justify-center rounded-full font-black text-xl border-4 border-purple-300 shadow-[0_0_15px_rgba(147,51,234,0.8)] animate-bounce">L5</span>
+                    <div class="absolute -top-6 right-4 text-4xl">👑</div>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-purple-400 mb-2 text-center">🏆 El Gran Caso Final</h2>
+                    <p class="text-purple-200 text-sm font-semibold mb-4 text-center">¡Demuestra todo lo que sabes analizando esta oración!</p>
+                    
+                    <div class="bg-purple-950 p-4 rounded-xl border-2 border-purple-700/50 mb-4 text-center">
+                        <p class="text-xl font-black text-white tracking-wide">"Mañana el jefe resolverá el misterio fácilmente."</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-slate-800 p-4 rounded-xl border border-slate-700">
+                        <!-- Sintaxis -->
+                        <div class="space-y-3">
+                            <h3 class="text-purple-300 font-black border-b border-purple-700 pb-1">Sintaxis (escribe):</h3>
+                            <div>
+                                <label class="text-xs font-bold text-slate-300">Sujeto:</label>
+                                <input type="text" id="l5-q1" class="w-full p-1 text-sm bg-slate-700 text-white border border-slate-600 rounded focus:border-purple-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-slate-300">C. Directo:</label>
+                                <input type="text" id="l5-q2" class="w-full p-1 text-sm bg-slate-700 text-white border border-slate-600 rounded focus:border-purple-500 outline-none">
+                            </div>
+                            <div class="flex gap-2">
+                                <div class="flex-1">
+                                    <label class="text-xs font-bold text-slate-300">C.C. Tiempo:</label>
+                                    <input type="text" id="l5-q3" class="w-full p-1 text-sm bg-slate-700 text-white border border-slate-600 rounded focus:border-purple-500 outline-none">
+                                </div>
+                                <div class="flex-1">
+                                    <label class="text-xs font-bold text-slate-300">C.C. Modo:</label>
+                                    <input type="text" id="l5-q4" class="w-full p-1 text-sm bg-slate-700 text-white border border-slate-600 rounded focus:border-purple-500 outline-none">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Morfología -->
+                        <div class="space-y-3">
+                            <h3 class="text-purple-300 font-black border-b border-purple-700 pb-1">Morfología (selecciona):</h3>
+                            <div class="flex items-center justify-between gap-2">
+                                <label class="text-sm font-bold text-white">jefe</label>
+                                <select id="l5-q5" class="w-32 p-1 text-xs font-bold bg-slate-700 text-white border border-slate-600 rounded focus:border-purple-500">
+                                    <option value="">Tipo...</option>
+                                    <option value="nombre_comun">Nombre Común</option>
+                                    <option value="nombre_propio">Nombre Propio</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center justify-between gap-2">
+                                <label class="text-sm font-bold text-white">resolverá</label>
+                                <select id="l5-q6" class="w-32 p-1 text-xs font-bold bg-slate-700 text-white border border-slate-600 rounded focus:border-purple-500">
+                                    <option value="">Tipo...</option>
+                                    <option value="verbo">Verbo</option>
+                                    <option value="adjetivo">Adjetivo</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center justify-between gap-2">
+                                <label class="text-sm font-bold text-white">el (1º)</label>
+                                <select id="l5-q7" class="w-32 p-1 text-xs font-bold bg-slate-700 text-white border border-slate-600 rounded focus:border-purple-500">
+                                    <option value="">Tipo...</option>
+                                    <option value="determinante">Determinante</option>
+                                    <option value="preposicion">Preposición</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="checkNivel(5)" class="w-full mt-4 bg-purple-600 hover:bg-purple-500 text-white font-black py-3 rounded-lg shadow-[0_0_10px_rgba(147,51,234,0.6)] active:scale-95 transition-all uppercase tracking-wider text-lg">¡Cerrar el Caso!</button>
+                    <p id="msg-l5" class="text-center font-bold text-sm hidden mt-3"></p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer / Consejo y Botón de Emergencia -->
+        <footer class="bg-slate-200 border-t-4 border-slate-300 p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
+                <div class="flex items-center gap-4 bg-white p-4 rounded-xl border-2 border-slate-300 shadow-sm w-full sm:w-auto">
+                    <span class="text-3xl">👨‍🏫</span>
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm uppercase">Súper Consejo de tu Profe:</h4>
+                        <p class="text-slate-600 text-sm">Para encontrar el Sujeto, pregúntale <strong>¿Quién?</strong> al verbo.</p>
+                    </div>
+                </div>
+                
+                <!-- Botón de Emergencia -->
+                <button onclick="mostrarSoluciones()" class="bg-red-500 hover:bg-red-600 text-white font-black py-3 px-4 rounded-xl border-b-4 border-red-700 active:border-b-0 active:translate-y-1 transition-all flex items-center justify-center gap-2 shadow-md w-full sm:w-auto">
+                    <span class="text-xl">🚨</span> 
+                    <span class="text-xs uppercase tracking-wider">Romper en caso de emergencia</span>
+                </button>
+            </div>
+
+            <div id="final-message" class="text-center w-full md:w-auto hidden">
+                <p class="text-green-700 font-black text-xl bg-green-200 px-6 py-3 rounded-xl border-2 border-green-400 shadow-lg animate-pulse uppercase">¡Caso Resuelto! 🏆</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Modal Soluciones (Cristal Roto) -->
+    <div id="soluciones-modal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 border-4 border-red-500 shadow-2xl relative">
+            <button onclick="cerrarSoluciones()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 text-3xl font-black transition-colors">&times;</button>
+            <h3 class="text-2xl font-black text-red-600 mb-2 flex items-center gap-2">🚨 Archivo Secreto Abierto</h3>
+            <p class="text-slate-600 mb-4 font-semibold text-sm">Aquí tienes el expediente con las soluciones. Revísalo solo si te has atascado.</p>
+            
+            <div class="space-y-3 max-h-[55vh] overflow-y-auto pr-2 text-sm">
+                <div class="bg-blue-50 p-3 rounded-lg border border-blue-200">
+                    <h4 class="font-bold text-blue-800">L1: La Escena</h4>
+                    <p><span class="font-bold">Sujeto:</span> el intrépido detective | <span class="font-bold">Predicado:</span> busca pistas</p>
+                </div>
+                <div class="bg-indigo-50 p-3 rounded-lg border border-indigo-200">
+                    <h4 class="font-bold text-indigo-800">L2: Piezas (Complementos)</h4>
+                    <p><span class="font-bold">CD:</span> el mapa | <span class="font-bold">CCT:</span> ayer | <span class="font-bold">CCM:</span> cuidadosamente | <span class="font-bold">CCL:</span> en el cajón</p>
+                </div>
+                <div class="bg-emerald-50 p-3 rounded-lg border border-emerald-200">
+                    <h4 class="font-bold text-emerald-800">L3: Fichas (Morfología I)</h4>
+                    <p>Unos: <span class="font-bold">Determinante</span><br>
+                    perros: <span class="font-bold">Nombre común, masculino, plural</span><br>
+                    grandísimos: <span class="font-bold">Adjetivo, superlativo</span></p>
+                </div>
+                <div class="bg-amber-50 p-3 rounded-lg border border-amber-200">
+                    <h4 class="font-bold text-amber-800">L4: Conexiones (Morfología II)</h4>
+                    <p>corrieron: <span class="font-bold">Verbo</span> | hacia: <span class="font-bold">Preposición</span><br>
+                    París: <span class="font-bold">Nombre Propio</span> | y: <span class="font-bold">Conjunción</span></p>
+                </div>
+                <div class="bg-purple-100 p-3 rounded-lg border border-purple-300">
+                    <h4 class="font-bold text-purple-800">L5: Gran Caso</h4>
+                    <p><span class="font-bold">Suj:</span> el jefe | <span class="font-bold">CD:</span> el misterio | <span class="font-bold">CCT:</span> mañana | <span class="font-bold">CCM:</span> fácilmente<br>
+                    jefe: <span class="font-bold">N. Común</span> | resolverá: <span class="font-bold">Verbo</span> | el: <span class="font-bold">Determinante</span></p>
+                </div>
+            </div>
+            <button onclick="cerrarSoluciones()" class="w-full mt-5 bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-xl transform active:scale-95 transition-all">Esconder el expediente</button>
+        </div>
+    </div>
+
+    <!-- Lógica de validación -->
+    <script>
+        let totalScore = 0;
+        const maxScore = 22; // 2(L1) + 4(L2) + 6(L3) + 4(L4) + 7(L5) = 23 (Wait, let's count: L3 has 6 inputs. L5 has 7. Total: 2+4+6+4+7 = 23). Ajustado a 23 en el código HTML. Let me recount the exact number of inputs.
+        // L1: 2
+        // L2: 4
+        // L3: q1, q2, q3, q4, q5, q6 -> 6
+        // L4: q1, q2, q3, q4 -> 4
+        // L5: q1, q2, q3, q4, q5, q6, q7 -> 7
+        // Total real: 23. Actualizando variable en JS y vista.
+        
+        document.getElementById('score-display').nextElementSibling.innerText = "/ 23";
+
+        // Respuestas correctas. Las de texto se normalizan en la función (sin espacios extra y minúsculas).
+        const answers = {
+            1: [ 
+                {id: 'l1-q1', val: 'el intrépido detective'}, 
+                {id: 'l1-q2', val: 'busca pistas'} 
+            ],
+            2: [ 
+                {id: 'l2-q1', val: 'el mapa'}, 
+                {id: 'l2-q2', val: 'ayer'}, 
+                {id: 'l2-q3', val: 'cuidadosamente'}, 
+                {id: 'l2-q4', val: 'en el cajón'} 
+            ],
+            3: [ 
+                {id: 'l3-q1', val: 'determinante'}, 
+                {id: 'l3-q2', val: 'nombre_comun'}, 
+                {id: 'l3-q3', val: 'masculino'}, 
+                {id: 'l3-q4', val: 'plural'},
+                {id: 'l3-q5', val: 'adjetivo'},
+                {id: 'l3-q6', val: 'superlativo'}
+            ],
+            4: [ 
+                {id: 'l4-q1', val: 'verbo'}, 
+                {id: 'l4-q2', val: 'preposicion'}, 
+                {id: 'l4-q3', val: 'nombre_propio'}, 
+                {id: 'l4-q4', val: 'conjuncion'} 
+            ],
+            5: [ 
+                {id: 'l5-q1', val: 'el jefe'}, 
+                {id: 'l5-q2', val: 'el misterio'}, 
+                {id: 'l5-q3', val: 'mañana'},
+                {id: 'l5-q4', val: 'fácilmente'},
+                {id: 'l5-q5', val: 'nombre_comun'},
+                {id: 'l5-q6', val: 'verbo'},
+                {id: 'l5-q7', val: 'determinante'}
+            ]
+        };
+
+        function verifyInput(inputId, correctValue) {
+            const input = document.getElementById(inputId);
+            if (input.disabled) return 0; // Ya acertada
+
+            let isCorrect = false;
+            let userVal = input.value.trim().toLowerCase();
+
+            // Quitar puntos finales si el alumno los pone por costumbre
+            if (userVal.endsWith('.')) {
+                userVal = userVal.slice(0, -1);
+            }
+
+            if (userVal === correctValue.toLowerCase()) {
+                isCorrect = true;
+            }
+
+            if (isCorrect) {
+                input.disabled = true;
+                input.classList.remove('border-slate-300', 'border-slate-600', 'focus:border-blue-500', 'focus:border-indigo-500', 'focus:border-emerald-500', 'focus:border-amber-500', 'focus:border-purple-500');
+                
+                // Estilos específicos para el L5 (fondo oscuro) vs resto
+                if(inputId.startsWith('l5')) {
+                    input.classList.remove('bg-slate-700', 'text-white');
+                    input.classList.add('border-green-400', 'bg-green-900/50', 'text-green-300', 'shadow-none');
+                } else {
+                    input.classList.add('border-green-500', 'bg-green-100', 'text-green-800');
+                }
+                return 1;
+            } else {
+                // Animación de error
+                const originalBg = inputId.startsWith('l5') ? 'bg-slate-700' : 'bg-white';
+                input.classList.add('border-red-500', 'bg-red-100', 'text-red-900', 'animate-pulse');
+                if(inputId.startsWith('l5')) input.classList.remove('bg-slate-700', 'text-white');
+
+                setTimeout(() => {
+                    input.classList.remove('border-red-500', 'bg-red-100', 'text-red-900', 'animate-pulse');
+                    if(inputId.startsWith('l5')) input.classList.add('bg-slate-700', 'text-white');
+                }, 1500);
+                return 0;
+            }
+        }
+
+        function checkNivel(nivelNum) {
+            let pointsWon = 0;
+            const levelData = answers[nivelNum];
+            
+            levelData.forEach(item => {
+                pointsWon += verifyInput(item.id, item.val);
+            });
+
+            if (pointsWon > 0) {
+                totalScore += pointsWon;
+                document.getElementById('score-display').innerText = totalScore;
+                
+                // Animación del marcador
+                const scoreCard = document.getElementById('score-card');
+                scoreCard.classList.add('scale-110', 'bg-green-300');
+                scoreCard.classList.remove('bg-amber-300');
+                setTimeout(() => {
+                    scoreCard.classList.remove('scale-110', 'bg-green-300');
+                    scoreCard.classList.add('bg-amber-300');
+                }, 400);
+            }
+
+            mostrarFeedback(nivelNum, pointsWon, levelData.length);
+            comprobarVictoria();
+        }
+
+        function mostrarFeedback(nivelNum, points, maxPoints) {
+            const msgEl = document.getElementById(`msg-l${nivelNum}`);
+            msgEl.classList.remove('hidden', 'text-green-600', 'text-orange-500', 'text-red-500', 'text-purple-400');
+            
+            const allCorrect = answers[nivelNum].every(item => document.getElementById(item.id).disabled);
+
+            if (allCorrect) {
+                msgEl.innerText = "¡Pistas verificadas! Nivel superado.";
+                msgEl.classList.add(nivelNum === 5 ? 'text-green-400' : 'text-green-600');
+            } else if (points > 0) {
+                msgEl.innerText = `¡Bien! Has descubierto ${points} pista(s) nueva(s). Sigue buscando.`;
+                msgEl.classList.add(nivelNum === 5 ? 'text-orange-400' : 'text-orange-500');
+            } else {
+                msgEl.innerText = "Las pistas no coinciden. ¡Revisa tu análisis!";
+                msgEl.classList.add('text-red-500');
+            }
+        }
+
+        function comprobarVictoria() {
+            if (totalScore === 23) { // 23 es el máximo real
+                document.getElementById('final-message').classList.remove('hidden');
+                document.getElementById('score-card').classList.replace('bg-amber-300', 'bg-green-400');
+                document.querySelector('#score-card span:first-child').innerText = '🏆';
+            }
+        }
+
+        // --- Botón de emergencia ---
+        function mostrarSoluciones() {
+            document.getElementById('soluciones-modal').classList.remove('hidden');
+        }
+
+        function cerrarSoluciones() {
+            document.getElementById('soluciones-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
