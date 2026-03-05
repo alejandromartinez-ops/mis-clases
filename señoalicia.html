@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Misión Decimal! - Infografía Interactiva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f0fdfa;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .level-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .level-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .dotted-line {
+            border-left: 4px dashed #94a3b8;
+        }
+        /* Eliminar flechas de los input type number */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="py-10 px-4 sm:px-6 lg:px-8">
+
+    <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border-4 border-slate-800 relative">
+        
+        <!-- Score Counter Sticky -->
+        <div id="score-card" class="fixed bottom-4 right-4 sm:top-4 sm:bottom-auto z-50 bg-yellow-300 border-4 border-slate-800 rounded-2xl p-3 sm:p-4 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] transition-transform duration-300 flex items-center gap-3">
+            <span class="text-3xl sm:text-4xl drop-shadow-md">⭐</span>
+            <div>
+                <p class="text-xs sm:text-sm font-black text-slate-800 uppercase tracking-wider">Puntuación</p>
+                <p class="text-xl sm:text-2xl font-black text-slate-800"><span id="score-display">0</span> <span class="text-lg text-slate-600">/ 14</span></p>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-8 text-center text-white relative">
+            <div class="absolute top-4 left-4 text-4xl hidden sm:block">🚀</div>
+            <h1 class="text-4xl sm:text-5xl font-black mb-3 drop-shadow-lg tracking-wide uppercase">¡Misión Decimal!</h1>
+            <p class="text-xl sm:text-2xl font-semibold bg-black/20 inline-block px-4 py-1 rounded-full backdrop-blur-sm">Aventura Matemática para 6º</p>
+            <p class="mt-4 text-sm sm:text-base font-medium max-w-xl mx-auto">Calcula en tu cuaderno y comprueba tus resultados aquí. ¡Consigue los 14 puntos para ganar el diploma virtual de Maestro Decimal!</p>
+        </header>
+
+        <!-- Main Content (Timeline) -->
+        <div class="p-8 sm:p-12 relative">
+            
+            <!-- Central Line for Desktop -->
+            <div class="hidden sm:block absolute top-12 bottom-12 left-1/2 transform -translate-x-1/2 dotted-line"></div>
+
+            <!-- Level 1: Rookie -->
+            <div class="relative flex flex-col sm:flex-row items-center justify-between mb-16 sm:mb-20">
+                <div class="w-full sm:w-5/12 level-card bg-emerald-50 border-4 border-emerald-400 rounded-2xl p-6 relative z-10">
+                    <span class="absolute -top-5 -left-5 bg-emerald-500 text-white w-12 h-12 flex items-center justify-center rounded-full font-black text-xl border-4 border-white shadow-lg">L1</span>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-emerald-800 mb-2 flex items-center gap-2">🛒 El Ticket del Súper</h2>
+                    <p class="text-emerald-900 text-sm font-semibold mb-3">Reto: Sumas y Restas</p>
+                    <p class="text-gray-700 text-sm mb-4 leading-relaxed">
+                        Tienes <strong>20.00 €</strong>. Compras galletas (<span class="font-bold text-emerald-600">2.45 €</span>), un zumo (<span class="font-bold text-emerald-600">1.30 €</span>) y manzanas (<span class="font-bold text-emerald-600">3.15 €</span>).
+                    </p>
+                    
+                    <!-- Interactive Questions L1 -->
+                    <div class="space-y-3 bg-white p-4 rounded-xl border-2 border-emerald-200">
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-sm font-bold text-slate-700">A) Gasto total (€):</label>
+                            <input type="number" step="0.01" id="l1-q1" class="w-20 p-1 text-center font-bold border-2 border-slate-300 rounded focus:border-emerald-500 focus:outline-none transition-colors">
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-sm font-bold text-slate-700">B) Dinero que sobra (€):</label>
+                            <input type="number" step="0.01" id="l1-q2" class="w-20 p-1 text-center font-bold border-2 border-slate-300 rounded focus:border-emerald-500 focus:outline-none transition-colors">
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-sm font-bold text-slate-700 leading-tight">C) ¿Cuánto más cuestan las manzanas que el zumo? (€):</label>
+                            <input type="number" step="0.01" id="l1-q3" class="w-20 p-1 text-center font-bold border-2 border-slate-300 rounded focus:border-emerald-500 focus:outline-none transition-colors">
+                        </div>
+                        
+                        <button onclick="checkNivel(1)" class="w-full mt-3 bg-emerald-500 hover:bg-emerald-600 text-white font-black py-2 rounded-lg shadow-md transform active:scale-95 transition-all">¡Corregir Nivel 1!</button>
+                        <p id="msg-l1" class="text-center font-bold text-sm hidden mt-2"></p>
+                    </div>
+                </div>
+                <!-- Connector dot -->
+                <div class="hidden sm:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-emerald-500 border-4 border-white rounded-full z-20 items-center justify-center shadow-md"></div>
+                <div class="w-full sm:w-5/12 hidden sm:block"></div>
+            </div>
+
+            <!-- Level 2: Explorer -->
+            <div class="relative flex flex-col sm:flex-row items-center justify-between mb-16 sm:mb-20">
+                <div class="w-full sm:w-5/12 hidden sm:block text-right pr-8">
+                    <img src="https://img.icons8.com/color/150/000000/pancakes.png" alt="Tortitas" class="inline-block opacity-80 w-32 drop-shadow-xl transform -rotate-6">
+                </div>
+                <!-- Connector dot -->
+                <div class="hidden sm:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-orange-500 border-4 border-white rounded-full z-20 items-center justify-center shadow-md"></div>
+                
+                <div class="w-full sm:w-5/12 level-card bg-orange-50 border-4 border-orange-400 rounded-2xl p-6 relative z-10">
+                    <span class="absolute -top-5 -right-5 sm:-left-5 bg-orange-500 text-white w-12 h-12 flex items-center justify-center rounded-full font-black text-xl border-4 border-white shadow-lg">L2</span>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-orange-800 mb-2 flex items-center gap-2">🥞 La Gran Receta</h2>
+                    <p class="text-orange-900 text-sm font-semibold mb-3">Reto: Multiplicación</p>
+                    <p class="text-gray-700 text-sm mb-4 leading-relaxed">
+                        Para hacer <strong>1 tortita</strong> necesitas <strong>0.25 litros</strong> de leche. 
+                    </p>
+                    
+                    <!-- Interactive Questions L2 -->
+                    <div class="space-y-3 bg-white p-4 rounded-xl border-2 border-orange-200">
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-sm font-bold text-slate-700">A) Litros para 24 tortitas:</label>
+                            <input type="number" step="0.01" id="l2-q1" class="w-20 p-1 text-center font-bold border-2 border-slate-300 rounded focus:border-orange-500 focus:outline-none transition-colors">
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-sm font-bold text-slate-700">B) Litros para 10 tortitas:</label>
+                            <input type="number" step="0.01" id="l2-q2" class="w-20 p-1 text-center font-bold border-2 border-slate-300 rounded focus:border-orange-500 focus:outline-none transition-colors">
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-sm font-bold text-slate-700 leading-tight">C) Si 1 litro cuesta 1.50€, ¿cuánto cuestan los litros del apartado A? (€):</label>
+                            <input type="number" step="0.01" id="l2-q3" class="w-20 p-1 text-center font-bold border-2 border-slate-300 rounded focus:border-orange-500 focus:outline-none transition-colors">
+                        </div>
+                        
+                        <button onclick="checkNivel(2)" class="w-full mt-3 bg-orange-500 hover:bg-orange-600 text-white font-black py-2 rounded-lg shadow-md transform active:scale-95 transition-all">¡Corregir Nivel 2!</button>
+                        <p id="msg-l2" class="text-center font-bold text-sm hidden mt-2"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Level 3: Expert -->
+            <div class="relative flex flex-col sm:flex-row items-center justify-between mb-16 sm:mb-20">
+                <div class="w-full sm:w-5/12 level-card bg-amber-50 border-4 border-amber-400 rounded-2xl p-6 relative z-10">
+                    <span class="absolute -top-5 -left-5 bg-amber-500 text-white w-12 h-12 flex items-center justify-center rounded-full font-black text-xl border-4 border-white shadow-lg">L3</span>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-amber-800 mb-2 flex items-center gap-2">🏴‍☠️ El Botín Pirata</h2>
+                    <p class="text-amber-900 text-sm font-semibold mb-3">Reto: División con decimales</p>
+                    <p class="text-gray-700 text-sm mb-4 leading-relaxed">
+                        Un cofre tiene <strong>145.50 monedas</strong> de oro a repartir en partes iguales.
+                    </p>
+                    
+                    <!-- Interactive Questions L3 -->
+                    <div class="space-y-3 bg-white p-4 rounded-xl border-2 border-amber-200">
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-sm font-bold text-slate-700 leading-tight">A) Monedas por pirata si son 5 en total:</label>
+                            <input type="number" step="0.01" id="l3-q1" class="w-20 p-1 text-center font-bold border-2 border-slate-300 rounded focus:border-amber-500 focus:outline-none transition-colors">
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-sm font-bold text-slate-700 leading-tight">B) Encuentran 34.50 monedas más. ¿Cuál es el tesoro total ahora?:</label>
+                            <input type="number" step="0.01" id="l3-q2" class="w-20 p-1 text-center font-bold border-2 border-slate-300 rounded focus:border-amber-500 focus:outline-none transition-colors">
+                        </div>
+                        
+                        <button onclick="checkNivel(3)" class="w-full mt-3 bg-amber-500 hover:bg-amber-600 text-white font-black py-2 rounded-lg shadow-md transform active:scale-95 transition-all">¡Corregir Nivel 3!</button>
+                        <p id="msg-l3" class="text-center font-bold text-sm hidden mt-2"></p>
+                    </div>
+                </div>
+                <!-- Connector dot -->
+                <div class="hidden sm:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-amber-500 border-4 border-white rounded-full z-20 items-center justify-center shadow-md"></div>
+                <div class="w-full sm:w-5/12 hidden sm:block pl-8">
+                     <img src="https://img.icons8.com/color/150/000000/treasure-chest.png" alt="Cofre" class="inline-block opacity-80 w-32 drop-shadow-xl transform rotate-6">
+                </div>
+            </div>
+
+            <!-- Level 4: Master -->
+            <div class="relative flex flex-col sm:flex-row items-center justify-between">
+                <div class="w-full sm:w-5/12 hidden sm:block"></div>
+                <!-- Connector dot -->
+                <div class="hidden sm:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-slate-800 border-4 border-white rounded-full z-20 items-center justify-center shadow-md"></div>
+                
+                <div class="w-full sm:w-5/12 level-card bg-slate-50 border-4 border-slate-800 rounded-2xl p-6 relative z-10">
+                    <span class="absolute -top-5 -right-5 sm:-left-5 bg-slate-800 text-white w-12 h-12 flex items-center justify-center rounded-full font-black text-xl border-4 border-white shadow-lg">L4</span>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-slate-800 mb-2 flex items-center gap-2">🕵️‍♂️ Código de Escape</h2>
+                    <p class="text-slate-600 text-sm font-semibold mb-3">Reto: Acertijo Paso a Paso</p>
+                    <p class="text-gray-700 text-sm mb-4 leading-relaxed">
+                        El candado de la clase tiene 3 códigos secretos. Sigue las pistas en orden para descubrirlos y poder salir.
+                    </p>
+                    
+                    <!-- Interactive Questions L4 -->
+                    <div class="space-y-3 bg-slate-100 p-4 rounded-xl border-2 border-slate-300">
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-sm font-bold text-slate-700">Pista 1: Multiplica 2.5 por 4</label>
+                            <input type="number" step="0.01" id="l4-q1" class="w-20 p-1 text-center font-mono font-bold bg-white border-2 border-slate-400 rounded focus:border-slate-800 focus:outline-none">
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-sm font-bold text-slate-700">Pista 2: Divide 15.6 entre 2</label>
+                            <input type="number" step="0.01" id="l4-q2" class="w-20 p-1 text-center font-mono font-bold bg-white border-2 border-slate-400 rounded focus:border-slate-800 focus:outline-none">
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-sm font-bold text-slate-700 leading-tight">Clave Final: Suma los resultados de la Pista 1 y la Pista 2</label>
+                            <input type="number" step="0.01" id="l4-q3" class="w-24 p-2 text-center text-lg text-green-600 font-mono font-black bg-slate-800 border-2 border-slate-800 rounded focus:border-green-400 focus:outline-none shadow-inner">
+                        </div>
+                        
+                        <button onclick="checkNivel(4)" class="w-full mt-3 bg-slate-800 hover:bg-slate-900 text-white font-black py-2 rounded-lg shadow-md transform active:scale-95 transition-all">¡Comprobar Código!</button>
+                        <p id="msg-l4" class="text-center font-bold text-sm hidden mt-2"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Level 5: Boss Level -->
+            <div class="relative flex flex-col sm:flex-row items-center justify-between mt-16 sm:mt-20">
+                <!-- Connector dot -->
+                <div class="hidden sm:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-rose-600 border-4 border-rose-300 rounded-full z-20 items-center justify-center shadow-[0_0_15px_rgba(225,29,72,0.8)] animate-pulse"></div>
+                
+                <div class="w-full sm:w-5/12 level-card bg-slate-900 border-4 border-rose-500 rounded-2xl p-6 relative z-10 shadow-[0_0_20px_rgba(225,29,72,0.5)]">
+                    <span class="absolute -top-5 -left-5 bg-rose-600 text-white w-12 h-12 flex items-center justify-center rounded-full font-black text-xl border-4 border-rose-300 shadow-[0_0_15px_rgba(225,29,72,1)] animate-bounce">L5</span>
+                    <div class="absolute -top-6 right-4 text-4xl">👾</div>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-rose-400 mb-2 flex items-center gap-2">⚠️ El Jefe Final</h2>
+                    <p class="text-rose-200 text-sm font-semibold mb-3">Reto: Misión Espacial Crítica</p>
+                    <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                        ¡Alerta! La nave consume <strong>12.5 litros</strong> de combustible por parsec. Va a viajar <strong>4.2 parsecs</strong> a Marte y luego <strong>3.8 parsecs</strong> a Júpiter. El combustible espacial cuesta <strong>15.50 €</strong> por litro.
+                    </p>
+                    
+                    <!-- Interactive Questions L5 -->
+                    <div class="space-y-3 bg-slate-800 p-4 rounded-xl border-2 border-rose-900/50">
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-sm font-bold text-rose-100">A) Distancia total (parsecs):</label>
+                            <input type="number" step="0.01" id="l5-q1" class="w-20 p-1 text-center font-bold bg-slate-700 text-white border-2 border-slate-600 rounded focus:border-rose-500 focus:outline-none transition-colors">
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-sm font-bold text-rose-100">B) Combustible total (litros):</label>
+                            <input type="number" step="0.01" id="l5-q2" class="w-20 p-1 text-center font-bold bg-slate-700 text-white border-2 border-slate-600 rounded focus:border-rose-500 focus:outline-none transition-colors">
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-sm font-bold text-rose-300 leading-tight">C) Coste total del viaje (€):</label>
+                            <input type="number" step="0.01" id="l5-q3" class="w-24 p-2 text-center text-lg text-rose-500 font-mono font-black bg-black border-2 border-rose-500 rounded focus:border-white focus:outline-none shadow-[inset_0_0_10px_rgba(225,29,72,0.5)]">
+                        </div>
+                        
+                        <button onclick="checkNivel(5)" class="w-full mt-3 bg-rose-600 hover:bg-rose-500 text-white font-black py-2 rounded-lg shadow-[0_0_10px_rgba(225,29,72,0.6)] transform active:scale-95 transition-all uppercase tracking-wider">¡Salvar la Misión!</button>
+                        <p id="msg-l5" class="text-center font-bold text-sm hidden mt-2"></p>
+                    </div>
+                </div>
+                <div class="w-full sm:w-5/12 hidden sm:block pl-8 text-center relative">
+                     <div class="absolute inset-0 bg-rose-500 blur-[40px] opacity-20 rounded-full animate-pulse"></div>
+                     <img src="https://img.icons8.com/color/150/000000/space-shuttle.png" alt="Nave Espacial" class="relative inline-block opacity-90 w-32 drop-shadow-[0_0_15px_rgba(225,29,72,0.8)] transform -rotate-12 hover:rotate-0 transition-transform duration-500">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer / Pro Tip -->
+        <footer class="bg-slate-100 border-t-4 border-slate-200 p-6 flex flex-col sm:flex-row items-center justify-between gap-4 mt-8">
+            <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                <div class="flex items-center gap-4 bg-yellow-100 p-4 rounded-xl border-2 border-yellow-300 w-full sm:w-auto">
+                    <span class="text-3xl">💡</span>
+                    <div>
+                        <h4 class="font-bold text-yellow-800 text-sm uppercase">Súper Consejo de la Seño:</h4>
+                        <p class="text-yellow-900 text-sm">En sumas y restas... <strong>¡ALINEA SIEMPRE LAS COMAS!</strong></p>
+                    </div>
+                </div>
+                
+                <!-- Botón de Emergencia -->
+                <button onclick="mostrarSoluciones()" class="bg-red-500 hover:bg-red-600 text-white font-black py-3 px-4 rounded-xl border-b-4 border-red-700 active:border-b-0 active:translate-y-1 transition-all flex items-center justify-center gap-2 shadow-md w-full sm:w-auto">
+                    <span class="text-xl">🚨</span> 
+                    <span class="text-sm uppercase tracking-wider">Romper en caso de emergencia</span>
+                </button>
+            </div>
+
+            <div id="final-message" class="text-center sm:text-right w-full sm:w-auto hidden">
+                <p class="text-green-600 font-black text-xl bg-green-100 px-4 py-2 rounded-xl border-2 border-green-300">¡Reto Superado! 🎉</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Modal Soluciones (Cristal Roto) -->
+    <div id="soluciones-modal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 border-4 border-red-500 shadow-2xl relative">
+            <button onclick="cerrarSoluciones()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 text-3xl font-black transition-colors">&times;</button>
+            <h3 class="text-2xl font-black text-red-600 mb-2 flex items-center gap-2">🚨 ¡Cristal Roto!</h3>
+            <p class="text-slate-600 mb-6 font-semibold">Aquí tienes las soluciones... ¡pero prométeme que lo has intentado primero en tu cuaderno! 😉</p>
+            
+            <div class="space-y-4 max-h-[50vh] overflow-y-auto pr-2">
+                <div class="bg-emerald-50 p-3 rounded-lg border-2 border-emerald-200">
+                    <h4 class="font-bold text-emerald-800">L1: El Ticket del Súper</h4>
+                    <p class="text-sm font-mono mt-1 font-bold">A) 6.90 | B) 13.10 | C) 1.85</p>
+                </div>
+                <div class="bg-orange-50 p-3 rounded-lg border-2 border-orange-200">
+                    <h4 class="font-bold text-orange-800">L2: La Gran Receta</h4>
+                    <p class="text-sm font-mono mt-1 font-bold">A) 6 | B) 2.5 | C) 9</p>
+                </div>
+                <div class="bg-amber-50 p-3 rounded-lg border-2 border-amber-200">
+                    <h4 class="font-bold text-amber-800">L3: El Botín Pirata</h4>
+                    <p class="text-sm font-mono mt-1 font-bold">A) 29.10 | B) 180</p>
+                </div>
+                <div class="bg-slate-100 p-3 rounded-lg border-2 border-slate-300">
+                    <h4 class="font-bold text-slate-800">L4: Código de Escape</h4>
+                    <p class="text-sm font-mono mt-1 font-bold">P1) 10 | P2) 7.8 | Final) 17.8</p>
+                </div>
+                <div class="bg-rose-50 p-3 rounded-lg border-2 border-rose-200">
+                    <h4 class="font-bold text-rose-800">L5: El Jefe Final</h4>
+                    <p class="text-sm font-mono mt-1 font-bold">A) 8 | B) 100 | C) 1550</p>
+                </div>
+            </div>
+            <button onclick="cerrarSoluciones()" class="w-full mt-6 bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-xl transform active:scale-95 transition-all">Esconder pruebas y volver</button>
+        </div>
+    </div>
+
+    <!-- Lógica de validación -->
+    <script>
+        let totalScore = 0;
+        const maxScore = 14; // 3 + 3 + 2 + 3 + 3
+
+        // Respuestas correctas
+        const answers = {
+            1: [ {id: 'l1-q1', val: 6.90}, {id: 'l1-q2', val: 13.10}, {id: 'l1-q3', val: 1.85} ],
+            2: [ {id: 'l2-q1', val: 6}, {id: 'l2-q2', val: 2.5}, {id: 'l2-q3', val: 9} ],
+            3: [ {id: 'l3-q1', val: 29.10}, {id: 'l3-q2', val: 180} ],
+            4: [ {id: 'l4-q1', val: 10}, {id: 'l4-q2', val: 7.8}, {id: 'l4-q3', val: 17.8} ],
+            5: [ {id: 'l5-q1', val: 8}, {id: 'l5-q2', val: 100}, {id: 'l5-q3', val: 1550} ]
+        };
+
+        function verifyInput(inputId, correctValue) {
+            const input = document.getElementById(inputId);
+            if (input.disabled) return 0; // Si ya está acertada, no suma doble
+
+            // Aceptamos coma o punto como separador decimal
+            let userValStr = input.value.replace(',', '.');
+            let userVal = parseFloat(userValStr);
+
+            if (isNaN(userVal)) return 0;
+
+            // Redondeo a 2 decimales para evitar problemas de coma flotante de JS
+            userVal = Math.round(userVal * 100) / 100;
+            correctValue = Math.round(correctValue * 100) / 100;
+
+            if (userVal === correctValue) {
+                // Correcto
+                input.disabled = true;
+                input.classList.remove('border-slate-300', 'focus:border-emerald-500', 'focus:border-orange-500', 'focus:border-amber-500', 'focus:border-slate-800', 'focus:border-rose-500');
+                
+                // Color especial para el último input del L4
+                if(inputId === 'l4-q3') {
+                    input.classList.add('border-green-400', 'bg-green-100', 'text-green-800', 'shadow-none');
+                } else if (inputId.startsWith('l5')) {
+                    input.classList.remove('bg-slate-700', 'bg-black', 'text-white', 'text-rose-500', 'border-slate-600', 'border-rose-500');
+                    input.classList.add('border-green-400', 'bg-green-900', 'text-green-300', 'shadow-none');
+                } else {
+                    input.classList.add('border-green-500', 'bg-green-100', 'text-green-800');
+                }
+                return 1;
+            } else {
+                // Incorrecto - animación de error
+                input.classList.add('border-red-500', 'bg-red-100', 'animate-pulse');
+                setTimeout(() => {
+                    input.classList.remove('border-red-500', 'bg-red-100', 'animate-pulse');
+                }, 1500);
+                return 0;
+            }
+        }
+
+        function checkNivel(nivelNum) {
+            let pointsWon = 0;
+            const levelData = answers[nivelNum];
+            
+            levelData.forEach(item => {
+                pointsWon += verifyInput(item.id, item.val);
+            });
+
+            if (pointsWon > 0) {
+                totalScore += pointsWon;
+                document.getElementById('score-display').innerText = totalScore;
+                
+                // Animación del marcador
+                const scoreCard = document.getElementById('score-card');
+                scoreCard.classList.add('scale-110', 'bg-green-300');
+                setTimeout(() => {
+                    scoreCard.classList.remove('scale-110', 'bg-green-300');
+                }, 400);
+            }
+
+            mostrarFeedback(nivelNum, pointsWon, levelData.length);
+            comprobarVictoria();
+        }
+
+        function mostrarFeedback(nivelNum, points, maxPoints) {
+            const msgEl = document.getElementById(`msg-l${nivelNum}`);
+            msgEl.classList.remove('hidden', 'text-green-600', 'text-orange-500', 'text-red-500');
+            
+            // Comprobar si todas las casillas del nivel están deshabilitadas (acertadas)
+            const allCorrect = answers[nivelNum].every(item => document.getElementById(item.id).disabled);
+
+            if (allCorrect) {
+                msgEl.innerText = "¡Perfecto! Nivel superado.";
+                msgEl.classList.add('text-green-600');
+            } else if (points > 0) {
+                msgEl.innerText = `¡Bien! Has acertado ${points} nueva(s). Revisa las demás.`;
+                msgEl.classList.add('text-orange-500');
+            } else {
+                msgEl.innerText = "¡Ups! Revisa tus cálculos. ¡Tú puedes!";
+                msgEl.classList.add('text-red-500');
+            }
+        }
+
+        function comprobarVictoria() {
+            if (totalScore === maxScore) {
+                document.getElementById('final-message').classList.remove('hidden');
+                document.getElementById('score-card').classList.replace('bg-yellow-300', 'bg-green-400');
+            }
+        }
+
+        // --- Funciones del botón de emergencia ---
+        function mostrarSoluciones() {
+            document.getElementById('soluciones-modal').classList.remove('hidden');
+        }
+
+        function cerrarSoluciones() {
+            document.getElementById('soluciones-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
