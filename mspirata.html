@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expedición: El Tesoro de la Isla de las Letras</title>
+    <!-- Tailwind CSS para diseño moderno y rápido -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fuentes temáticas -->
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Special+Elite&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pirate-gold: #ffd700;
+            --paper-bg: #f4e4bc;
+        }
+        body {
+            background-color: #1a2a3a;
+            font-family: 'Special Elite', cursive;
+            color: #3e2723;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3 {
+            font-family: 'Pirata One', system-ui;
+        }
+        /* Estilo de pergamino antiguo */
+        .parchment {
+            background: radial-gradient(circle, #fdf5e6 0%, #f4e4bc 100%);
+            border: 15px solid transparent;
+            border-image: url('https://www.transparenttextures.com/patterns/dark-leather.png') 30 round;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
+        /* Línea de tiempo / Pasos de la isla */
+        .island-step {
+            border-left: 4px dashed #8b4513;
+            padding-left: 2rem;
+            position: relative;
+            margin-bottom: 4rem;
+            opacity: 0.35;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: grayscale(100%);
+            pointer-events: none;
+        }
+        .island-step.active {
+            opacity: 1;
+            filter: grayscale(0%);
+            pointer-events: auto;
+            border-left: 4px solid #d2691e;
+        }
+        .step-marker {
+            position: absolute;
+            left: -1.75rem;
+            top: 0;
+            background: #5d4037;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Pirata One';
+            font-size: 1.25rem;
+            z-index: 10;
+            transition: background 0.3s;
+        }
+        .active .step-marker {
+            background: #d2691e;
+            box-shadow: 0 0 15px #ffd700;
+        }
+        /* Estilo de inputs */
+        .input-pirata {
+            background: rgba(255, 255, 255, 0.5);
+            border-bottom: 3px solid #8b4513;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 6px 6px 0 0;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+        .input-pirata:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.8);
+            border-bottom-color: #d2691e;
+        }
+        .is-correct {
+            border-bottom: 4px solid #2d5a27 !important;
+            background-color: rgba(144, 238, 144, 0.4) !important;
+        }
+        .is-wrong {
+            border-bottom: 4px solid #a02020 !important;
+            background-color: rgba(255, 182, 193, 0.4) !important;
+        }
+        /* Botones piratas */
+        .btn-pirata {
+            background: #5d4037;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-family: 'Pirata One';
+            font-size: 1.75rem;
+            box-shadow: 0 4px 0 #3e2723;
+            transition: all 0.2s;
+        }
+        .btn-pirata:hover {
+            background: #8b4513;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #3e2723;
+        }
+        .btn-pirata:active {
+            transform: translateY(2px);
+            box-shadow: 0 0 0 #3e2723;
+        }
+        /* Animaciones */
+        .floating { animation: float 4s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .shake { animation: shake 0.5s ease-in-out; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-12 flex flex-col items-center min-h-screen">
+
+    <div class="max-w-4xl w-full parchment p-6 md:p-16 rounded-2xl">
+        
+        <!-- CABECERA -->
+        <header class="text-center mb-12">
+            <h1 class="text-5xl md:text-7xl text-amber-900 mb-6 drop-shadow-md">⚓ Diario del Sabio de los Mapas</h1>
+            
+            <!-- Rol del Alumno -->
+            <div class="bg-amber-900/5 p-6 rounded-xl border-2 border-amber-900/20 mb-10 text-left relative overflow-hidden">
+                <div class="absolute -right-4 -bottom-4 text-6xl opacity-10">📜</div>
+                <h2 class="text-2xl text-amber-900 mb-3 flex items-center">
+                    <span class="mr-2">📝</span> Tu Misión, Grumete:
+                </h2>
+                <p class="text-lg leading-relaxed text-amber-950">
+                    Has sido nombrado el nuevo <strong>sabio de los mapas</strong> de la tripulación. El Capitán Tilde ha perdido las llaves de su cofre y solo alguien capaz de descifrar las oraciones mágicas podrá abrirlas. ¡Usa tu ingenio para recuperar el oro y ganar tu libertad!
+                </p>
+            </div>
+            
+            <!-- Oración Principal -->
+            <div class="bg-white/40 p-6 rounded-lg border-2 border-dashed border-amber-900 shadow-inner">
+                <p class="text-xs uppercase tracking-widest text-amber-800 font-bold mb-2">Frase del Loro Mágico 🦜</p>
+                <p class="text-2xl md:text-4xl font-bold text-amber-950 italic">
+                    "Los piratas escondieron el tesoro con cuidado bajo la palmera."
+                </p>
+            </div>
+        </header>
+
+        <!-- EXPLORACIÓN POR PASOS -->
+        <main class="relative">
+            
+            <!-- PASO 1 -->
+            <section id="step1" class="island-step active">
+                <div class="step-marker">1</div>
+                <h3 class="text-3xl text-amber-900 mb-3">🏝️ Playa del Sujeto y el Verbo</h3>
+                <p class="mb-6 text-amber-800">El primer paso es saber quién actúa y qué hace.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold uppercase text-amber-900">Sujeto (¿Quiénes?):</label>
+                        <input type="text" class="input-pirata" data-answer="Los piratas" placeholder="Escribe el sujeto...">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold uppercase text-amber-900">Verbo (La acción):</label>
+                        <input type="text" class="input-pirata" data-answer="escondieron" placeholder="Escribe la acción...">
+                    </div>
+                </div>
+                <button onclick="checkStep(1)" class="btn-pirata mt-8">Explorar zona 🧭</button>
+            </section>
+
+            <!-- PASO 2 -->
+            <section id="step2" class="island-step">
+                <div class="step-marker">2</div>
+                <h3 class="text-3xl text-amber-900 mb-3">🪵 El Bosque de los Objetos</h3>
+                <p class="mb-6 text-amber-800">¿Qué es exactamente lo que se ha ocultado?</p>
+                
+                <div class="max-w-md space-y-2">
+                    <label class="text-sm font-bold uppercase text-amber-900">Complemento Directo (CD):</label>
+                    <input type="text" class="input-pirata" data-answer="el tesoro" placeholder="¿Qué escondieron?">
+                </div>
+                <button onclick="checkStep(2)" class="btn-pirata mt-8">Seguir el rastro ⚓</button>
+            </section>
+
+            <!-- PASO 3 -->
+            <section id="step3" class="island-step">
+                <div class="step-marker">3</div>
+                <h3 class="text-3xl text-amber-900 mb-3">🐊 El Pantano de las Circunstancias</h3>
+                <p class="mb-6 text-amber-800">Detalla cómo y en qué lugar ocurrió todo.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold uppercase text-amber-900">C.C. de Modo (¿Cómo?):</label>
+                        <input type="text" class="input-pirata" data-answer="con cuidado" placeholder="¿De qué manera?">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold uppercase text-amber-900">C.C. de Lugar (¿Dónde?):</label>
+                        <input type="text" class="input-pirata" data-answer="bajo la palmera" placeholder="¿En qué sitio?">
+                    </div>
+                </div>
+                <button onclick="checkStep(3)" class="btn-pirata mt-8">Cruzar el pantano 🛶</button>
+            </section>
+
+            <!-- PASO 4 -->
+            <section id="step4" class="island-step">
+                <div class="step-marker">4</div>
+                <h3 class="text-3xl text-amber-900 mb-3">💎 La Cueva de las Palabras</h3>
+                <p class="mb-6 text-amber-800">Analiza cada pieza para abrir la cerradura final.</p>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div class="p-3 bg-white/30 rounded border border-amber-900/10">
+                        <span class="block text-xs font-bold text-amber-700 mb-1">LOS</span>
+                        <input type="text" class="input-pirata text-sm" data-answer="articulo" placeholder="Tipo...">
+                    </div>
+                    <div class="p-3 bg-white/30 rounded border border-amber-900/10">
+                        <span class="block text-xs font-bold text-amber-700 mb-1">PIRATAS</span>
+                        <input type="text" class="input-pirata text-sm" data-answer="sustantivo" placeholder="Tipo...">
+                    </div>
+                    <div class="p-3 bg-white/30 rounded border border-amber-900/10">
+                        <span class="block text-xs font-bold text-amber-700 mb-1">ESCONDIERON</span>
+                        <input type="text" class="input-pirata text-sm" data-answer="verbo" placeholder="Tipo...">
+                    </div>
+                    <div class="p-3 bg-white/30 rounded border border-amber-900/10">
+                        <span class="block text-xs font-bold text-amber-700 mb-1">TESORO</span>
+                        <input type="text" class="input-pirata text-sm" data-answer="sustantivo" placeholder="Tipo...">
+                    </div>
+                    <div class="p-3 bg-white/30 rounded border border-amber-900/10">
+                        <span class="block text-xs font-bold text-amber-700 mb-1">CON</span>
+                        <input type="text" class="input-pirata text-sm" data-answer="preposicion" placeholder="Tipo...">
+                    </div>
+                    <div class="p-3 bg-white/30 rounded border border-amber-900/10">
+                        <span class="block text-xs font-bold text-amber-700 mb-1">PALMERA</span>
+                        <input type="text" class="input-pirata text-sm" data-answer="sustantivo" placeholder="Tipo...">
+                    </div>
+                </div>
+                <button onclick="checkStep(4)" class="btn-pirata mt-10 w-full">✨ ¡INTENTAR ABRIR EL COFRE! ✨</button>
+            </section>
+
+            <!-- VICTORIA FINAL -->
+            <section id="victory" class="hidden text-center py-16 animate-bounce-slow">
+                <div class="floating text-9xl mb-6">💰</div>
+                <h2 class="text-6xl text-amber-900 mb-4">¡EL COFRE SE ABRIÓ!</h2>
+                <p class="text-2xl text-amber-800 mb-8">Has demostrado ser el mayor <strong>sabio de los mapas</strong>.</p>
+                <div class="inline-block bg-yellow-400 p-6 rounded-full border-4 border-amber-900 shadow-xl">
+                    <p class="text-2xl font-bold text-amber-900">🏆 Medalla: Maestro de la Lengua</p>
+                </div>
+                <div class="mt-12">
+                    <button onclick="location.reload()" class="text-amber-900 underline font-bold hover:text-amber-700">
+                        Reiniciar expedición
+                    </button>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Barra de estado / Feedback -->
+        <div id="status-bar" class="mt-10 text-center font-bold text-lg min-h-[2rem]"></div>
+    </div>
+
+    <script>
+        function checkStep(n) {
+            const step = document.getElementById(`step${n}`);
+            const inputs = step.querySelectorAll('input');
+            const status = document.getElementById('status-bar');
+            let mistakes = 0;
+
+            inputs.forEach(input => {
+                // Normalización de texto (quitar tildes, espacios y pasar a minúsculas)
+                const userVal = input.value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const correctVal = input.getAttribute('data-answer').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                
+                // Lógica de sinónimos
+                const isCorrect = (userVal === correctVal) || 
+                                (correctVal === "sustantivo" && userVal === "nombre") ||
+                                (correctVal === "articulo" && userVal === "determinante");
+
+                if (isCorrect) {
+                    input.classList.remove('is-wrong', 'shake');
+                    input.classList.add('is-correct');
+                } else {
+                    input.classList.remove('is-correct');
+                    input.classList.add('is-wrong', 'shake');
+                    mistakes++;
+                    
+                    // Quitar clase shake después de la animación para poder repetirla
+                    setTimeout(() => input.classList.remove('shake'), 500);
+                }
+            });
+
+            if (mistakes === 0) {
+                status.innerText = "¡Arrr! ¡Todo en orden! Desbloqueando la siguiente zona...";
+                status.className = "mt-10 text-center font-bold text-green-700 transition-all";
+                
+                if (n < 4) {
+                    // Activar el siguiente paso
+                    const nextStep = document.getElementById(`step${n+1}`);
+                    nextStep.classList.add('active');
+                    
+                    setTimeout(() => {
+                        nextStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        status.innerText = "";
+                    }, 1500);
+                } else {
+                    // Victoria
+                    document.getElementById('step4').classList.add('hidden');
+                    document.getElementById('victory').classList.remove('hidden');
+                    document.getElementById('victory').scrollIntoView({ behavior: 'smooth' });
+                    status.innerText = "";
+                }
+            } else {
+                status.innerText = `¡Rayos y centellas! Hay ${mistakes} error(es) en tu mapa. ¡Revísalos!`;
+                status.className = "mt-10 text-center font-bold text-red-700";
+            }
+        }
+    </script>
+</body>
+</html>
