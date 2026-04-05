@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los 5 Reinos de la Vida - 4º Primaria</title>
+    <!-- Librerías vía CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #F8FAFC;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .kingdom-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .kingdom-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .challenge-input {
+            border: 2px solid #E2E8F0;
+            transition: all 0.2s;
+        }
+        .challenge-input.correct {
+            border-color: #22C55E !important;
+            background-color: #F0FDF4 !important;
+        }
+        .challenge-input.incorrect {
+            border-color: #EF4444 !important;
+            background-color: #FEF2F2 !important;
+        }
+        .english-box {
+            background-color: #F1F5F9;
+            border-left: 4px solid #64748B;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            border-radius: 0.5rem;
+            font-style: italic;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+        }
+        .list-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased">
+
+<nav class="sticky top-0 z-50 bg-white shadow-md border-b-4 border-amber-400 p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+        <h1 class="text-xl md:text-2xl font-black text-slate-800">🏰 <span class="text-orange-600">LOS 5 REINOS</span></h1>
+        <span class="bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">Natural Sciences</span>
+    </div>
+</nav>
+
+<main class="max-w-6xl mx-auto px-4 py-8 space-y-12">
+    
+    <!-- Introducción -->
+    <header class="text-center space-y-4">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900">La Clasificación de los Seres Vivos</h2>
+        <p class="text-lg text-slate-600 max-w-3xl mx-auto">
+            Explora las características únicas de cada grupo de seres vivos y cómo se alimentan, crecen y ayudan al planeta.
+        </p>
+    </header>
+
+    <!-- Sección Detallada de los Reinos -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Reino Animal -->
+        <div class="kingdom-card bg-white p-8 rounded-3xl shadow-md border-t-8 border-orange-500">
+            <div class="flex justify-between items-start">
+                <h3 class="text-2xl font-bold text-orange-600 flex items-center gap-2">🦁 Animal</h3>
+                <span class="badge bg-orange-100 text-orange-700">Pluricelulares</span>
+            </div>
+            <div class="mt-4 space-y-3">
+                <p class="text-slate-700 leading-relaxed">
+                    Son organismos pluricelulares que se alimentan de otros. Se dividen según su dieta:
+                </p>
+                <ul class="text-sm space-y-2 text-slate-600 ml-2">
+                    <li><span class="list-dot bg-green-500"></span><strong>Herbívoros:</strong> Comen plantas (vaca, conejo).</li>
+                    <li><span class="list-dot bg-red-500"></span><strong>Carnívoros:</strong> Comen carne. Pueden ser <em>depredadores</em> (cazan, como el león) o <em>carroñeros</em> (comen restos, como el buitre).</li>
+                    <li><span class="list-dot bg-blue-500"></span><strong>Omnívoros:</strong> Comen de todo (oso, humano).</li>
+                </ul>
+                <div class="english-box">
+                    <p class="text-xs font-bold text-slate-500 uppercase mb-1">English Summary:</p>
+                    <p class="text-slate-700">"Animals <strong>are made of</strong> many cells. They can be <strong>herbivores</strong>, <strong>carnivores</strong> (predators or scavengers), or <strong>omnivores</strong>."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reino Vegetal -->
+        <div class="kingdom-card bg-white p-8 rounded-3xl shadow-md border-t-8 border-green-500">
+            <div class="flex justify-between items-start">
+                <h3 class="text-2xl font-bold text-green-600 flex items-center gap-2">🌿 Vegetal</h3>
+                <span class="badge bg-green-100 text-green-700">Autótrofos</span>
+            </div>
+            <div class="mt-4 space-y-3">
+                <p class="text-slate-700 leading-relaxed">
+                    Incluye a todas las plantas. Son capaces de producir su propio alimento mediante la <strong>fotosíntesis</strong>. No pueden trasladarse de un lugar a otro, pero reaccionan a la luz y al agua.
+                </p>
+                <div class="english-box">
+                    <p class="text-xs font-bold text-slate-500 uppercase mb-1">English Summary:</p>
+                    <p class="text-slate-700">"Plants <strong>are made of</strong> many cells. They use the sun to make food, but they <strong>are not made for</strong> walking."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reino Hongos -->
+        <div class="kingdom-card bg-white p-8 rounded-3xl shadow-md border-t-8 border-purple-500">
+            <div class="flex justify-between items-start">
+                <h3 class="text-2xl font-bold text-purple-600 flex items-center gap-2">🍄 Hongos</h3>
+                <span class="badge bg-purple-100 text-purple-700">Descomponedores</span>
+            </div>
+            <div class="mt-4 space-y-3">
+                <p class="text-slate-700 leading-relaxed">
+                    Absorben nutrientes de materia en descomposición. Son muy importantes porque de algunos hongos obtenemos medicinas como los <strong>antibióticos</strong> (penicilina), que ayudan a curar enfermedades.
+                </p>
+                <div class="english-box">
+                    <p class="text-xs font-bold text-slate-500 uppercase mb-1">English Summary:</p>
+                    <p class="text-slate-700">"Some fungi <strong>are made of</strong> many cells. They help us make <strong>antibiotics</strong> to fight illness."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reino Monera (Bacterias) -->
+        <div class="kingdom-card bg-white p-8 rounded-3xl shadow-md border-t-8 border-yellow-500">
+            <div class="flex justify-between items-start">
+                <h3 class="text-2xl font-bold text-yellow-600 flex items-center gap-2">🧫 Monera (Bacterias)</h3>
+                <span class="badge bg-yellow-100 text-yellow-700">Microscópicas</span>
+            </div>
+            <div class="mt-4 space-y-3">
+                <p class="text-slate-700 leading-relaxed">
+                    Son las bacterias. Son <strong>microscópicas</strong> (necesitas un microscopio para verlas). Pueden ser <strong>beneficiosas</strong> (como las del yogur) o <strong>perjudiciales</strong> (causan enfermedades).
+                </p>
+                <div class="english-box">
+                    <p class="text-xs font-bold text-slate-500 uppercase mb-1">English Summary:</p>
+                    <p class="text-slate-700">"Bacteria <strong>are made of</strong> just one tiny cell. They <strong>are not made of</strong> many parts. Some are good and some are bad."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reino Protista (Algas y Protozoos) -->
+        <div class="kingdom-card bg-white p-8 rounded-3xl shadow-md border-t-8 border-sky-500 md:col-span-2">
+            <div class="flex justify-between items-start">
+                <h3 class="text-2xl font-bold text-sky-600 flex items-center gap-2">🌊 Protista (Algas y Protozoos)</h3>
+                <span class="badge bg-sky-100 text-sky-700">Variados</span>
+            </div>
+            <div class="mt-4 space-y-3">
+                <p class="text-slate-700 leading-relaxed">
+                    Un grupo muy diferente entre sí. Incluye a los protozoos y a las <strong>algas</strong>. Las algas son muy importantes porque, al igual que las plantas, <strong>fabrican su propio alimento</strong> y viven en el agua.
+                </p>
+                <div class="english-box">
+                    <p class="text-xs font-bold text-slate-500 uppercase mb-1">English Summary:</p>
+                    <p class="text-slate-700">"Protists <strong>are made of</strong> simple cells. Algae <strong>is made of</strong> cells that make their own food."</p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Sección de Retos -->
+    <section class="bg-slate-900 rounded-3xl p-8 text-white">
+        <h3 class="text-3xl font-black mb-6 text-orange-400">⚡ Zona de Desafío (10 Preguntas)</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- P1 -->
+            <div class="space-y-3">
+                <label class="block text-sm font-medium text-slate-300 uppercase tracking-wide">1. ¿Qué reino realiza la fotosíntesis?</label>
+                <div class="flex gap-2">
+                    <input type="text" id="ans1" class="challenge-input flex-1 p-3 rounded-xl text-slate-900" placeholder="...">
+                    <button onclick="verificar('ans1', ['vegetal', 'plantas', 'planta'])" class="bg-orange-500 px-4 py-2 rounded-xl font-bold hover:bg-orange-600">OK</button>
+                </div>
+            </div>
+            <!-- P2 -->
+            <div class="space-y-3">
+                <label class="block text-sm font-medium text-slate-300 uppercase tracking-wide">2. ¿A qué reino pertenecen las bacterias?</label>
+                <div class="flex gap-2">
+                    <input type="text" id="ans2" class="challenge-input flex-1 p-3 rounded-xl text-slate-900" placeholder="...">
+                    <button onclick="verificar('ans2', ['monera', 'moneras'])" class="bg-orange-500 px-4 py-2 rounded-xl font-bold hover:bg-orange-600">OK</button>
+                </div>
+            </div>
+            <!-- P3 -->
+            <div class="space-y-3">
+                <label class="block text-sm font-medium text-slate-300 uppercase tracking-wide">3. Animales que comen restos orgánicos:</label>
+                <div class="flex gap-2">
+                    <input type="text" id="ans3" class="challenge-input flex-1 p-3 rounded-xl text-slate-900" placeholder="...">
+                    <button onclick="verificar('ans3', ['carroñeros', 'carroñero'])" class="bg-orange-500 px-4 py-2 rounded-xl font-bold hover:bg-orange-600">OK</button>
+                </div>
+            </div>
+            <!-- P4 -->
+            <div class="space-y-3">
+                <label class="block text-sm font-medium text-slate-300 uppercase tracking-wide">4. Medicina que obtenemos de los hongos:</label>
+                <div class="flex gap-2">
+                    <input type="text" id="ans4" class="challenge-input flex-1 p-3 rounded-xl text-slate-900" placeholder="...">
+                    <button onclick="verificar('ans4', ['antibiotico', 'antibioticos', 'antibiótico', 'antibióticos', 'penicilina'])" class="bg-orange-500 px-4 py-2 rounded-xl font-bold hover:bg-orange-600">OK</button>
+                </div>
+            </div>
+            <!-- P5 -->
+            <div class="space-y-3">
+                <label class="block text-sm font-medium text-slate-300 uppercase tracking-wide">5. Protista que fabrica su alimento:</label>
+                <div class="flex gap-2">
+                    <input type="text" id="ans5" class="challenge-input flex-1 p-3 rounded-xl text-slate-900" placeholder="...">
+                    <button onclick="verificar('ans5', ['algas', 'alga'])" class="bg-orange-500 px-4 py-2 rounded-xl font-bold hover:bg-orange-600">OK</button>
+                </div>
+            </div>
+            <!-- P6 -->
+            <div class="space-y-3">
+                <label class="block text-sm font-medium text-slate-300 uppercase tracking-wide">6. ¿Cómo se ve una bacteria (micro...)?</label>
+                <div class="flex gap-2">
+                    <input type="text" id="ans6" class="challenge-input flex-1 p-3 rounded-xl text-slate-900" placeholder="...">
+                    <button onclick="verificar('ans6', ['microscopica', 'microscópica', 'microscopico', 'microscópico'])" class="bg-orange-500 px-4 py-2 rounded-xl font-bold hover:bg-orange-600">OK</button>
+                </div>
+            </div>
+            <!-- P7 -->
+            <div class="space-y-3">
+                <label class="block text-sm font-medium text-slate-300 uppercase tracking-wide">7. Animales que cazan a otros:</label>
+                <div class="flex gap-2">
+                    <input type="text" id="ans7" class="challenge-input flex-1 p-3 rounded-xl text-slate-900" placeholder="...">
+                    <button onclick="verificar('ans7', ['depredadores', 'depredador'])" class="bg-orange-500 px-4 py-2 rounded-xl font-bold hover:bg-orange-600">OK</button>
+                </div>
+            </div>
+            <!-- P8 (True/False English) -->
+            <div class="space-y-3 border-t border-slate-700 pt-4">
+                <label class="block text-sm font-medium text-orange-300">8. Bacteria are made of many cells (True/False):</label>
+                <div class="flex gap-2">
+                    <input type="text" id="ans8" class="challenge-input flex-1 p-3 rounded-xl text-slate-900" placeholder="T or F">
+                    <button onclick="verificar('ans8', ['false', 'f'])" class="bg-sky-500 px-4 py-2 rounded-xl font-bold hover:bg-sky-600">OK</button>
+                </div>
+            </div>
+            <!-- P9 (True/False English) -->
+            <div class="space-y-3 border-t border-slate-700 pt-4">
+                <label class="block text-sm font-medium text-orange-300">9. Animals are made for walking (True/False):</label>
+                <div class="flex gap-2">
+                    <input type="text" id="ans9" class="challenge-input flex-1 p-3 rounded-xl text-slate-900" placeholder="T or F">
+                    <button onclick="verificar('ans9', ['true', 't'])" class="bg-sky-500 px-4 py-2 rounded-xl font-bold hover:bg-sky-600">OK</button>
+                </div>
+            </div>
+            <!-- P10 (True/False English) -->
+            <div class="space-y-3 border-t border-slate-700 pt-4">
+                <label class="block text-sm font-medium text-orange-300">10. Fungi are not made of sunlight (True/False):</label>
+                <div class="flex gap-2">
+                    <input type="text" id="ans10" class="challenge-input flex-1 p-3 rounded-xl text-slate-900" placeholder="T or F">
+                    <button onclick="verificar('ans10', ['true', 't'])" class="bg-sky-500 px-4 py-2 rounded-xl font-bold hover:bg-sky-600">OK</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-10 p-4 bg-slate-800 rounded-2xl text-center border border-slate-700">
+            <p id="feedback" class="text-xl font-bold text-slate-400">Completa las 10 preguntas para el éxito total.</p>
+        </div>
+    </section>
+</main>
+
+<script>
+    function verificar(id, correctas) {
+        const input = document.getElementById(id);
+        const valor = input.value.trim().toLowerCase();
+        
+        if (correctas.includes(valor)) {
+            input.classList.remove('incorrect');
+            input.classList.add('correct');
+        } else {
+            input.classList.remove('correct');
+            input.classList.add('incorrect');
+        }
+        
+        actualizarPuntaje();
+    }
+
+    function actualizarPuntaje() {
+        const total = 10;
+        const correctos = document.querySelectorAll('.challenge-input.correct').length;
+        const feedback = document.getElementById('feedback');
+        
+        if (correctos === total) {
+            feedback.innerHTML = "¡EXCELLENT! 🏆 You finished all 10 questions!";
+            feedback.className = "text-xl font-bold text-green-400 animate-bounce";
+        } else {
+            feedback.innerText = `Llevas ${correctos} de ${total} correctas. / Progress: ${correctos}/${total}`;
+            feedback.className = "text-xl font-bold text-orange-400";
+        }
+    }
+</script>
+
+</body>
+</html>
