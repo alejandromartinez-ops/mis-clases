@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Conditional: Camping Adventure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2d6a4f; /* Forest Green */
+            --secondary: #d4a373; /* Wood */
+            --accent: #e07a5f; /* Campfire Orange */
+            --light: #fefae0; /* Sand/Paper */
+            --dark: #333d29;
+            --success: #2a9d8f;
+            --error: #e63946;
+            --bg: #ccd5ae;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg);
+            color: var(--dark);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background-color: var(--light);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary), #1b4332);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--secondary);
+            position: relative;
+        }
+
+        .header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.8rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-top: 10px;
+            color: #e9edc9;
+        }
+
+        .emoji-deco {
+            font-size: 2rem;
+            margin: 10px;
+        }
+
+        /* Theory Section */
+        .theory-section {
+            padding: 30px;
+            background-color: white;
+            border-bottom: 4px dashed var(--secondary);
+        }
+
+        .explanation-box {
+            background-color: #e9edc9;
+            border-left: 6px solid var(--primary);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .explanation-box h3 {
+            margin-top: 0;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .grammar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .grammar-card {
+            background: white;
+            border: 2px solid var(--secondary);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .grammar-card h4 {
+            margin: 0 0 10px 0;
+            text-align: center;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .formula {
+            font-family: 'Poppins', monospace;
+            font-weight: bold;
+            color: var(--primary);
+            text-align: center;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+
+        .example {
+            font-style: italic;
+            font-size: 0.95rem;
+            text-align: center;
+            color: #555;
+        }
+
+        /* Activities Section */
+        .activity-container {
+            padding: 30px;
+            border-bottom: 4px dashed var(--secondary);
+        }
+
+        .activity-container:last-child {
+            border-bottom: none;
+        }
+
+        .activity-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .activity-title {
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary);
+            font-size: 1.6rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instructions {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 20px;
+            background: rgba(212, 163, 115, 0.1);
+            padding: 10px 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .question {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Inputs */
+        input[type="text"] {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            padding: 8px 12px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.3s;
+            font-weight: bold;
+            color: var(--primary);
+            background: white;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(224, 122, 95, 0.2);
+        }
+
+        input.correct {
+            background-color: #dcfce7;
+            border-color: var(--success);
+            color: #166534;
+        }
+
+        input.incorrect {
+            background-color: #fee2e2;
+            border-color: var(--error);
+            color: #991b1b;
+        }
+
+        /* Scramble Activity specific */
+        .scramble-words {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px dashed #ccc;
+        }
+
+        .scramble-word {
+            background: var(--secondary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        /* Dialogue Activity specific */
+        .dialogue-box {
+            background-color: white;
+            border: 2px solid #e9edc9;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
+        }
+        
+        .speaker-a { color: var(--primary); font-weight: bold; }
+        .speaker-b { color: var(--accent); font-weight: bold; }
+
+        /* Reading Activity specific */
+        .reading-box {
+            background-color: #fffbeb;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 5px solid var(--accent);
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .tf-select {
+            padding: 6px;
+            font-weight: bold;
+            border-radius: 6px;
+            border: 2px solid #ccc;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Buttons & Feedback */
+        .btn-check {
+            background-color: var(--accent);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(224, 122, 95, 0.4);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .btn-check:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .feedback-msg {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            min-height: 25px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🌲 Wilderness Survival</h1>
+            <p>Master the First Conditional in Nature!</p>
+            <div>
+                <span class="emoji-deco">🏕️</span>
+                <span class="emoji-deco">🔦</span>
+                <span class="emoji-deco">🗺️</span>
+                <span class="emoji-deco">🧭</span>
+            </div>
+        </header>
+
+        <!-- Theory Section -->
+        <section class="theory-section">
+            <div class="explanation-box">
+                <h3>💡 When do we use the First Conditional?</h3>
+                <p>We use the <strong>First Conditional</strong> to talk about possible situations in the future and their consequences. It is perfect for planning a mountain trip!</p>
+            </div>
+
+            <div class="grammar-grid">
+                <!-- Affirmative -->
+                <div class="grammar-card">
+                    <h4 style="color: var(--success);">✅ Affirmative</h4>
+                    <div class="formula">If + Present Simple , will + verb</div>
+                    <div class="example">"If we bring a <strong>tent</strong>, we will sleep well."</div>
+                </div>
+
+                <!-- Negative -->
+                <div class="grammar-card">
+                    <h4 style="color: var(--error);">❌ Negative</h4>
+                    <div class="formula">If + Present Simple , won't + verb</div>
+                    <div class="example">"If you don't take a <strong>torch</strong>, you won't see in the dark."</div>
+                </div>
+
+                <!-- Interrogative -->
+                <div class="grammar-card">
+                    <h4 style="color: #0284c7;">❓ Interrogative</h4>
+                    <div class="formula">Will + verb + if + Present Simple?</div>
+                    <div class="example">"Will we get lost if we forget the <strong>map</strong>?"</div>
+                </div>
+            </div>
+            <p style="text-align: center; color: #666; font-size: 0.9rem; margin-top: 15px;">
+                <em>*Remember: If the sentence starts with "If", we put a comma in the middle. If "if" is in the middle, there is no comma!</em>
+            </p>
+        </section>
+
+        <!-- Activity 1: Fill in the blanks -->
+        <section class="activity-container" id="act1">
+            <div class="activity-header">
+                <h2 class="activity-title">🎒 Activity 1: Packing the backpack</h2>
+            </div>
+            <div class="instructions">Fill in the blanks with the verbs in brackets. Use Present Simple in the "If" part and "will / won't" in the other part.</div>
+            
+            <div class="question">
+                1. If it <input type="text" class="input-act1" data-answer="rains" style="width: 100px;"> (rain), we <input type="text" class="input-act1" data-answer="will stay,'ll stay" style="width: 100px;"> (stay) in the tent.
+            </div>
+            <div class="question">
+                2. She <input type="text" class="input-act1" data-answer="won't come,will not come" style="width: 120px;"> (not come) camping if she <input type="text" class="input-act1" data-answer="doesn't find,does not find" style="width: 120px;"> (not find) her hiking boots.
+            </div>
+            <div class="question">
+                3. If you <input type="text" class="input-act1" data-answer="use" style="width: 100px;"> (use) the compass, we <input type="text" class="input-act1" data-answer="won't get,will not get" style="width: 100px;"> (not get) lost.
+            </div>
+            <div class="question">
+                4. What <input type="text" class="input-act1" data-answer="will you do" style="width: 120px;"> (you / do) if you see a bear?
+            </div>
+            <div class="question">
+                5. If they <input type="text" class="input-act1" data-answer="forget" style="width: 100px;"> (forget) the map, they <input type="text" class="input-act1" data-answer="will need,'ll need" style="width: 100px;"> (need) help.
+            </div>
+
+            <button class="btn-check" onclick="checkActivity('act1')">✔️ Check Activity 1</button>
+            <div class="feedback-msg" id="feedback-act1"></div>
+        </section>
+
+        <!-- Activity 2: Unscramble -->
+        <section class="activity-container" id="act2">
+            <div class="activity-header">
+                <h2 class="activity-title">🧩 Activity 2: Unscramble the sentences</h2>
+            </div>
+            <div class="instructions">Order the words to make correct First Conditional sentences. <em>(Write without periods or commas)</em>.</div>
+            
+            <div class="question">
+                <div class="scramble-words">
+                    <span class="scramble-word">will</span> <span class="scramble-word">a</span> <span class="scramble-word">make</span> <span class="scramble-word">we</span> <span class="scramble-word">campfire</span> <span class="scramble-word">if</span> <span class="scramble-word">cold</span> <span class="scramble-word">is</span> <span class="scramble-word">it</span>
+                </div>
+                1. <input type="text" class="input-act2" style="width: 80%;" data-answer="if it is cold we will make a campfire|we will make a campfire if it is cold">
+            </div>
+            <div class="question">
+                <div class="scramble-words">
+                    <span class="scramble-word">forget</span> <span class="scramble-word">you</span> <span class="scramble-word">sleeping bag</span> <span class="scramble-word">if</span> <span class="scramble-word">your</span> <span class="scramble-word">be</span> <span class="scramble-word">will</span> <span class="scramble-word">cold</span> <span class="scramble-word">you</span>
+                </div>
+                2. <input type="text" class="input-act2" style="width: 80%;" data-answer="if you forget your sleeping bag you will be cold|you will be cold if you forget your sleeping bag">
+            </div>
+            <div class="question">
+                <div class="scramble-words">
+                    <span class="scramble-word">won't</span> <span class="scramble-word">we</span> <span class="scramble-word">the</span> <span class="scramble-word">see</span> <span class="scramble-word">path</span> <span class="scramble-word">if</span> <span class="scramble-word">we</span> <span class="scramble-word">don't</span> <span class="scramble-word">bring</span> <span class="scramble-word">a</span> <span class="scramble-word">torch</span>
+                </div>
+                3. <input type="text" class="input-act2" style="width: 80%;" data-answer="if we don't bring a torch we won't see the path|we won't see the path if we don't bring a torch|if we do not bring a torch we will not see the path|we will not see the path if we do not bring a torch">
+            </div>
+            <div class="question">
+                <div class="scramble-words">
+                    <span class="scramble-word">you</span> <span class="scramble-word">have</span> <span class="scramble-word">a</span> <span class="scramble-word">map</span> <span class="scramble-word">if</span> <span class="scramble-word">you</span> <span class="scramble-word">won't</span> <span class="scramble-word">get</span> <span class="scramble-word">lost</span>
+                </div>
+                4. <input type="text" class="input-act2" style="width: 80%;" data-answer="if you have a map you won't get lost|you won't get lost if you have a map|if you have a map you will not get lost|you will not get lost if you have a map">
+            </div>
+            <div class="question">
+                <div class="scramble-words">
+                    <span class="scramble-word">what</span> <span class="scramble-word">you</span> <span class="scramble-word">do</span> <span class="scramble-word">will</span> <span class="scramble-word">if</span> <span class="scramble-word">it</span> <span class="scramble-word">rains</span>
+                </div>
+                5. <input type="text" class="input-act2" style="width: 80%;" data-answer="what will you do if it rains">
+            </div>
+
+            <button class="btn-check" onclick="checkActivity('act2', true)">✔️ Check Activity 2</button>
+            <div class="feedback-msg" id="feedback-act2"></div>
+        </section>
+
+        <!-- Activity 3: Dialogue -->
+        <section class="activity-container" id="act3">
+            <div class="activity-header">
+                <h2 class="activity-title">💬 Activity 3: Forest chat</h2>
+            </div>
+            <div class="instructions">Read the dialogue between two hikers and fill in the blanks.</div>
+            
+            <div class="dialogue-box">
+                <p><span class="speaker-a">Alex:</span> Let's pack the backpack! If we don't bring the map, we 1.<input type="text" class="input-act3" data-answer="will get,'ll get" style="width: 90px;"> (get) lost in the forest.</p>
+                <p><span class="speaker-b">Sam:</span> Don't worry, I have it. But what 2.<input type="text" class="input-act3" data-answer="will happen" style="width: 100px;"> (happen) if it 3.<input type="text" class="input-act3" data-answer="rains" style="width: 80px;"> (rain)?</p>
+                <p><span class="speaker-a">Alex:</span> If it rains, we 4.<input type="text" class="input-act3" data-answer="will sleep,'ll sleep" style="width: 90px;"> (sleep) inside the tent. It's waterproof.</p>
+                <p><span class="speaker-b">Sam:</span> Okay. And if it's dark at night, I 5.<input type="text" class="input-act3" data-answer="will use,'ll use" style="width: 90px;"> (use) my new torch.</p>
+            </div>
+
+            <button class="btn-check" onclick="checkActivity('act3')">✔️ Check Activity 3</button>
+            <div class="feedback-msg" id="feedback-act3"></div>
+        </section>
+
+        <!-- Activity 4: Reading True/False -->
+        <section class="activity-container" id="act4">
+            <div class="activity-header">
+                <h2 class="activity-title">📖 Activity 4: The weekend plan</h2>
+            </div>
+            <div class="instructions">Read the text about the trip and decide if the sentences are True or False.</div>
+            
+            <div class="reading-box">
+                "Next weekend, we are going camping in the mountains. If the weather is nice, we will hike to the big lake. We need to be careful. If we don't look at the map, we will get lost easily. In the evening, my dad will make a campfire if we find dry wood. If it gets cold, I will use my warm sleeping bag. But if it rains a lot, we won't sleep outside; we will sleep in the car!"
+            </div>
+
+            <div class="question">
+                1. They will hike to the lake if the weather is bad. 
+                <select class="tf-select input-act4" data-answer="false">
+                    <option value="">-- Choose --</option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+            </div>
+            <div class="question">
+                2. If they forget to look at the map, they will get lost. 
+                <select class="tf-select input-act4" data-answer="true">
+                    <option value="">-- Choose --</option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+            </div>
+            <div class="question">
+                3. The dad will make a campfire if they find dry wood. 
+                <select class="tf-select input-act4" data-answer="true">
+                    <option value="">-- Choose --</option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+            </div>
+            <div class="question">
+                4. The person will use a tent if it gets cold. 
+                <select class="tf-select input-act4" data-answer="false">
+                    <option value="">-- Choose --</option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+            </div>
+            <div class="question">
+                5. They will sleep in the car if it rains a lot. 
+                <select class="tf-select input-act4" data-answer="true">
+                    <option value="">-- Choose --</option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+            </div>
+
+            <button class="btn-check" onclick="checkActivity('act4', false, true)">✔️ Check Activity 4</button>
+            <div class="feedback-msg" id="feedback-act4"></div>
+        </section>
+
+        <!-- Activity 5: Emoji Translation -->
+        <section class="activity-container" id="act5">
+            <div class="activity-header">
+                <h2 class="activity-title">🗺️ Activity 5: Secret Code (Emojis)</h2>
+            </div>
+            <div class="instructions">Translate the emojis to create a First Conditional sentence. Use the verbs in brackets to help you. <em>(Write without periods or commas)</em>.</div>
+            
+            <div class="question">
+                <div style="font-size: 1.5rem; margin-bottom: 5px;">🌧️ ➡️ 🏕️</div>
+                <div style="font-size: 0.9rem; color: #666; margin-bottom: 5px;">(rain / stay in the tent)</div>
+                1. <input type="text" class="input-act5" style="width: 80%;" placeholder="Write here..." data-answer="if it rains we will stay in the tent|we will stay in the tent if it rains">
+            </div>
+            
+            <div class="question">
+                <div style="font-size: 1.5rem; margin-bottom: 5px;">🚫🔦 ➡️ 🚫👀</div>
+                <div style="font-size: 0.9rem; color: #666; margin-bottom: 5px;">(not bring a torch / not see)</div>
+                2. <input type="text" class="input-act5" style="width: 80%;" placeholder="Write here..." data-answer="if we don't bring a torch we won't see|if we do not bring a torch we will not see|we won't see if we don't bring a torch|we will not see if we do not bring a torch">
+            </div>
+
+            <div class="question">
+                <div style="font-size: 1.5rem; margin-bottom: 5px;">🐻 ➡️ 🏃‍♂️💨</div>
+                <div style="font-size: 0.9rem; color: #666; margin-bottom: 5px;">(see a bear / run fast)</div>
+                3. <input type="text" class="input-act5" style="width: 80%;" placeholder="Write here..." data-answer="if we see a bear we will run fast|we will run fast if we see a bear">
+            </div>
+
+            <button class="btn-check" onclick="checkActivity('act5', true)">✔️ Check Activity 5</button>
+            <div class="feedback-msg" id="feedback-act5"></div>
+        </section>
+
+    </div>
+
+    <!-- Interactive Logic (JavaScript) -->
+    <script>
+        /**
+         * Checks the answers for a specific activity
+         * @param {string} actId - The ID suffix of the activity (e.g., 'act1')
+         * @param {boolean} isFullSentence - If true, strips punctuation before checking
+         * @param {boolean} isSelect - If true, element is a dropdown select
+         */
+        function checkActivity(actId, isFullSentence = false, isSelect = false) {
+            const inputs = document.querySelectorAll('.input-' + actId);
+            const feedbackDiv = document.getElementById('feedback-' + actId);
+            let correctCount = 0;
+            const total = inputs.length;
+
+            inputs.forEach(input => {
+                let userAnswer = input.value.trim().toLowerCase();
+                
+                // If it's a full sentence typing activity, strip punctuation to be more forgiving
+                if (isFullSentence) {
+                    userAnswer = userAnswer.replace(/[.,!?]/g, '').replace(/\s+/g, ' ');
+                }
+                
+                // Handle different apostrophes
+                userAnswer = userAnswer.replace(/[’´`]/g, "'");
+
+                // Get valid answers (separated by comma or pipe depending on the activity)
+                const delimiter = isFullSentence ? '|' : ',';
+                const correctAnswersArray = input.getAttribute('data-answer').toLowerCase().split(delimiter);
+
+                if (userAnswer !== "" && correctAnswersArray.includes(userAnswer)) {
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                    correctCount++;
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+
+            // Display Feedback
+            if (correctCount === total) {
+                feedbackDiv.style.color = '#2a9d8f';
+                feedbackDiv.innerHTML = `🌟 Perfect! You got ${correctCount} out of ${total} correct. You are ready to camp!`;
+            } else if (correctCount >= total / 2) {
+                feedbackDiv.style.color = '#e07a5f';
+                feedbackDiv.innerHTML = `👍 Well done! You got ${correctCount} out of ${total} correct. Check the ones in red.`;
+            } else {
+                feedbackDiv.style.color = '#e63946';
+                feedbackDiv.innerHTML = `🧭 Don't get lost! You got ${correctCount} out of ${total} correct. Look at the formulas and try again.`;
+            }
+        }
+
+        // Add event listeners to remove red/green styling when typing/changing again
+        document.querySelectorAll('input[type="text"], select').forEach(element => {
+            element.addEventListener('input', function() {
+                this.classList.remove('correct');
+                this.classList.remove('incorrect');
+            });
+        });
+    </script>
+</body>
+</html>
