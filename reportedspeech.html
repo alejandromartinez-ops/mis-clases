@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reported Speech: Wildlife Park</title>
+    <style>
+        /* Variables y Reseteo */
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #4caf50;
+            --secondary: #fbc02d;
+            --bg-color: #f1f8e9;
+            --surface: #ffffff;
+            --text-dark: #333333;
+            --text-muted: #555555;
+            --border: #c8e6c9;
+            --success: #388e3c;
+            --success-bg: #e8f5e9;
+            --error: #d32f2f;
+            --error-bg: #ffebee;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--surface);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 2px solid var(--border);
+        }
+
+        /* Cabecera */
+        .header {
+            background: linear-gradient(135deg, var(--primary), #1b5e20);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .badge {
+            background-color: var(--secondary);
+            color: #333;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        /* Secciones de Teoría */
+        .section {
+            padding: 30px;
+            border-bottom: 2px dashed var(--border);
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theory-box {
+            background-color: #f9fbe7;
+            border-left: 5px solid var(--primary-light);
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 20px;
+        }
+
+        .formula-box {
+            background-color: var(--surface);
+            border: 2px solid var(--primary);
+            padding: 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-align: center;
+            margin: 15px 0;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .grammar-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .grammar-table th, .grammar-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .grammar-table th {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .grammar-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .highlight {
+            color: #d81b60;
+            font-weight: bold;
+        }
+
+        .highlight-blue {
+            color: #1976d2;
+            font-weight: bold;
+        }
+
+        /* Diferencia Said vs Told */
+        .vs-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media(min-width: 768px) {
+            .vs-container { flex-direction: row; }
+        }
+
+        .vs-box {
+            flex: 1;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid;
+        }
+
+        .said-box {
+            background-color: #e3f2fd;
+            border-color: #90caf9;
+        }
+
+        .told-box {
+            background-color: #fff8e1;
+            border-color: #ffe082;
+        }
+
+        .vs-box h4 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .said-box h4 { color: #1565c0; }
+        .told-box h4 { color: #f57f17; }
+
+        /* Actividades */
+        .activity-container {
+            background-color: white;
+            border: 2px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .activity-header {
+            font-size: 1.4rem;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        .question {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-text {
+            padding: 8px 12px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-text:focus {
+            border-color: var(--primary);
+        }
+
+        .input-select {
+            padding: 8px 12px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .feedback {
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin-left: 10px;
+            display: inline-block;
+        }
+
+        .correct-input { border-color: var(--success) !important; background-color: var(--success-bg); }
+        .incorrect-input { border-color: var(--error) !important; background-color: var(--error-bg); }
+        
+        .correct-text { color: var(--success); }
+        .incorrect-text { color: var(--error); }
+
+        .btn-check {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: block;
+            margin: 20px 0 0 0;
+            width: 100%;
+        }
+
+        @media(min-width: 768px) {
+            .btn-check { width: auto; }
+        }
+
+        .btn-check:hover {
+            background-color: var(--primary-light);
+        }
+
+        /* Reading Box */
+        .reading-box {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--text-muted);
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        /* Emoji Challenge */
+        .emoji-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #eee;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .emoji-prompt {
+            font-size: 1.5rem;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- CABECERA -->
+    <div class="header">
+        <span class="badge">Grammar Guide</span>
+        <h1>🦁 Reported Speech 🐆</h1>
+        <p>A day at the Wildlife Park: Statements & Commands</p>
+    </div>
+
+    <!-- SECCIÓN 1: STATEMENTS -->
+    <div class="section">
+        <h2 class="section-title">💬 1. Reported Speech: Statements</h2>
+        <div class="theory-box">
+            <p>We use reported speech to talk about the things somebody said in the past. To do this, we usually change the tenses (we move them one step back into the past).</p>
+            
+            <div class="formula-box">
+                Subject + said (that) + Subject + changed verb + ...
+            </div>
+
+            <table class="grammar-table">
+                <thead>
+                    <tr>
+                        <th>Direct Speech (What they say)</th>
+                        <th>Reported Speech (What we report)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>"I<span class="highlight">'m going to</span> the wildlife park."</td>
+                        <td>He said he <span class="highlight-blue">was going to</span> the wildlife park.</td>
+                    </tr>
+                    <tr>
+                        <td>"I <span class="highlight">saw</span> a leopard."</td>
+                        <td>She said she <span class="highlight-blue">had seen</span> a leopard.</td>
+                    </tr>
+                    <tr>
+                        <td>"I<span class="highlight">'ve read</span> a book about penguins."</td>
+                        <td>He said he <span class="highlight-blue">had read</span> a book about penguins.</td>
+                    </tr>
+                    <tr>
+                        <td>"I <span class="highlight">will</span> take more photos next time."</td>
+                        <td>She said she <span class="highlight-blue">would</span> take more photos next time.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- SECCIÓN 2: SAID VS TOLD -->
+    <div class="section">
+        <h2 class="section-title">🗣️ 2. The difference: Said vs. Told</h2>
+        <p style="margin-bottom: 20px;">When we report things, we use <strong>said</strong> for general speech and <strong>told</strong> for commands (orders) or instructions.</p>
+        
+        <div class="vs-container">
+            <!-- SAID -->
+            <div class="vs-box said-box">
+                <h4>Using "Said"</h4>
+                <p>We use it for general statements. <strong>We do NOT need an object</strong> after said. We DO change the tense.</p>
+                <div class="formula-box" style="border-color: #1976d2; color: #1976d2; font-size: 0.95rem;">
+                    Subject + said (that) + Subject + Verb...
+                </div>
+                <p><em>"They <span class="highlight">don't like</span> noisy visitors!"</em></p>
+                <p>➔ She <strong>said</strong> they <span class="highlight-blue">didn't like</span> noisy visitors.</p>
+            </div>
+
+            <!-- TOLD -->
+            <div class="vs-box told-box">
+                <h4>Using "Told" (Commands)</h4>
+                <p>We use it to give instructions. <strong>We NEED an object</strong> (me, us, him) after told. We do NOT change the tense, we use the infinitive.</p>
+                <div class="formula-box" style="border-color: #f57f17; color: #f57f17; font-size: 0.95rem;">
+                    Subject + told + Object + (not) to + base verb
+                </div>
+                <p><em>"<span class="highlight">Be</span> very quiet."</em></p>
+                <p>➔ The tour guide <strong>told us to</strong> <span class="highlight-blue">be</span> very quiet.</p>
+                <p style="margin-top: 10px;"><em>"<span class="highlight">Don't take</span> photos."</em></p>
+                <p>➔ The teacher <strong>told us not to</strong> <span class="highlight-blue">take</span> photos.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ACTIVIDADES -->
+    <div class="section" style="background-color: #fafafa;">
+        <h2 class="section-title" style="justify-content: center;">📝 Let's Practice!</h2>
+
+        <!-- ACTIVIDAD 1: Fill in the blanks -->
+        <div class="activity-container">
+            <h3 class="activity-header">Activity 1: Fill in the blanks</h3>
+            <p style="margin-bottom: 15px; color: var(--text-muted);">Change the verbs or choose <em>said/told</em> correctly based on the rules.</p>
+            
+            <div class="question">
+                1. "I am going to see the lions." ➔ He said he <input type="text" id="act1-q1" class="input-text" style="width: 120px;" placeholder="verb"> see the lions.
+                <span id="fb-act1-q1" class="feedback"></span>
+            </div>
+            <div class="question">
+                2. "I saw a huge eagle." ➔ She said she <input type="text" id="act1-q2" class="input-text" style="width: 120px;" placeholder="verb"> a huge eagle.
+                <span id="fb-act1-q2" class="feedback"></span>
+            </div>
+            <div class="question">
+                3. "Don't run near the pool!" ➔ The guide <input type="text" id="act1-q3" class="input-text" style="width: 80px;" placeholder="said/told"> us <input type="text" id="act1-q4" class="input-text" style="width: 100px;" placeholder="to/not to"> run near the pool.
+                <span id="fb-act1-q3" class="feedback"></span>
+            </div>
+            <div class="question">
+                4. "I will feed the monkeys." ➔ The ranger said he <input type="text" id="act1-q5" class="input-text" style="width: 100px;" placeholder="verb"> feed the monkeys.
+                <span id="fb-act1-q5" class="feedback"></span>
+            </div>
+
+            <button class="btn-check" onclick="checkAct1()">Check Answers 1</button>
+        </div>
+
+        <!-- ACTIVIDAD 2: Complete the Dialogues -->
+        <div class="activity-container">
+            <h3 class="activity-header">Activity 2: Complete the Dialogues</h3>
+            
+            <div class="question" style="background: #f0f4c3; padding: 15px; border-radius: 10px;">
+                <strong>Ranger:</strong> "I have read a lot of books about elephants."<br>
+                <strong>You:</strong> What did the ranger say?<br>
+                <strong>Friend:</strong> He said he <input type="text" id="act2-q1" class="input-text" style="width: 150px;"> a lot of books about elephants.
+                <span id="fb-act2-q1" class="feedback"></span>
+            </div>
+
+            <div class="question" style="background: #e1bee7; padding: 15px; border-radius: 10px;">
+                <strong>Teacher:</strong> "Be careful with the snakes!"<br>
+                <strong>You:</strong> What did the teacher tell us?<br>
+                <strong>Friend:</strong> She told us <input type="text" id="act2-q2" class="input-text" style="width: 150px;"> careful with the snakes.
+                <span id="fb-act2-q2" class="feedback"></span>
+            </div>
+
+            <button class="btn-check" onclick="checkAct2()">Check Answers 2</button>
+        </div>
+
+        <!-- ACTIVIDAD 3: True or False -->
+        <div class="activity-container">
+            <h3 class="activity-header">Activity 3: Reading (True or False)</h3>
+            <div class="reading-box">
+                "Yesterday, we went to the Wildlife Park. The guide <strong>told us to</strong> stay together on the path. Later, my sister <strong>said</strong> she <strong>had seen</strong> a dangerous snake in the grass. I was scared! Suddenly, a boy <strong>said</strong> he <strong>would</strong> take a photo of the snake. The guide was angry and <strong>told him not to</strong> move. Finally, the guide <strong>said</strong> the park ranger <strong>was going to</strong> help us."
+            </div>
+
+            <div class="question">1. The guide told them to stay together. 
+                <select id="act3-q1" class="input-select"><option value="">--</option><option value="true">True</option><option value="false">False</option></select> <span id="fb-act3-q1" class="feedback"></span>
+            </div>
+            <div class="question">2. The sister said she saw a snake today. (Look at the tense!)
+                <select id="act3-q2" class="input-select"><option value="">--</option><option value="true">True</option><option value="false">False</option></select> <span id="fb-act3-q2" class="feedback"></span>
+            </div>
+            <div class="question">3. The boy said he would take a photo.
+                <select id="act3-q3" class="input-select"><option value="">--</option><option value="true">True</option><option value="false">False</option></select> <span id="fb-act3-q3" class="feedback"></span>
+            </div>
+            <div class="question">4. The guide told the boy to run away.
+                <select id="act3-q4" class="input-select"><option value="">--</option><option value="true">True</option><option value="false">False</option></select> <span id="fb-act3-q4" class="feedback"></span>
+            </div>
+            <div class="question">5. The guide said the ranger was going to help.
+                <select id="act3-q5" class="input-select"><option value="">--</option><option value="true">True</option><option value="false">False</option></select> <span id="fb-act3-q5" class="feedback"></span>
+            </div>
+
+            <button class="btn-check" onclick="checkAct3()">Check Answers 3</button>
+        </div>
+
+        <!-- ACTIVIDAD 4: Transform to Indirect -->
+        <div class="activity-container">
+            <h3 class="activity-header">Activity 4: Direct to Indirect</h3>
+            <p style="margin-bottom: 15px; color: var(--text-muted);">Rewrite the sentences in reported speech. Be careful with tenses and commands!</p>
+
+            <div style="margin-bottom: 20px;">
+                <p>1. <em>"I saw a beautiful zebra."</em></p>
+                <p>She said <input type="text" id="act4-q1" class="input-text" style="width: 100%; max-width: 400px;" placeholder="Finish the sentence..."></p>
+                <span id="fb-act4-q1" class="feedback" style="margin-left: 0;"></span>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <p>2. <em>"We will visit the monkey enclosure."</em></p>
+                <p>They said <input type="text" id="act4-q2" class="input-text" style="width: 100%; max-width: 400px;" placeholder="Finish the sentence..."></p>
+                <span id="fb-act4-q2" class="feedback" style="margin-left: 0;"></span>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <p>3. <em>"Don't touch the glass!"</em></p>
+                <p>The guide told us <input type="text" id="act4-q3" class="input-text" style="width: 100%; max-width: 400px;" placeholder="Finish the sentence..."></p>
+                <span id="fb-act4-q3" class="feedback" style="margin-left: 0;"></span>
+            </div>
+
+            <button class="btn-check" onclick="checkAct4()">Check Answers 4</button>
+        </div>
+
+        <!-- ACTIVIDAD 5: Emoji Challenge -->
+        <div class="activity-container">
+            <h3 class="activity-header">Activity 5: Emoji Challenge 🧩</h3>
+            <p style="margin-bottom: 15px; color: var(--text-muted);">Translate the direct speech emojis into Reported Speech sentences. (Use "He said..." or "The guide told us...")</p>
+
+            <div class="emoji-row">
+                <div class="emoji-prompt">👦🏽💬 "I 👁️ (saw) a 🐆"</div>
+                <div style="flex: 1; min-width: 250px;">
+                    <input type="text" id="act5-q1" class="input-text" style="width: 100%;" placeholder="Write the full reported sentence...">
+                    <span id="fb-act5-q1" class="feedback" style="display: block; margin-top: 5px; margin-left: 0;"></span>
+                </div>
+            </div>
+
+            <div class="emoji-row">
+                <div class="emoji-prompt">👨🏻‍🏫💬 "🚫 📸 (take photos)"</div>
+                <div style="flex: 1; min-width: 250px;">
+                    <input type="text" id="act5-q2" class="input-text" style="width: 100%;" placeholder="Write the full command sentence...">
+                    <span id="fb-act5-q2" class="feedback" style="display: block; margin-top: 5px; margin-left: 0;"></span>
+                </div>
+            </div>
+
+            <button class="btn-check" onclick="checkAct5()">Check Answers 5</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Utilidad para normalizar texto (quita espacios extra, minúsculas, puntuación final)
+    function cleanText(text) {
+        return text.toLowerCase().replace(/[.,!?'"]/g, '').trim().replace(/\s+/g, ' ');
+    }
+
+    // Utilidad para procesar feedback visual
+    function giveFeedback(inputId, feedbackId, isCorrect, correctAnswers) {
+        const input = document.getElementById(inputId);
+        const feedback = document.getElementById(feedbackId);
+        
+        input.classList.remove('correct-input', 'incorrect-input');
+        feedback.classList.remove('correct-text', 'incorrect-text');
+
+        if(isCorrect) {
+            input.classList.add('correct-input');
+            feedback.classList.add('correct-text');
+            feedback.innerHTML = "✅ Correct!";
+        } else {
+            input.classList.add('incorrect-input');
+            feedback.classList.add('incorrect-text');
+            // Muestra la primera opción correcta como ayuda
+            feedback.innerHTML = "❌ Try again. (Hint: " + correctAnswers[0] + ")";
+        }
+    }
+
+    function checkAct1() {
+        const answers = {
+            'act1-q1': ['was going to'],
+            'act1-q2': ['had seen'],
+            'act1-q3': ['told'],
+            'act1-q4': ['not to'],
+            'act1-q5': ['would']
+        };
+
+        // q1
+        let ans1 = cleanText(document.getElementById('act1-q1').value);
+        giveFeedback('act1-q1', 'fb-act1-q1', answers['act1-q1'].includes(ans1), answers['act1-q1']);
+        
+        // q2
+        let ans2 = cleanText(document.getElementById('act1-q2').value);
+        giveFeedback('act1-q2', 'fb-act1-q2', answers['act1-q2'].includes(ans2), answers['act1-q2']);
+        
+        // q3 & q4 share a line but have separate inputs
+        let ans3 = cleanText(document.getElementById('act1-q3').value);
+        let ans4 = cleanText(document.getElementById('act1-q4').value);
+        
+        let isQ3Correct = answers['act1-q3'].includes(ans3);
+        let isQ4Correct = answers['act1-q4'].includes(ans4);
+        
+        document.getElementById('act1-q3').classList.remove('correct-input', 'incorrect-input');
+        document.getElementById('act1-q4').classList.remove('correct-input', 'incorrect-input');
+        
+        if(isQ3Correct) document.getElementById('act1-q3').classList.add('correct-input');
+        else document.getElementById('act1-q3').classList.add('incorrect-input');
+        
+        if(isQ4Correct) document.getElementById('act1-q4').classList.add('correct-input');
+        else document.getElementById('act1-q4').classList.add('incorrect-input');
+        
+        const fb3 = document.getElementById('fb-act1-q3');
+        if(isQ3Correct && isQ4Correct) {
+            fb3.innerHTML = "✅ Correct!";
+            fb3.className = "feedback correct-text";
+        } else {
+            fb3.innerHTML = "❌ Check said/told and to/not to.";
+            fb3.className = "feedback incorrect-text";
+        }
+
+        // q5
+        let ans5 = cleanText(document.getElementById('act1-q5').value);
+        giveFeedback('act1-q5', 'fb-act1-q5', answers['act1-q5'].includes(ans5), answers['act1-q5']);
+    }
+
+    function checkAct2() {
+        const answers = {
+            'act2-q1': ['had read'],
+            'act2-q2': ['to be']
+        };
+
+        let ans1 = cleanText(document.getElementById('act2-q1').value);
+        giveFeedback('act2-q1', 'fb-act2-q1', answers['act2-q1'].includes(ans1), answers['act2-q1']);
+
+        let ans2 = cleanText(document.getElementById('act2-q2').value);
+        giveFeedback('act2-q2', 'fb-act2-q2', answers['act2-q2'].includes(ans2), answers['act2-q2']);
+    }
+
+    function checkAct3() {
+        const answers = {
+            'act3-q1': 'true',
+            'act3-q2': 'false', // because she said she HAD seen (past perfect, not today)
+            'act3-q3': 'true',
+            'act3-q4': 'false', // told him NOT to move
+            'act3-q5': 'true'
+        };
+
+        for(let i=1; i<=5; i++) {
+            let select = document.getElementById('act3-q' + i);
+            let val = select.value;
+            let fb = document.getElementById('fb-act3-q' + i);
+            
+            select.classList.remove('correct-input', 'incorrect-input');
+            fb.classList.remove('correct-text', 'incorrect-text');
+
+            if(val === answers['act3-q'+i]) {
+                select.classList.add('correct-input');
+                fb.classList.add('correct-text');
+                fb.innerHTML = "✅ Correct!";
+            } else if (val !== "") {
+                select.classList.add('incorrect-input');
+                fb.classList.add('incorrect-text');
+                fb.innerHTML = "❌ Try again.";
+            }
+        }
+    }
+
+    function checkAct4() {
+        // We already provide "She said " / "They said " / "The guide told us " in the HTML.
+        const answers = {
+            'act4-q1': ['she had seen a beautiful zebra', 'she had seen a beautiful zebra.'],
+            'act4-q2': ['they would visit the monkey enclosure', 'they would visit the monkey enclosure.'],
+            'act4-q3': ['not to touch the glass', 'not to touch the glass.']
+        };
+
+        for(let i=1; i<=3; i++) {
+            let inputId = 'act4-q' + i;
+            let ans = cleanText(document.getElementById(inputId).value);
+            let validArray = answers[inputId].map(cleanText); // clean valid answers just in case
+            
+            giveFeedback(inputId, 'fb-'+inputId, validArray.includes(ans), [answers[inputId][0]]);
+        }
+    }
+
+    function checkAct5() {
+        // Full sentences required
+        const answers = {
+            'act5-q1': [
+                'he said he had seen a leopard', 
+                'he said that he had seen a leopard'
+            ],
+            'act5-q2': [
+                'the teacher told us not to take photos',
+                'he told us not to take photos',
+                'the guide told us not to take photos'
+            ]
+        };
+
+        for(let i=1; i<=2; i++) {
+            let inputId = 'act5-q' + i;
+            let ans = cleanText(document.getElementById(inputId).value);
+            let validArray = answers[inputId];
+            
+            giveFeedback(inputId, 'fb-'+inputId, validArray.includes(ans), [answers[inputId][0]]);
+        }
+    }
+</script>
+
+</body>
+</html>
