@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Grammar: Present Perfect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Fredoka', 'sans-serif'],
+                    },
+                    colors: {
+                        game: {
+                            neon: '#39ff14',
+                            purple: '#a855f7',
+                            cyan: '#06b6d4',
+                            pink: '#ec4899',
+                            yellow: '#facc15'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Base Animations */
+        .fade-in { animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .bounce-hover:hover { transform: translateY(-5px); }
+        
+        /* Playful Card Styles */
+        .playful-card {
+            background-color: white;
+            border-radius: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border: 4px solid #f8fafc;
+            transition: all 0.3s ease;
+        }
+        
+        /* Correction States */
+        .card-correct { 
+            background-color: #f0fdf4 !important; 
+            border-color: #86efac !important; 
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.4); 
+        }
+        .card-incorrect { 
+            background-color: #fef2f2 !important; 
+            border-color: #fca5a5 !important; 
+            box-shadow: 0 0 20px rgba(248, 113, 113, 0.4); 
+        }
+        
+        .icon-correct, .icon-incorrect { display: none; }
+        .card-correct .icon-correct { display: flex; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .card-incorrect .icon-incorrect { display: flex; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .card-incorrect .correction-hint { display: flex; animation: fadeIn 0.5s ease forwards; }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Unscramble Sentences */
+        .word-btn { 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            box-shadow: 0 4px 0 #9333ea;
+        }
+        .word-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 0 #9333ea;
+        }
+        .word-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #9333ea;
+        }
+        
+        .word-pool { min-height: 70px; background-color: #f8fafc; border: 2px dashed #cbd5e1; }
+        .word-answer { min-height: 70px; background-color: #f0f9ff; border: 2px dashed #bae6fd; }
+
+        /* Cute Inputs */
+        .cute-input {
+            background-color: #f8fafc;
+            border: 3px solid #e2e8f0;
+            border-radius: 1rem;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+        .cute-input:focus {
+            outline: none;
+            border-color: #a855f7;
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-800 font-sans pb-24 selection:bg-game-purple selection:text-white">
+
+    <!-- Playful Sticky Header -->
+    <header class="bg-white border-b-4 border-slate-100 p-4 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-5xl mx-auto flex justify-center items-center">
+            <h1 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-game-cyan via-game-purple to-game-pink flex items-center gap-3">
+                <span class="text-4xl animate-bounce">🎮</span> 
+                Level Up: Present Perfect
+                <span class="text-4xl animate-bounce" style="animation-delay: 0.2s">🕹️</span>
+            </h1>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto p-4 mt-8 space-y-16">
+        
+        <!-- ================= SECTION 1: INFOGRAPHIC ================= -->
+        <section class="fade-in space-y-10">
+            <div class="text-center space-y-4 max-w-2xl mx-auto">
+                <div class="inline-block bg-game-cyan text-cyan-900 px-6 py-2 rounded-full font-bold text-xl mb-2 -rotate-2 shadow-sm border-2 border-cyan-300">
+                    Grammar Time! ⏱️
+                </div>
+                <h2 class="text-4xl md:text-5xl font-black text-slate-800">
+                    The <span class="text-game-purple underline decoration-wavy decoration-game-pink">Present Perfect</span>
+                </h2>
+                <p class="text-slate-500 text-xl font-medium">
+                    We use the Present Perfect for actions that happened in the past but are connected to the present!
+                </p>
+            </div>
+
+            <!-- Vocabulary Materials (Playful Chips) -->
+            <div class="bg-white p-6 rounded-3xl border-4 border-slate-100 shadow-sm">
+                <h3 class="font-bold text-slate-400 uppercase tracking-widest text-center mb-4 text-sm">Game Vocabulary</h3>
+                <div class="flex flex-wrap justify-center gap-3 mb-4">
+                    <span class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl font-bold">avatar</span>
+                    <span class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl font-bold">button</span>
+                    <span class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl font-bold">computer</span>
+                    <span class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl font-bold">controller</span>
+                    <span class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl font-bold">keyboard</span>
+                    <span class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl font-bold">laptop</span>
+                    <span class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl font-bold">monitor</span>
+                    <span class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl font-bold">mouse</span>
+                    <span class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl font-bold">speaker</span>
+                    <span class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl font-bold">tablet</span>
+                </div>
+                <div class="flex flex-wrap justify-center gap-3 mb-4">
+                    <span class="bg-purple-100 text-purple-700 px-4 py-2 rounded-xl font-bold">partner</span>
+                    <span class="bg-purple-100 text-purple-700 px-4 py-2 rounded-xl font-bold">player</span>
+                    <span class="bg-purple-100 text-purple-700 px-4 py-2 rounded-xl font-bold">winner</span>
+                </div>
+                
+                <h3 class="font-bold text-slate-400 uppercase tracking-widest text-center mb-2 mt-6 text-sm">Important Past Participles</h3>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <span class="bg-green-100 text-green-700 px-4 py-2 rounded-xl font-bold">collect ➔ collected</span>
+                    <span class="bg-green-100 text-green-700 px-4 py-2 rounded-xl font-bold">guess ➔ guessed</span>
+                    <span class="bg-green-100 text-green-700 px-4 py-2 rounded-xl font-bold">move ➔ moved</span>
+                    <span class="bg-green-100 text-green-700 px-4 py-2 rounded-xl font-bold">pick ➔ picked</span>
+                    <span class="bg-green-100 text-green-700 px-4 py-2 rounded-xl font-bold">race ➔ raced</span>
+                    <span class="bg-green-100 text-green-700 px-4 py-2 rounded-xl font-bold">score ➔ scored</span>
+                    <span class="bg-green-100 text-green-700 px-4 py-2 rounded-xl font-bold">drop ➔ dropped</span>
+                    <span class="bg-pink-100 text-pink-700 px-4 py-2 rounded-xl font-bold border border-pink-300">hide ➔ hidden</span>
+                    <span class="bg-pink-100 text-pink-700 px-4 py-2 rounded-xl font-bold border border-pink-300">keep ➔ kept</span>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Affirmative -->
+                <div class="playful-card p-6 border-t-8 border-t-green-400 relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 opacity-10 text-9xl">✅</div>
+                    
+                    <div class="flex flex-col items-center mb-6 relative z-10">
+                        <div class="bg-green-100 text-green-600 p-4 rounded-full text-3xl mb-3 shadow-inner">👍</div>
+                        <h3 class="text-2xl font-black text-slate-800">Affirmative</h3>
+                    </div>
+                    
+                    <div class="bg-green-50 rounded-2xl p-4 text-center text-green-800 mb-6 border-2 border-green-200 font-bold text-lg shadow-sm">
+                        Subject + <span class="text-green-600">have / has</span> + Past Participle
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-white p-5 rounded-2xl border-2 border-slate-100 shadow-sm relative group">
+                            <p class="text-xs text-slate-400 uppercase tracking-wider mb-2 font-bold">I, You, We, They</p>
+                            <p class="text-xl font-bold text-slate-700">
+                                The players <span class="bg-green-200 text-green-800 px-2 rounded-md">have collected</span> the coins.
+                            </p>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border-2 border-slate-100 shadow-sm relative group">
+                            <p class="text-xs text-slate-400 uppercase tracking-wider mb-2 font-bold">He, She, It</p>
+                            <p class="text-xl font-bold text-slate-700">
+                                The winner <span class="bg-green-200 text-green-800 px-2 rounded-md">has kept</span> the laptop.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Negative -->
+                <div class="playful-card p-6 border-t-8 border-t-pink-400 relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 opacity-10 text-9xl">❌</div>
+                    
+                    <div class="flex flex-col items-center mb-6 relative z-10">
+                        <div class="bg-pink-100 text-pink-600 p-4 rounded-full text-3xl mb-3 shadow-inner">👎</div>
+                        <h3 class="text-2xl font-black text-slate-800">Negative</h3>
+                    </div>
+                    
+                    <div class="bg-pink-50 rounded-2xl p-4 text-center text-pink-800 mb-6 border-2 border-pink-200 font-bold text-lg shadow-sm">
+                        Subject + <span class="text-pink-600">haven't / hasn't</span> + Past Participle
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-white p-5 rounded-2xl border-2 border-slate-100 shadow-sm relative">
+                            <p class="text-xs text-slate-400 uppercase tracking-wider mb-2 font-bold">I, You, We, They</p>
+                            <p class="text-xl font-bold text-slate-700">
+                                We <span class="bg-pink-200 text-pink-800 px-2 rounded-md">haven't dropped</span> the controller.
+                            </p>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border-2 border-slate-100 shadow-sm relative">
+                            <p class="text-xs text-slate-400 uppercase tracking-wider mb-2 font-bold">He, She, It</p>
+                            <p class="text-xl font-bold text-slate-700">
+                                He <span class="bg-pink-200 text-pink-800 px-2 rounded-md">hasn't guessed</span> the word.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interrogative -->
+                <div class="playful-card p-6 border-t-8 border-t-cyan-400 relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 opacity-10 text-9xl">❓</div>
+                    
+                    <div class="flex flex-col items-center mb-6 relative z-10">
+                        <div class="bg-cyan-100 text-cyan-600 p-4 rounded-full text-3xl mb-3 shadow-inner">🤔</div>
+                        <h3 class="text-2xl font-black text-slate-800">Question</h3>
+                    </div>
+                    
+                    <div class="bg-cyan-50 rounded-2xl p-4 text-center text-cyan-800 mb-6 border-2 border-cyan-200 font-bold text-lg shadow-sm">
+                        <span class="text-cyan-600">Have / Has</span> + Subject + Past Participle?
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-white p-5 rounded-2xl border-2 border-slate-100 shadow-sm relative">
+                            <p class="text-xl font-bold text-slate-700 mb-2">
+                                <span class="bg-cyan-200 text-cyan-800 px-2 rounded-md">Have</span> you <span class="bg-cyan-200 text-cyan-800 px-2 rounded-md">scored</span> a point?
+                            </p>
+                            <div class="flex gap-2 text-sm font-bold text-slate-500">
+                                <span class="bg-green-100 text-green-700 px-2 py-1 rounded">Yes, I have.</span>
+                                <span class="bg-red-100 text-red-700 px-2 py-1 rounded">No, I haven't.</span>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border-2 border-slate-100 shadow-sm relative">
+                            <p class="text-xl font-bold text-slate-700 mb-2">
+                                <span class="bg-cyan-200 text-cyan-800 px-2 rounded-md">Has</span> she <span class="bg-cyan-200 text-cyan-800 px-2 rounded-md">picked</span> an avatar?
+                            </p>
+                            <div class="flex gap-2 text-sm font-bold text-slate-500">
+                                <span class="bg-green-100 text-green-700 px-2 py-1 rounded">Yes, she has.</span>
+                                <span class="bg-red-100 text-red-700 px-2 py-1 rounded">No, she hasn't.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-center mt-12">
+                 <div class="animate-bounce bg-white p-4 rounded-full shadow-md text-slate-400 font-bold">
+                     👇 Scroll down for activities! 👇
+                 </div>
+            </div>
+        </section>
+
+        <!-- Fun Divider -->
+        <div class="flex items-center justify-center gap-4 py-8 opacity-50">
+            <span class="text-2xl">〰️</span>
+            <span class="text-3xl">💻</span>
+            <span class="text-2xl">〰️</span>
+            <span class="text-3xl">🎮</span>
+            <span class="text-2xl">〰️</span>
+            <span class="text-3xl">🖱️</span>
+            <span class="text-2xl">〰️</span>
+        </div>
+
+        <!-- ================= SECTION 2: ACTIVITIES ================= -->
+        <section class="fade-in space-y-12">
+            
+            <div class="text-center space-y-2 mb-8">
+                <h2 class="text-4xl font-black text-slate-800">
+                    Let's Play! 🕹️
+                </h2>
+                <p class="text-slate-500 text-lg font-medium">Show what you have learned.</p>
+            </div>
+
+            <!-- Sticky Result Banner -->
+            <div id="result-banner" class="hidden sticky top-24 z-40 mb-8 p-6 rounded-3xl flex-col items-center justify-center text-center border-4"></div>
+
+            <!-- ACTIVITY 1: Fill in the blanks -->
+            <div id="act-1" class="playful-card p-8 border-l-8 border-l-game-yellow">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="bg-game-yellow text-amber-900 w-12 h-12 rounded-full flex items-center justify-center text-2xl font-black shadow-inner">1</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">Fill in the blanks</h3>
+                        <p class="text-slate-500 font-medium">Select the correct option (Present Perfect).</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="activity-card p-6 rounded-2xl bg-slate-50 border-2 border-slate-200 relative flex items-center gap-4" data-type="select" data-answer="has guessed">
+                        <div class="text-4xl">🧑‍💻</div>
+                        <div class="flex-1">
+                            <p class="text-xl font-bold text-slate-700">1. The player <select class="cute-input font-bold text-game-purple mx-2"><option value="">---</option><option value="have guessed">have guessed</option><option value="has guessed">has guessed</option><option value="has guess">has guess</option></select> <strong>(guess)</strong> the secret word!</p>
+                            <div class="hidden correction-hint mt-3 text-sm text-red-600 bg-red-100 px-3 py-2 rounded-lg font-bold">➔ Correct: has guessed ("The player" is singular)</div>
+                        </div>
+                        <div class="icon-correct bg-green-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg">✓</div>
+                        <div class="icon-incorrect bg-red-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg">✗</div>
+                    </div>
+                    
+                    <div class="activity-card p-6 rounded-2xl bg-slate-50 border-2 border-slate-200 relative flex items-center gap-4" data-type="select" data-answer="haven't moved">
+                        <div class="text-4xl">🖱️</div>
+                        <div class="flex-1">
+                            <p class="text-xl font-bold text-slate-700">2. I <select class="cute-input font-bold text-game-purple mx-2"><option value="">---</option><option value="hasn't moved">hasn't moved</option><option value="haven't move">haven't move</option><option value="haven't moved">haven't moved</option></select> <strong>(not / move)</strong> the mouse.</p>
+                            <div class="hidden correction-hint mt-3 text-sm text-red-600 bg-red-100 px-3 py-2 rounded-lg font-bold">➔ Correct: haven't moved ("I" uses have)</div>
+                        </div>
+                        <div class="icon-correct bg-green-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg">✓</div>
+                        <div class="icon-incorrect bg-red-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg">✗</div>
+                    </div>
+
+                    <div class="activity-card p-6 rounded-2xl bg-slate-50 border-2 border-slate-200 relative flex items-center gap-4" data-type="select" data-answer="Have they connected">
+                        <div class="text-4xl">🔊</div>
+                        <div class="flex-1">
+                            <p class="text-xl font-bold text-slate-700">3. <select class="cute-input font-bold text-game-purple mx-2"><option value="">---</option><option value="Has they connected">Has they connected</option><option value="Have they connected">Have they connected</option><option value="Have they connect">Have they connect</option></select> <strong>(they / connect)</strong> the speaker?</p>
+                            <div class="hidden correction-hint mt-3 text-sm text-red-600 bg-red-100 px-3 py-2 rounded-lg font-bold">➔ Correct: Have they connected</div>
+                        </div>
+                        <div class="icon-correct bg-green-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg">✓</div>
+                        <div class="icon-incorrect bg-red-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg">✗</div>
+                    </div>
+
+                    <div class="activity-card p-6 rounded-2xl bg-slate-50 border-2 border-slate-200 relative flex items-center gap-4" data-type="select" data-answer="has kept">
+                        <div class="text-4xl">🏆</div>
+                        <div class="flex-1">
+                            <p class="text-xl font-bold text-slate-700">4. The winner <select class="cute-input font-bold text-game-purple mx-2"><option value="">---</option><option value="has keep">has keep</option><option value="have kept">have kept</option><option value="has kept">has kept</option></select> <strong>(keep)</strong> the tablet.</p>
+                            <div class="hidden correction-hint mt-3 text-sm text-red-600 bg-red-100 px-3 py-2 rounded-lg font-bold">➔ Correct: has kept ("kept" is the irregular past participle of keep)</div>
+                        </div>
+                        <div class="icon-correct bg-green-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg">✓</div>
+                        <div class="icon-incorrect bg-red-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg">✗</div>
+                    </div>
+                </div>
+
+                <!-- Action Bar -->
+                <div class="mt-8 flex items-center justify-between border-t-2 border-slate-100 pt-6">
+                    <span class="act-score hidden font-bold text-lg"></span>
+                    <div class="flex gap-4 ml-auto">
+                        <button onclick="checkActivity('act-1')" class="btn-check-act bg-blue-500 text-white px-6 py-3 rounded-xl font-bold shadow-md hover:bg-blue-600 hover:scale-105 transition-all flex items-center gap-2">
+                            ✨ Check
+                        </button>
+                        <button onclick="resetActivity('act-1')" class="btn-reset-act hidden bg-slate-200 text-slate-700 px-6 py-3 rounded-xl font-bold shadow-md hover:bg-slate-300 transition-all flex items-center gap-2">
+                            ↻ Retry
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTIVITY 2: Unscramble Sentences -->
+            <div id="act-2" class="playful-card p-8 border-l-8 border-l-purple-400">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="bg-purple-500 text-white w-12 h-12 rounded-full flex items-center justify-center text-2xl font-black shadow-inner">2</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">Unscramble the sentences</h3>
+                        <p class="text-slate-500 font-medium">Click on the words to put them in the correct order.</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-10">
+                    <!-- Sentence 1 -->
+                    <div class="activity-card bg-slate-50 p-6 rounded-2xl border-2 border-slate-200 relative sentence-builder" data-type="order" data-answer="the winner has collected the tablet">
+                        <div class="absolute right-4 top-4 icon-correct bg-green-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg z-10">✓</div>
+                        <div class="absolute right-4 top-4 icon-incorrect bg-red-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg z-10">✗</div>
+                        
+                        <p class="text-purple-600 font-bold mb-2 flex items-center gap-2">➔ Your answer:</p>
+                        <div class="word-answer flex flex-wrap gap-3 p-4 rounded-xl mb-6 shadow-inner" onclick="moveWordBack(event, 'pool-1')"></div>
+                        
+                        <p class="text-slate-500 font-bold mb-2">Available words (click to move):</p>
+                        <div id="pool-1" class="word-pool flex flex-wrap gap-3 p-4 rounded-xl shadow-inner" onclick="moveWordToAnswer(event)">
+                            <button class="word-btn bg-purple-500 text-white px-5 py-3 rounded-xl font-bold text-lg">tablet</button>
+                            <button class="word-btn bg-purple-500 text-white px-5 py-3 rounded-xl font-bold text-lg">collected</button>
+                            <button class="word-btn bg-purple-500 text-white px-5 py-3 rounded-xl font-bold text-lg">The</button>
+                            <button class="word-btn bg-purple-500 text-white px-5 py-3 rounded-xl font-bold text-lg">winner</button>
+                            <button class="word-btn bg-purple-500 text-white px-5 py-3 rounded-xl font-bold text-lg">the</button>
+                            <button class="word-btn bg-purple-500 text-white px-5 py-3 rounded-xl font-bold text-lg">has</button>
+                        </div>
+                        <div class="hidden correction-hint mt-4 text-sm text-red-600 bg-red-100 px-4 py-3 rounded-xl font-bold">➔ Correct: The winner has collected the tablet.</div>
+                    </div>
+
+                    <!-- Sentence 2 -->
+                    <div class="activity-card bg-slate-50 p-6 rounded-2xl border-2 border-slate-200 relative sentence-builder" data-type="order" data-answer="has the player picked an avatar">
+                        <div class="absolute right-4 top-4 icon-correct bg-green-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg z-10">✓</div>
+                        <div class="absolute right-4 top-4 icon-incorrect bg-red-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg z-10">✗</div>
+                        
+                        <p class="text-purple-600 font-bold mb-2 flex items-center gap-2">➔ Your answer:</p>
+                        <div class="word-answer flex flex-wrap gap-3 p-4 rounded-xl mb-6 shadow-inner" onclick="moveWordBack(event, 'pool-2')"></div>
+                        
+                        <p class="text-slate-500 font-bold mb-2">Available words:</p>
+                        <div id="pool-2" class="word-pool flex flex-wrap gap-3 p-4 rounded-xl shadow-inner" onclick="moveWordToAnswer(event)">
+                            <button class="word-btn bg-purple-500 text-white px-5 py-3 rounded-xl font-bold text-lg">player</button>
+                            <button class="word-btn bg-purple-500 text-white px-5 py-3 rounded-xl font-bold text-lg">an</button>
+                            <button class="word-btn bg-purple-500 text-white px-5 py-3 rounded-xl font-bold text-lg">Has</button>
+                            <button class="word-btn bg-purple-500 text-white px-5 py-3 rounded-xl font-bold text-lg">the</button>
+                            <button class="word-btn bg-purple-500 text-white px-5 py-3 rounded-xl font-bold text-lg">avatar</button>
+                            <button class="word-btn bg-purple-500 text-white px-5 py-3 rounded-xl font-bold text-lg">picked</button>
+                        </div>
+                        <div class="hidden correction-hint mt-4 text-sm text-red-600 bg-red-100 px-4 py-3 rounded-xl font-bold">➔ Correct: Has the player picked an avatar?</div>
+                    </div>
+
+                    <!-- Sentence 3 -->
+                    <div class="activity-card bg-slate-50 p-6 rounded-2xl border-2 border-slate-200 relative sentence-builder" data-type="order" data-answer="my partner hasn't dropped the laptop">
+                        <div class="absolute right-4 top-4 icon-correct bg-green-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg z-10">✓</div>
+                        <div class="absolute right-4 top-4 icon-incorrect bg-red-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg z-10">✗</div>
+                        
+                        <p class="text-purple-600 font-bold mb-2 flex items-center gap-2">➔ Your answer:</p>
+                        <div class="word-answer flex flex-wrap gap-3 p-4 rounded-xl mb-6 shadow-inner" onclick="moveWordBack(event, 'pool-3')"></div>
+                        
+                        <p class="text-slate-500 font-bold mb-2">Available words:</p>
+                        <div id="pool-3" class="word-pool flex flex-wrap gap-3 p-4 rounded-xl shadow-inner" onclick="moveWordToAnswer(event)">
+                            <button class="word-btn bg-purple-500 text-white px-5 py-3 rounded-xl font-bold text-lg">hasn't</button>
+                            <button class="word-btn bg-purple-500 text-white px-5 py-3 rounded-xl font-bold text-lg">dropped</button>
+                            <button class="word-btn bg-purple-500 text-white px-5 py-3 rounded-xl font-bold text-lg">the</button>
+                            <button class="word-btn bg-purple-500 text-white px-5 py-3 rounded-xl font-bold text-lg">My</button>
+                            <button class="word-btn bg-purple-500 text-white px-5 py-3 rounded-xl font-bold text-lg">laptop</button>
+                            <button class="word-btn bg-purple-500 text-white px-5 py-3 rounded-xl font-bold text-lg">partner</button>
+                        </div>
+                        <div class="hidden correction-hint mt-4 text-sm text-red-600 bg-red-100 px-4 py-3 rounded-xl font-bold">➔ Correct: My partner hasn't dropped the laptop.</div>
+                    </div>
+                </div>
+
+                <!-- Action Bar -->
+                <div class="mt-8 flex items-center justify-between border-t-2 border-slate-100 pt-6">
+                    <span class="act-score hidden font-bold text-lg"></span>
+                    <div class="flex gap-4 ml-auto">
+                        <button onclick="checkActivity('act-2')" class="btn-check-act bg-blue-500 text-white px-6 py-3 rounded-xl font-bold shadow-md hover:bg-blue-600 hover:scale-105 transition-all flex items-center gap-2">
+                            ✨ Check
+                        </button>
+                        <button onclick="resetActivity('act-2')" class="btn-reset-act hidden bg-slate-200 text-slate-700 px-6 py-3 rounded-xl font-bold shadow-md hover:bg-slate-300 transition-all flex items-center gap-2">
+                            ↻ Retry
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTIVITY 3: Complete Dialogues -->
+            <div id="act-3" class="playful-card p-8 border-l-8 border-l-cyan-400">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="bg-cyan-400 text-white w-12 h-12 rounded-full flex items-center justify-center text-2xl font-black shadow-inner">3</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">Complete the dialogues</h3>
+                        <p class="text-slate-500 font-medium">Type in the blanks (e.g., <span class="bg-slate-100 px-2 rounded font-mono">have</span>, <span class="bg-slate-100 px-2 rounded font-mono">Has</span>, <span class="bg-slate-100 px-2 rounded font-mono">hasn't</span>).</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <!-- Dialogue 1 -->
+                    <div class="activity-card bg-slate-50 p-6 rounded-2xl border-2 border-slate-200 relative" data-type="multi-text">
+                        <div class="absolute right-4 top-4 icon-correct bg-green-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg">✓</div>
+                        <div class="absolute right-4 top-4 icon-incorrect bg-red-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg">✗</div>
+                        
+                        <div class="flex gap-4 mb-4 items-start">
+                            <div class="bg-blue-100 w-10 h-10 rounded-full flex items-center justify-center font-bold text-blue-600 shrink-0 shadow-sm">A</div>
+                            <div class="bg-white p-4 rounded-2xl rounded-tl-none border-2 border-slate-100 shadow-sm">
+                                <p class="text-lg font-bold text-slate-700">Have you scored a point?</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start flex-row-reverse">
+                            <div class="bg-pink-100 w-10 h-10 rounded-full flex items-center justify-center font-bold text-pink-600 shrink-0 shadow-sm">B</div>
+                            <div class="bg-pink-50 p-4 rounded-2xl rounded-tr-none border-2 border-pink-100 shadow-sm text-right">
+                                <p class="text-lg font-bold text-slate-700">
+                                    Yes, I <input type="text" data-ans="have" class="cute-input w-24 text-center text-pink-600 font-black">.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="hidden correction-hint mt-4 text-sm text-red-600 bg-red-100 px-4 py-3 rounded-xl font-bold">➔ Correct: have</div>
+                    </div>
+
+                    <!-- Dialogue 2 -->
+                    <div class="activity-card bg-slate-50 p-6 rounded-2xl border-2 border-slate-200 relative" data-type="multi-text">
+                        <div class="absolute right-4 top-4 icon-correct bg-green-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg">✓</div>
+                        <div class="absolute right-4 top-4 icon-incorrect bg-red-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg">✗</div>
+                        
+                        <div class="flex gap-4 mb-4 items-start">
+                            <div class="bg-blue-100 w-10 h-10 rounded-full flex items-center justify-center font-bold text-blue-600 shrink-0 shadow-sm">A</div>
+                            <div class="bg-white p-4 rounded-2xl rounded-tl-none border-2 border-slate-100 shadow-sm">
+                                <p class="text-lg font-bold text-slate-700">
+                                    <input type="text" data-ans="Has" class="cute-input w-20 text-center text-blue-600 font-black"> the player hidden the keyboard?
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start flex-row-reverse">
+                            <div class="bg-pink-100 w-10 h-10 rounded-full flex items-center justify-center font-bold text-pink-600 shrink-0 shadow-sm">B</div>
+                            <div class="bg-pink-50 p-4 rounded-2xl rounded-tr-none border-2 border-pink-100 shadow-sm text-right">
+                                <p class="text-lg font-bold text-slate-700 leading-loose">
+                                    No, he <input type="text" data-ans="hasn't" class="cute-input w-28 text-center text-pink-600 font-black">.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="hidden correction-hint mt-4 text-sm text-red-600 bg-red-100 px-4 py-3 rounded-xl font-bold">➔ Correct: Has / hasn't</div>
+                    </div>
+
+                    <!-- Dialogue 3 -->
+                    <div class="activity-card bg-slate-50 p-6 rounded-2xl border-2 border-slate-200 relative" data-type="multi-text">
+                        <div class="absolute right-4 top-4 icon-correct bg-green-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg">✓</div>
+                        <div class="absolute right-4 top-4 icon-incorrect bg-red-500 text-white w-10 h-10 rounded-full items-center justify-center text-xl shadow-lg">✗</div>
+                        
+                        <div class="flex gap-4 mb-4 items-start">
+                            <div class="bg-blue-100 w-10 h-10 rounded-full flex items-center justify-center font-bold text-blue-600 shrink-0 shadow-sm">A</div>
+                            <div class="bg-white p-4 rounded-2xl rounded-tl-none border-2 border-slate-100 shadow-sm">
+                                <p class="text-lg font-bold text-slate-700">Have they raced?</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start flex-row-reverse">
+                            <div class="bg-pink-100 w-10 h-10 rounded-full flex items-center justify-center font-bold text-pink-600 shrink-0 shadow-sm">B</div>
+                            <div class="bg-pink-50 p-4 rounded-2xl rounded-tr-none border-2 border-pink-100 shadow-sm text-right">
+                                <p class="text-lg font-bold text-slate-700 leading-loose">
+                                    Yes, they <input type="text" data-ans="have" class="cute-input w-24 text-center text-pink-600 font-black mx-1">.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="hidden correction-hint mt-4 text-sm text-red-600 bg-red-100 px-4 py-3 rounded-xl font-bold">➔ Correct: have</div>
+                    </div>
+                </div>
+
+                <!-- Action Bar -->
+                <div class="mt-8 flex items-center justify-between border-t-2 border-slate-100 pt-6">
+                    <span class="act-score hidden font-bold text-lg"></span>
+                    <div class="flex gap-4 ml-auto">
+                        <button onclick="checkActivity('act-3')" class="btn-check-act bg-blue-500 text-white px-6 py-3 rounded-xl font-bold shadow-md hover:bg-blue-600 hover:scale-105 transition-all flex items-center gap-2">
+                            ✨ Check
+                        </button>
+                        <button onclick="resetActivity('act-3')" class="btn-reset-act hidden bg-slate-200 text-slate-700 px-6 py-3 rounded-xl font-bold shadow-md hover:bg-slate-300 transition-all flex items-center gap-2">
+                            ↻ Retry
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTIVITY 4: Reading True/False -->
+            <div id="act-4" class="playful-card p-8 border-l-8 border-l-green-400">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="bg-green-400 text-green-900 w-12 h-12 rounded-full flex items-center justify-center text-2xl font-black shadow-inner">4</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">Read & Answer: True/False</h3>
+                        <p class="text-slate-500 font-medium">Read the text about the gaming tournament and decide.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-green-50 p-6 rounded-2xl border-2 border-green-200 text-green-900 font-medium text-lg mb-8 shadow-inner relative">
+                    <span class="absolute -top-4 -left-4 text-4xl">🎮</span>
+                    "The gaming tournament has started! The winner has scored 100 points. He has kept the computer and the laptop. But wait! His partner hasn't collected the coins. Has the partner hidden the tablet? No, he hasn't. The partner has dropped the controller!"
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="activity-card p-5 rounded-2xl bg-white border-2 border-slate-200 relative shadow-sm hover:shadow-md transition" data-type="radio" data-answer="true">
+                        <div class="absolute right-3 top-3 icon-correct bg-green-500 text-white w-8 h-8 rounded-full items-center justify-center font-bold">✓</div>
+                        <div class="absolute right-3 top-3 icon-incorrect bg-red-500 text-white w-8 h-8 rounded-full items-center justify-center font-bold">✗</div>
+                        <p class="font-bold text-slate-700 mb-4 pr-8">1. The winner has scored 100 points.</p>
+                        <div class="flex gap-4">
+                            <label class="flex items-center gap-2 cursor-pointer font-bold text-slate-600 bg-slate-100 px-4 py-2 rounded-lg hover:bg-slate-200 transition"><input type="radio" name="tf1" value="true" class="w-5 h-5 accent-green-500"> True</label>
+                            <label class="flex items-center gap-2 cursor-pointer font-bold text-slate-600 bg-slate-100 px-4 py-2 rounded-lg hover:bg-slate-200 transition"><input type="radio" name="tf1" value="false" class="w-5 h-5 accent-green-500"> False</label>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card p-5 rounded-2xl bg-white border-2 border-slate-200 relative shadow-sm hover:shadow-md transition" data-type="radio" data-answer="false">
+                        <div class="absolute right-3 top-3 icon-correct bg-green-500 text-white w-8 h-8 rounded-full items-center justify-center font-bold">✓</div>
+                        <div class="absolute right-3 top-3 icon-incorrect bg-red-500 text-white w-8 h-8 rounded-full items-center justify-center font-bold">✗</div>
+                        <p class="font-bold text-slate-700 mb-4 pr-8">2. He hasn't kept the computer.</p>
+                        <div class="flex gap-4">
+                            <label class="flex items-center gap-2 cursor-pointer font-bold text-slate-600 bg-slate-100 px-4 py-2 rounded-lg hover:bg-slate-200 transition"><input type="radio" name="tf2" value="true" class="w-5 h-5 accent-green-500"> True</label>
+                            <label class="flex items-center gap-2 cursor-pointer font-bold text-slate-600 bg-slate-100 px-4 py-2 rounded-lg hover:bg-slate-200 transition"><input type="radio" name="tf2" value="false" class="w-5 h-5 accent-green-500"> False</label>
+                        </div>
+                    </div>
+
+                    <div class="activity-card p-5 rounded-2xl bg-white border-2 border-slate-200 relative shadow-sm hover:shadow-md transition" data-type="radio" data-answer="false">
+                        <div class="absolute right-3 top-3 icon-correct bg-green-500 text-white w-8 h-8 rounded-full items-center justify-center font-bold">✓</div>
+                        <div class="absolute right-3 top-3 icon-incorrect bg-red-500 text-white w-8 h-8 rounded-full items-center justify-center font-bold">✗</div>
+                        <p class="font-bold text-slate-700 mb-4 pr-8">3. The partner has collected the coins.</p>
+                        <div class="flex gap-4">
+                            <label class="flex items-center gap-2 cursor-pointer font-bold text-slate-600 bg-slate-100 px-4 py-2 rounded-lg hover:bg-slate-200 transition"><input type="radio" name="tf3" value="true" class="w-5 h-5 accent-green-500"> True</label>
+                            <label class="flex items-center gap-2 cursor-pointer font-bold text-slate-600 bg-slate-100 px-4 py-2 rounded-lg hover:bg-slate-200 transition"><input type="radio" name="tf3" value="false" class="w-5 h-5 accent-green-500"> False</label>
+                        </div>
+                    </div>
+
+                    <div class="activity-card p-5 rounded-2xl bg-white border-2 border-slate-200 relative shadow-sm hover:shadow-md transition" data-type="radio" data-answer="false">
+                        <div class="absolute right-3 top-3 icon-correct bg-green-500 text-white w-8 h-8 rounded-full items-center justify-center font-bold">✓</div>
+                        <div class="absolute right-3 top-3 icon-incorrect bg-red-500 text-white w-8 h-8 rounded-full items-center justify-center font-bold">✗</div>
+                        <p class="font-bold text-slate-700 mb-4 pr-8">4. The partner has hidden the tablet.</p>
+                        <div class="flex gap-4">
+                            <label class="flex items-center gap-2 cursor-pointer font-bold text-slate-600 bg-slate-100 px-4 py-2 rounded-lg hover:bg-slate-200 transition"><input type="radio" name="tf4" value="true" class="w-5 h-5 accent-green-500"> True</label>
+                            <label class="flex items-center gap-2 cursor-pointer font-bold text-slate-600 bg-slate-100 px-4 py-2 rounded-lg hover:bg-slate-200 transition"><input type="radio" name="tf4" value="false" class="w-5 h-5 accent-green-500"> False</label>
+                        </div>
+                    </div>
+
+                    <div class="activity-card p-5 rounded-2xl bg-white border-2 border-slate-200 relative shadow-sm hover:shadow-md transition sm:col-span-2" data-type="radio" data-answer="true">
+                        <div class="absolute right-3 top-3 icon-correct bg-green-500 text-white w-8 h-8 rounded-full items-center justify-center font-bold">✓</div>
+                        <div class="absolute right-3 top-3 icon-incorrect bg-red-500 text-white w-8 h-8 rounded-full items-center justify-center font-bold">✗</div>
+                        <p class="font-bold text-slate-700 mb-4 pr-8">5. The partner has dropped the controller.</p>
+                        <div class="flex gap-4">
+                            <label class="flex items-center gap-2 cursor-pointer font-bold text-slate-600 bg-slate-100 px-4 py-2 rounded-lg hover:bg-slate-200 transition"><input type="radio" name="tf5" value="true" class="w-5 h-5 accent-green-500"> True</label>
+                            <label class="flex items-center gap-2 cursor-pointer font-bold text-slate-600 bg-slate-100 px-4 py-2 rounded-lg hover:bg-slate-200 transition"><input type="radio" name="tf5" value="false" class="w-5 h-5 accent-green-500"> False</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Bar -->
+                <div class="mt-8 flex items-center justify-between border-t-2 border-slate-100 pt-6">
+                    <span class="act-score hidden font-bold text-lg"></span>
+                    <div class="flex gap-4 ml-auto">
+                        <button onclick="checkActivity('act-4')" class="btn-check-act bg-blue-500 text-white px-6 py-3 rounded-xl font-bold shadow-md hover:bg-blue-600 hover:scale-105 transition-all flex items-center gap-2">
+                            ✨ Check
+                        </button>
+                        <button onclick="resetActivity('act-4')" class="btn-reset-act hidden bg-slate-200 text-slate-700 px-6 py-3 rounded-xl font-bold shadow-md hover:bg-slate-300 transition-all flex items-center gap-2">
+                            ↻ Retry
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTIVITY 5: Emoji Translation -->
+            <div id="act-5" class="playful-card p-8 border-l-8 border-l-pink-400">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="bg-pink-400 text-white w-12 h-12 rounded-full flex items-center justify-center text-2xl font-black shadow-inner">5</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">Emoji Translator 🤖</h3>
+                        <p class="text-slate-500 font-medium">Translate the emojis into a full English sentence in Present Perfect. Use vocabulary words.</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="activity-card bg-slate-50 p-6 rounded-2xl border-2 border-slate-200 relative flex flex-col sm:flex-row gap-6 items-center shadow-sm" data-type="emoji" data-answer="the player has scored a point|the player has scored">
+                        <div class="absolute right-3 top-3 icon-correct bg-green-500 text-white w-8 h-8 rounded-full items-center justify-center font-bold">✓</div>
+                        <div class="absolute right-3 top-3 icon-incorrect bg-red-500 text-white w-8 h-8 rounded-full items-center justify-center font-bold">✗</div>
+                        
+                        <div class="text-4xl bg-white p-4 rounded-2xl border-2 border-slate-100 shadow-sm flex items-center gap-2 whitespace-nowrap">
+                            👦 <span class="text-3xl text-green-500">✔️</span> 💯
+                            <p class="text-xs absolute -bottom-6 left-0 text-slate-400 w-full text-center">(player / score)</p>
+                        </div>
+                        <div class="w-full flex-1">
+                            <input type="text" class="cute-input w-full text-xl font-bold text-slate-700" placeholder="Type sentence here...">
+                            <div class="hidden w-full correction-hint mt-3 text-sm text-red-600 bg-red-100 px-4 py-2 rounded-lg font-bold">➔ The player has scored.</div>
+                        </div>
+                    </div>
+
+                    <div class="activity-card bg-slate-50 p-6 rounded-2xl border-2 border-slate-200 relative flex flex-col sm:flex-row gap-6 items-center shadow-sm" data-type="emoji" data-answer="she hasn't moved the mouse|she has not moved the mouse">
+                        <div class="absolute right-3 top-3 icon-correct bg-green-500 text-white w-8 h-8 rounded-full items-center justify-center font-bold">✓</div>
+                        <div class="absolute right-3 top-3 icon-incorrect bg-red-500 text-white w-8 h-8 rounded-full items-center justify-center font-bold">✗</div>
+                        
+                        <div class="text-4xl bg-white p-4 rounded-2xl border-2 border-slate-100 shadow-sm flex items-center gap-2 whitespace-nowrap">
+                            👧 <span class="text-3xl text-red-500">❌</span> 🖱️
+                            <p class="text-xs absolute -bottom-6 left-0 text-slate-400 w-full text-center">(she / move / mouse)</p>
+                        </div>
+                        <div class="w-full flex-1">
+                            <input type="text" class="cute-input w-full text-xl font-bold text-slate-700" placeholder="Type negative sentence here...">
+                            <div class="hidden w-full correction-hint mt-3 text-sm text-red-600 bg-red-100 px-4 py-2 rounded-lg font-bold">➔ She hasn't moved the mouse.</div>
+                        </div>
+                    </div>
+
+                    <div class="activity-card bg-slate-50 p-6 rounded-2xl border-2 border-slate-200 relative flex flex-col sm:flex-row gap-6 items-center shadow-sm" data-type="emoji" data-answer="has he dropped the controller|has he dropped the controller?">
+                        <div class="absolute right-3 top-3 icon-correct bg-green-500 text-white w-8 h-8 rounded-full items-center justify-center font-bold">✓</div>
+                        <div class="absolute right-3 top-3 icon-incorrect bg-red-500 text-white w-8 h-8 rounded-full items-center justify-center font-bold">✗</div>
+                        
+                        <div class="text-4xl bg-white p-4 rounded-2xl border-2 border-slate-100 shadow-sm flex items-center gap-2 whitespace-nowrap">
+                            <span class="text-3xl text-blue-500">❓</span> 🧑 🎮
+                            <p class="text-xs absolute -bottom-6 left-0 text-slate-400 w-full text-center">(he / drop / controller)</p>
+                        </div>
+                        <div class="w-full flex-1">
+                            <input type="text" class="cute-input w-full text-xl font-bold text-slate-700" placeholder="Type question here...">
+                            <div class="hidden w-full correction-hint mt-3 text-sm text-red-600 bg-red-100 px-4 py-2 rounded-lg font-bold">➔ Has he dropped the controller?</div>
+                        </div>
+                    </div>
+
+                    <div class="activity-card bg-slate-50 p-6 rounded-2xl border-2 border-slate-200 relative flex flex-col sm:flex-row gap-6 items-center shadow-sm" data-type="emoji" data-answer="the winner has kept the laptop|a winner has kept the laptop">
+                        <div class="absolute right-3 top-3 icon-correct bg-green-500 text-white w-8 h-8 rounded-full items-center justify-center font-bold">✓</div>
+                        <div class="absolute right-3 top-3 icon-incorrect bg-red-500 text-white w-8 h-8 rounded-full items-center justify-center font-bold">✗</div>
+                        
+                        <div class="text-4xl bg-white p-4 rounded-2xl border-2 border-slate-100 shadow-sm flex items-center gap-2 whitespace-nowrap">
+                            🏆 <span class="text-3xl text-green-500">✔️</span> 💻
+                            <p class="text-xs absolute -bottom-6 left-0 text-slate-400 w-full text-center">(winner / keep / laptop)</p>
+                        </div>
+                        <div class="w-full flex-1">
+                            <input type="text" class="cute-input w-full text-xl font-bold text-slate-700" placeholder="Type sentence here...">
+                            <div class="hidden w-full correction-hint mt-3 text-sm text-red-600 bg-red-100 px-4 py-2 rounded-lg font-bold">➔ The winner has kept the laptop.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Bar -->
+                <div class="mt-8 flex items-center justify-between border-t-2 border-slate-100 pt-6">
+                    <span class="act-score hidden font-bold text-lg"></span>
+                    <div class="flex gap-4 ml-auto">
+                        <button onclick="checkActivity('act-5')" class="btn-check-act bg-blue-500 text-white px-6 py-3 rounded-xl font-bold shadow-md hover:bg-blue-600 hover:scale-105 transition-all flex items-center gap-2">
+                            ✨ Check
+                        </button>
+                        <button onclick="resetActivity('act-5')" class="btn-reset-act hidden bg-slate-200 text-slate-700 px-6 py-3 rounded-xl font-bold shadow-md hover:bg-slate-300 transition-all flex items-center gap-2">
+                            ↻ Retry
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Interactive JavaScript -->
+    <script>
+        // Unscramble Sentences Logic
+        function moveWordToAnswer(e) {
+            if (e.target.classList.contains('word-btn')) {
+                const answerDiv = e.target.closest('.sentence-builder').querySelector('.word-answer');
+                answerDiv.appendChild(e.target);
+            }
+        }
+
+        function moveWordBack(e, poolId) {
+            if (e.target.classList.contains('word-btn')) {
+                const poolDiv = document.getElementById(poolId);
+                poolDiv.appendChild(e.target);
+            }
+        }
+
+        // Check specific activity
+        function checkActivity(actId) {
+            const container = document.getElementById(actId);
+            const cards = container.querySelectorAll('.activity-card');
+            let score = 0;
+            let totalCards = cards.length;
+
+            cards.forEach(card => {
+                const type = card.getAttribute('data-type');
+                let isCorrect = false;
+
+                card.classList.remove('card-correct', 'card-incorrect');
+
+                if (type === 'select') {
+                    const expected = card.getAttribute('data-answer');
+                    const selected = card.querySelector('select').value;
+                    if (selected === expected) isCorrect = true;
+
+                } else if (type === 'radio') {
+                    const expected = card.getAttribute('data-answer');
+                    const checkedRadio = card.querySelector('input[type="radio"]:checked');
+                    if (checkedRadio && checkedRadio.value === expected) isCorrect = true;
+
+                } else if (type === 'order') {
+                    const expected = card.getAttribute('data-answer').toLowerCase();
+                    const wordsInAnswer = Array.from(card.querySelector('.word-answer').children);
+                    const sentence = wordsInAnswer.map(btn => btn.innerText.toLowerCase()).join(' ');
+                    if (sentence === expected) isCorrect = true;
+
+                } else if (type === 'multi-text') {
+                    const inputs = card.querySelectorAll('input[type="text"]');
+                    let allCorrect = true;
+                    inputs.forEach(input => {
+                        const expected = input.getAttribute('data-ans').toLowerCase();
+                        const val = input.value.trim().toLowerCase();
+                        if (val !== expected && val !== expected.replace("'", "’")) allCorrect = false;
+                    });
+                    if (allCorrect && inputs.length > 0) isCorrect = true;
+
+                } else if (type === 'emoji') {
+                    const expectedAnswers = card.getAttribute('data-answer').split('|');
+                    const inputVal = card.querySelector('input[type="text"]').value.trim().toLowerCase().replace(/[.,!?'"]/g, ''); 
+                    
+                    let cleanExpected = expectedAnswers.map(ans => ans.replace(/[.,!?'"]/g, ''));
+                    
+                    if (cleanExpected.includes(inputVal)) isCorrect = true;
+                }
+
+                if (isCorrect) {
+                    card.classList.add('card-correct');
+                    score++;
+                } else {
+                    card.classList.add('card-incorrect');
+                }
+            });
+
+            // Toggle buttons
+            container.querySelector('.btn-check-act').classList.add('hidden');
+            container.querySelector('.btn-reset-act').classList.remove('hidden');
+            
+            // Show score
+            const scoreDisplay = container.querySelector('.act-score');
+            if (scoreDisplay) {
+                if (score === totalCards) {
+                    scoreDisplay.innerHTML = `🏆 Perfect! (${score}/${totalCards})`;
+                    scoreDisplay.className = "act-score font-bold text-lg text-green-500 fade-in";
+                } else {
+                    scoreDisplay.innerHTML = `😅 Keep trying! (${score}/${totalCards})`;
+                    scoreDisplay.className = "act-score font-bold text-lg text-red-500 fade-in";
+                }
+                scoreDisplay.classList.remove('hidden');
+                scoreDisplay.classList.add('block');
+            }
+        }
+
+        // Reset specific activity
+        function resetActivity(actId) {
+            const container = document.getElementById(actId);
+            
+            // Clear inputs
+            container.querySelectorAll('select').forEach(el => el.value = "");
+            container.querySelectorAll('input[type="radio"]').forEach(el => el.checked = false);
+            container.querySelectorAll('input[type="text"]').forEach(el => el.value = "");
+
+            // Restore unscramble sentences
+            const builders = container.querySelectorAll('.sentence-builder');
+            builders.forEach(builder => {
+                const answerDiv = builder.querySelector('.word-answer');
+                const poolDiv = builder.querySelector('.word-pool');
+                while (answerDiv.firstChild) {
+                    poolDiv.appendChild(answerDiv.firstChild);
+                }
+            });
+
+            // Clear visual CSS classes
+            container.querySelectorAll('.activity-card').forEach(card => {
+                card.classList.remove('card-correct', 'card-incorrect');
+            });
+
+            // Toggle buttons
+            container.querySelector('.btn-check-act').classList.remove('hidden');
+            container.querySelector('.btn-reset-act').classList.add('hidden');
+            
+            // Hide score
+            const scoreDisplay = container.querySelector('.act-score');
+            if (scoreDisplay) {
+                scoreDisplay.classList.add('hidden');
+                scoreDisplay.classList.remove('block');
+            }
+        }
+    </script>
+</body>
+</html>
