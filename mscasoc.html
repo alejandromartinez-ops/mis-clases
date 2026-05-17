@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expedición Baker Street: El Misterio de la Oración</title>
+    <!-- Tailwind CSS para diseño rápido y adaptable -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts con estilo victoriano, periodístico y de máquina de escribir -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Special+Elite&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0f172a;
+            font-family: 'Special Elite', cursive;
+            color: #1e293b;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+        }
+        /* Cuaderno de investigación victoriano */
+        .journal {
+            background: radial-gradient(circle, #fcfaf2 0%, #f1ebda 100%);
+            border: 12px solid transparent;
+            border-image: url('https://www.transparenttextures.com/patterns/dark-leather.png') 30 round;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+        }
+        /* Tarjeta de palabra interactiva */
+        .word-card {
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .word-card:hover {
+            transform: translateY(-3px);
+            background-color: #f8fafc;
+        }
+        /* Estados de selección visual */
+        .selected-sujeto {
+            background-color: #2563eb !important;
+            color: white !important;
+            border-color: #1d4ed8 !important;
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.6);
+        }
+        .selected-predicado {
+            background-color: #d97706 !important;
+            color: white !important;
+            border-color: #b45309 !important;
+            box-shadow: 0 0 10px rgba(217, 119, 6, 0.6);
+        }
+        .selected-generic {
+            background-color: #0d9488 !important;
+            color: white !important;
+            border-color: #0f766e !important;
+            box-shadow: 0 0 10px rgba(13, 148, 136, 0.6);
+        }
+        /* Animación para el trofeo final */
+        .floating { animation: float 4s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+        .correct-pulse {
+            animation: successPulse 1.5s infinite;
+        }
+        @keyframes successPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 flex flex-col items-center min-h-screen">
+
+    <div class="max-w-5xl w-full journal p-6 md:p-12 rounded-3xl relative overflow-hidden">
+        
+        <!-- DECORACIONES ESQUINAS -->
+        <div class="absolute top-4 left-4 text-3xl opacity-20 select-none">🕵️‍♂️</div>
+        <div class="absolute top-4 right-4 text-3xl opacity-20 select-none">🔍</div>
+        <div class="absolute bottom-4 left-4 text-3xl opacity-20 select-none">🎻</div>
+        <div class="absolute bottom-4 right-4 text-3xl opacity-20 select-none">🎩</div>
+
+        <!-- CABECERA DE LA AVENTURA -->
+        <header class="text-center mb-8">
+            <h1 class="text-5xl md:text-7xl text-slate-900 mb-3 drop-shadow-sm font-black">Expedición Baker Street</h1>
+            <p class="text-lg md:text-xl text-slate-700 italic">¡Resuelve el caso de la morfosintaxis junto al gran detective!</p>
+            
+            <!-- Rol del Alumno -->
+            <div class="bg-slate-900/5 border-2 border-dashed border-slate-900/30 p-5 rounded-xl my-6 text-left">
+                <h2 class="text-2xl text-slate-900 mb-1 flex items-center">
+                    <span class="mr-2">🔬</span> ¡Tu Rol: Detective Aprendiz!
+                </h2>
+                <p class="text-sm md:text-base text-slate-800 leading-relaxed">
+                    Sherlock Holmes te ha encomendado tu primera gran investigación gramatical. Hay un misterio oculto en una de las pistas de la escena del crimen. Debes pulsar sobre las palabras del informe para dividirlas y analizarlas con total precisión lógica. ¡Usa tu lupa de deducción!
+                </p>
+            </div>
+
+            <!-- MAPA DE PROGRESO VISUAL (LUPAS Y PISTAS) -->
+            <div class="bg-slate-900/10 p-4 rounded-xl mb-8">
+                <div class="flex justify-between items-center max-w-md mx-auto relative">
+                    <!-- Línea de progreso de fondo -->
+                    <div class="absolute left-0 right-0 top-1/2 h-1 bg-dashed border-t-2 border-dashed border-slate-900/40 z-0"></div>
+                    
+                    <!-- Paradas del mapa -->
+                    <div id="nav-step1" class="z-10 bg-slate-900 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg border-2 border-slate-900 transition-all duration-300">🔍</div>
+                    <div id="nav-step2" class="z-10 bg-slate-100 text-slate-900 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg border-2 border-slate-900 transition-all duration-300 opacity-50">📂</div>
+                    <div id="nav-step3" class="z-10 bg-slate-100 text-slate-900 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg border-2 border-slate-900 transition-all duration-300 opacity-50">🕰️</div>
+                    <div id="nav-step4" class="z-10 bg-slate-100 text-slate-900 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg border-2 border-slate-900 transition-all duration-300 opacity-50">🧪</div>
+                    <div id="nav-victory" class="z-10 bg-slate-100 text-slate-900 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg border-2 border-slate-900 transition-all duration-300 opacity-50">🏆</div>
+                </div>
+                <div class="text-center text-xs text-slate-800 font-bold mt-2" id="map-text">
+                    Fase actual: Análisis de la Escena (Sujeto y Predicado)
+                </div>
+            </div>
+
+            <!-- INFORME DEL CASO (ORACIÓN INTERACTIVA) -->
+            <div class="bg-slate-900/10 p-6 rounded-2xl border-2 border-slate-900 shadow-inner my-6">
+                <span class="text-xs uppercase font-bold text-slate-700 tracking-wider">Informe de la escena del crimen:</span>
+                
+                <!-- Palabras de la frase como botones individuales -->
+                <div class="flex flex-wrap justify-center gap-2 mt-4" id="sentence-container">
+                    <!-- Se genera dinámicamente con JS -->
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENEDORES DE ACTIVIDAD -->
+        <main class="relative bg-white/20 p-6 rounded-2xl border border-slate-900/10">
+            
+            <!-- ETAPA 1: SUJETO Y PREDICADO -->
+            <section id="pane-step1" class="step-pane">
+                <h3 class="text-3xl text-slate-900 mb-2 flex items-center">
+                    <span>🔍 Paso 1: Dividir la Oración</span>
+                </h3>
+                <p class="text-sm text-slate-700 mb-6">
+                    Aísla el sujeto del predicado en el informe. Haz clic en las palabras correspondientes y asígnalas a su sección de archivo.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Caja del Sujeto -->
+                    <div class="border-2 border-dashed border-blue-600 rounded-xl p-4 bg-blue-50/50 flex flex-col min-h-[120px]">
+                        <h4 class="text-xl text-blue-900 font-bold mb-2 flex justify-between items-center">
+                            <span>Sujeto (¿Quién realiza la acción?)</span>
+                            <button onclick="assignToGroup('sujeto')" class="text-xs bg-blue-700 hover:bg-blue-800 text-white py-1 px-3 rounded">
+                                Archivar seleccionadas
+                            </button>
+                        </h4>
+                        <div id="box-sujeto" class="flex flex-wrap gap-2 p-2 bg-white/40 rounded-lg min-h-[50px] items-center">
+                            <span class="text-xs text-blue-600 italic">Vacío. Selecciona palabras arriba y pulsa Archivar.</span>
+                        </div>
+                    </div>
+
+                    <!-- Caja del Predicado -->
+                    <div class="border-2 border-dashed border-amber-700 rounded-xl p-4 bg-amber-50/50 flex flex-col min-h-[120px]">
+                        <h4 class="text-xl text-amber-900 font-bold mb-2 flex justify-between items-center">
+                            <span>Predicado (¿Qué se dice del sujeto?)</span>
+                            <button onclick="assignToGroup('predicado')" class="text-xs bg-amber-700 hover:bg-amber-800 text-white py-1 px-3 rounded">
+                                Archivar seleccionadas
+                            </button>
+                        </h4>
+                        <div id="box-predicado" class="flex flex-wrap gap-2 p-2 bg-white/40 rounded-lg min-h-[50px] items-center">
+                            <span class="text-xs text-amber-600 italic">Vacío. Selecciona palabras arriba y pulsa Archivar.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center mt-8">
+                    <button onclick="clearStep1()" class="text-xs text-slate-800 underline font-bold">Limpiar selecciones 🧹</button>
+                    <button onclick="verifyStep1()" class="btn-pirata bg-slate-900 text-white hover:bg-slate-800 p-3 rounded font-bold">Comprobar Paso 1 🔬</button>
+                </div>
+            </section>
+
+            <!-- ETAPA 2: NÚCLEOS -->
+            <section id="pane-step2" class="step-pane hidden">
+                <h3 class="text-3xl text-slate-900 mb-2">📂 Paso 2: Los Núcleos del Caso</h3>
+                <p class="text-sm text-slate-700 mb-6">
+                    Cada elemento tiene una palabra clave o Núcleo (N). Selecciona una única palabra arriba y asígnala a su ficha lógica.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="border border-slate-950/20 rounded-xl p-4 bg-white/40">
+                        <h4 class="text-xl text-slate-900 font-bold mb-2">Núcleo del Sujeto (N)</h4>
+                        <p class="text-xs text-slate-700 mb-3">Es el sustantivo principal encargado de la acción.</p>
+                        <div class="flex items-center gap-2">
+                            <button onclick="assignNucleo('sujeto')" class="bg-slate-900 hover:bg-slate-800 text-white text-xs px-3 py-2 rounded">
+                                Asignar palabra
+                            </button>
+                            <div id="nucleo-sujeto-display" class="border border-slate-900/30 px-3 py-2 bg-white rounded font-bold min-w-[120px] text-center text-sm">
+                                [Ninguna]
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-slate-950/20 rounded-xl p-4 bg-white/40">
+                        <h4 class="text-xl text-slate-900 font-bold mb-2">Núcleo del Predicado (NP)</h4>
+                        <p class="text-xs text-slate-700 mb-3">Es siempre el verbo o acción de la oración.</p>
+                        <div class="flex items-center gap-2">
+                            <button onclick="assignNucleo('predicado')" class="bg-slate-900 hover:bg-slate-800 text-white text-xs px-3 py-2 rounded">
+                                Asignar palabra
+                            </button>
+                            <div id="nucleo-predicado-display" class="border border-slate-900/30 px-3 py-2 bg-white rounded font-bold min-w-[120px] text-center text-sm">
+                                [Ninguna]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center mt-8">
+                    <button onclick="clearStep2()" class="text-xs text-slate-800 underline font-bold">Limpiar núcleos 🧹</button>
+                    <button onclick="verifyStep2()" class="btn-pirata bg-slate-900 text-white hover:bg-slate-800 p-3 rounded font-bold">Comprobar Núcleos 📋</button>
+                </div>
+            </section>
+
+            <!-- ETAPA 3: COMPLEMENTOS -->
+            <section id="pane-step3" class="step-pane hidden">
+                <h3 class="text-3xl text-slate-900 mb-2">🕰️ Paso 3: Los Complementos del Misterio</h3>
+                <p class="text-sm text-slate-700 mb-6">
+                    Averigua las circunstancias y objetos asociados a la acción del predicado. Selecciona palabras y archívalas en la casilla lógica correcta.
+                </p>
+
+                <div class="space-y-4">
+                    <!-- Complemento Directo -->
+                    <div class="border border-slate-950/20 rounded-xl p-4 bg-white/40">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
+                            <div>
+                                <h4 class="text-xl text-slate-900 font-bold">Complemento Directo (CD)</h4>
+                                <p class="text-xs text-slate-700">¿Qué cosa buscaron? Responde a la pregunta clásica: ¿Qué?</p>
+                            </div>
+                            <button onclick="assignComplemento('cd')" class="bg-slate-900 hover:bg-slate-800 text-white text-xs px-3 py-2 rounded self-start md:self-auto">
+                                Archivar seleccionadas
+                            </button>
+                        </div>
+                        <div id="display-cd" class="p-2 bg-slate-50 rounded border border-slate-900/10 min-h-[40px] font-bold text-sm">
+                            ---
+                        </div>
+                    </div>
+
+                    <!-- CC Modo -->
+                    <div class="border border-slate-950/20 rounded-xl p-4 bg-white/40">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
+                            <div>
+                                <h4 class="text-xl text-slate-900 font-bold">C. Circunstancial de Modo (CCM)</h4>
+                                <p class="text-xs text-slate-700">¿De qué modo lo hicieron? Responde a: ¿Cómo?</p>
+                            </div>
+                            <button onclick="assignComplemento('ccm')" class="bg-slate-900 hover:bg-slate-800 text-white text-xs px-3 py-2 rounded self-start md:self-auto">
+                                Archivar seleccionadas
+                            </button>
+                        </div>
+                        <div id="display-ccm" class="p-2 bg-slate-50 rounded border border-slate-900/10 min-h-[40px] font-bold text-sm">
+                            ---
+                        </div>
+                    </div>
+
+                    <!-- CC Lugar -->
+                    <div class="border border-slate-950/20 rounded-xl p-4 bg-white/40">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
+                            <div>
+                                <h4 class="text-xl text-slate-900 font-bold">C. Circunstancial de Lugar (CCL)</h4>
+                                <p class="text-xs text-slate-700">¿En qué parte ocurrió el suceso? Responde a: ¿Dónde?</p>
+                            </div>
+                            <button onclick="assignComplemento('ccl')" class="bg-slate-900 hover:bg-slate-800 text-white text-xs px-3 py-2 rounded self-start md:self-auto">
+                                Archivar seleccionadas
+                            </button>
+                        </div>
+                        <div id="display-ccl" class="p-2 bg-slate-50 rounded border border-slate-900/10 min-h-[40px] font-bold text-sm">
+                            ---
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center mt-8">
+                    <button onclick="clearStep3()" class="text-xs text-slate-800 underline font-bold">Limpiar complementos 🧹</button>
+                    <button onclick="verifyStep3()" class="btn-pirata bg-slate-900 text-white hover:bg-slate-800 p-3 rounded font-bold">Comprobar Complementos 🕰️</button>
+                </div>
+            </section>
+
+            <!-- ETAPA 4: MORFOLOGÍA -->
+            <section id="pane-step4" class="step-pane hidden">
+                <h3 class="text-3xl text-slate-900 mb-2">🧪 Paso 4: Laboratorio de Análisis Morfológico</h3>
+                <p class="text-sm text-slate-700 mb-6">
+                    El veredicto final requiere de la máxima finura analítica. Indica la categoría gramatical de cada palabra del informe.
+                </p>
+
+                <!-- Grid dinámico de palabras -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="morfologia-container">
+                    <!-- Generado dinámicamente con JS -->
+                </div>
+
+                <div class="flex justify-end mt-8">
+                    <button onclick="verifyStep4()" class="btn-pirata bg-slate-900 text-white hover:bg-slate-800 p-3 rounded font-bold w-full sm:w-auto">🧪 COMPROBAR Y EMITIR VEREDICTO</button>
+                </div>
+            </section>
+
+            <!-- VICTORIA -->
+            <section id="pane-victory" class="step-pane hidden text-center py-8">
+                <div class="floating text-9xl mb-6 select-none">🏆</div>
+                <h2 class="text-5xl md:text-6xl text-slate-950 mb-4 font-bold">¡CASO TOTALMENTE RESUELTO!</h2>
+                <p class="text-xl text-slate-800 mb-8 max-w-lg mx-auto leading-relaxed">
+                    ¡Brillante deducción, Detective! Tus conocimientos de morfosintaxis habrían impresionado al mismísimo Sherlock Holmes en Baker Street.
+                </p>
+                <div class="inline-block bg-yellow-400 border-4 border-slate-950 p-6 rounded-2xl shadow-2xl correct-pulse mb-8">
+                    <span class="block text-slate-950 font-bold uppercase tracking-wider text-xs">Rango Conquistado</span>
+                    <span class="text-3xl font-extrabold text-slate-950">👑 Gran Inspector de la Gramática 👑</span>
+                </div>
+                <div>
+                    <button onclick="resetApp()" class="btn-pirata bg-slate-900 text-white hover:bg-slate-800 p-3 rounded font-bold">Resolver un Nuevo Caso 🔄</button>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- BANNER DE FEEDBACK / ALERTAS PERSONALIZADAS -->
+        <footer class="mt-8">
+            <div id="feedback-banner" class="hidden p-4 rounded-xl text-center font-bold text-lg border-2 transition-all duration-300">
+                <!-- Rellenado dinámicamente -->
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- CÓDIGO INTERACTIVO JAVASCRIPT -->
+    <script>
+        // Configuración de la Oración Sherlockiana Equivalente
+        const sentenceWords = ["Los", "detectives", "buscaron", "las", "pistas", "con", "paciencia", "en", "el", "despacho."];
+        
+        // Mapeo morfológico exacto para validaciones del Paso 4
+        const correctMorphology = [
+            { word: "Los", answer: "articulo" },
+            { word: "detectives", answer: "sustantivo" },
+            { word: "buscaron", answer: "verbo" },
+            { word: "las", answer: "articulo" },
+            { word: "pistas", answer: "sustantivo" },
+            { word: "con", answer: "preposicion" },
+            { word: "paciencia", answer: "sustantivo" },
+            { word: "en", answer: "preposicion" },
+            { word: "el", answer: "articulo" },
+            { word: "despacho.", answer: "sustantivo" }
+        ];
+
+        // Estado del juego
+        let currentStep = 1;
+        let selectedIndices = []; // Índices seleccionados de forma interactiva
+
+        // Estructuras de datos para las respuestas
+        let step1Data = {
+            sujeto: [],     
+            predicado: []   
+        };
+
+        let step2Data = {
+            sujeto: null,    
+            predicado: null  
+        };
+
+        let step3Data = {
+            cd: [],
+            ccm: [],
+            ccl: []
+        };
+
+        // Inicio automático
+        window.onload = function() {
+            renderSentence();
+            renderMorfologia();
+            updateNavigation();
+        };
+
+        // Renderiza el flujo interactivo de palabras
+        function renderSentence() {
+            const container = document.getElementById('sentence-container');
+            container.innerHTML = '';
+            
+            sentenceWords.forEach((word, index) => {
+                const wordBtn = document.createElement('button');
+                wordBtn.innerText = word;
+                wordBtn.id = `word-${index}`;
+                wordBtn.className = "word-card px-4 py-2 bg-amber-50/60 border-2 border-slate-900/40 rounded-lg font-bold text-lg md:text-xl text-slate-900 cursor-pointer shadow-sm hover:bg-slate-100";
+                
+                wordBtn.onclick = () => toggleWordSelection(index);
+                container.appendChild(wordBtn);
+            });
+        }
+
+        // Selección/Deselección de palabras interactiva
+        function toggleWordSelection(index) {
+            if (currentStep > 3) return;
+
+            const idx = selectedIndices.indexOf(index);
+            if (idx > -1) {
+                selectedIndices.splice(idx, 1);
+                document.getElementById(`word-${index}`).classList.remove('selected-generic');
+            } else {
+                selectedIndices.push(index);
+                document.getElementById(`word-${index}`).classList.add('selected-generic');
+            }
+        }
+
+        function clearVisualSelection() {
+            selectedIndices = [];
+            sentenceWords.forEach((_, index) => {
+                const el = document.getElementById(`word-${index}`);
+                if (el) el.classList.remove('selected-generic');
+            });
+        }
+
+        // Sistema dinámico de feedback libre de alertas molestas
+        function showFeedback(text, type) {
+            const banner = document.getElementById('feedback-banner');
+            banner.classList.remove('hidden', 'bg-red-100', 'border-red-500', 'text-red-900', 'bg-green-100', 'border-green-500', 'text-green-900');
+            
+            if (type === 'error') {
+                banner.classList.add('bg-red-100', 'border-red-500', 'text-red-900', 'shake');
+                banner.innerText = "❌ " + text;
+                setTimeout(() => banner.classList.remove('shake'), 500);
+            } else if (type === 'success') {
+                banner.classList.add('bg-green-100', 'border-green-500', 'text-green-900');
+                banner.innerText = "⭐ " + text;
+            }
+            banner.classList.remove('hidden');
+        }
+
+        function hideFeedback() {
+            document.getElementById('feedback-banner').classList.add('hidden');
+        }
+
+        // ==========================================
+        // LÓGICA DEL PASO 1 (SUJETO Y PREDICADO)
+        // ==========================================
+        function assignToGroup(group) {
+            if (selectedIndices.length === 0) {
+                showFeedback("Primero selecciona palabras del informe superior pulsando sobre ellas.", "error");
+                return;
+            }
+
+            const otherGroup = group === 'sujeto' ? 'predicado' : 'sujeto';
+            step1Data[otherGroup] = step1Data[otherGroup].filter(idx => !selectedIndices.includes(idx));
+            
+            selectedIndices.forEach(idx => {
+                if (!step1Data[group].includes(idx)) {
+                    step1Data[group].push(idx);
+                }
+            });
+            step1Data[group].sort((a, b) => a - b);
+
+            renderStep1Boxes();
+            clearVisualSelection();
+            hideFeedback();
+        }
+
+        function renderStep1Boxes() {
+            const boxSujeto = document.getElementById('box-sujeto');
+            const boxPredicado = document.getElementById('box-predicado');
+
+            if (step1Data.sujeto.length === 0) {
+                boxSujeto.innerHTML = '<span class="text-xs text-blue-500 italic">Vacío. Selecciona palabras arriba y pulsa Archivar.</span>';
+            } else {
+                boxSujeto.innerHTML = step1Data.sujeto.map(idx => 
+                    `<span class="px-2 py-1 bg-blue-100 border border-blue-400 text-blue-900 font-bold rounded text-sm">${sentenceWords[idx]}</span>`
+                ).join(' ');
+            }
+
+            if (step1Data.predicado.length === 0) {
+                boxPredicado.innerHTML = '<span class="text-xs text-amber-600 italic">Vacío. Selecciona palabras arriba y pulsa Archivar.</span>';
+            } else {
+                boxPredicado.innerHTML = step1Data.predicado.map(idx => 
+                    `<span class="px-2 py-1 bg-amber-100 border border-amber-500 text-amber-900 font-bold rounded text-sm">${sentenceWords[idx]}</span>`
+                ).join(' ');
+            }
+        }
+
+        function clearStep1() {
+            step1Data.sujeto = [];
+            step1Data.predicado = [];
+            renderStep1Boxes();
+            clearVisualSelection();
+            hideFeedback();
+        }
+
+        function verifyStep1() {
+            const correctSujeto = [0, 1]; // "Los detectives"
+            const correctPredicado = [2, 3, 4, 5, 6, 7, 8, 9]; // "buscaron las pistas con paciencia en el despacho."
+
+            const isSujetoCorrect = JSON.stringify(step1Data.sujeto) === JSON.stringify(correctSujeto);
+            const isPredicadoCorrect = JSON.stringify(step1Data.predicado) === JSON.stringify(correctPredicado);
+
+            if (isSujetoCorrect && isPredicadoCorrect) {
+                showFeedback("¡Sujeto y Predicado correctos! Tu deducción es impecable.", "success");
+                
+                step1Data.sujeto.forEach(idx => {
+                    document.getElementById(`word-${idx}`).classList.add('selected-sujeto');
+                });
+                step1Data.predicado.forEach(idx => {
+                    document.getElementById(`word-${idx}`).classList.add('selected-predicado');
+                });
+
+                setTimeout(() => {
+                    transitionToStep(2);
+                }, 1500);
+            } else {
+                showFeedback("Elemental... pero incorrecto. Revisa el límite exacto del sujeto.", "error");
+            }
+        }
+
+        // ==========================================
+        // LÓGICA DEL PASO 2 (NÚCLEOS)
+        // ==========================================
+        function assignNucleo(type) {
+            if (selectedIndices.length !== 1) {
+                showFeedback("Debes seleccionar una única palabra clave para asignar como Núcleo.", "error");
+                return;
+            }
+
+            const chosenIdx = selectedIndices[0];
+            step2Data[type] = chosenIdx;
+
+            document.getElementById(`nucleo-${type}-display`).innerText = sentenceWords[chosenIdx].toUpperCase();
+            
+            clearVisualSelection();
+            hideFeedback();
+        }
+
+        function clearStep2() {
+            step2Data.sujeto = null;
+            step2Data.predicado = null;
+            document.getElementById('nucleo-sujeto-display').innerText = "[Ninguna]";
+            document.getElementById('nucleo-predicado-display').innerText = "[Ninguna]";
+            clearVisualSelection();
+            hideFeedback();
+        }
+
+        function verifyStep2() {
+            const isSujetoNucleoCorrect = step2Data.sujeto === 1; // "detectives"
+            const isPredicadoNucleoCorrect = step2Data.predicado === 2; // "buscaron"
+
+            if (isSujetoNucleoCorrect && isPredicadoNucleoCorrect) {
+                showFeedback("¡Núcleos correctos! Sigamos desgranando los detalles del despacho.", "success");
+                setTimeout(() => {
+                    transitionToStep(3);
+                }, 1500);
+            } else {
+                showFeedback("Vaya, parece que has confundido el núcleo. Busca el sustantivo principal y el verbo ejecutor.", "error");
+            }
+        }
+
+        // ==========================================
+        // LÓGICA DEL PASO 3 (COMPLEMENTOS)
+        // ==========================================
+        function assignComplemento(compType) {
+            if (selectedIndices.length === 0) {
+                showFeedback("Selecciona primero un grupo de palabras del informe.", "error");
+                return;
+            }
+
+            step3Data[compType] = [...selectedIndices].sort((a, b) => a - b);
+            
+            const display = document.getElementById(`display-${compType}`);
+            display.innerText = step3Data[compType].map(idx => sentenceWords[idx]).join(' ');
+
+            clearVisualSelection();
+            hideFeedback();
+        }
+
+        function clearStep3() {
+            step3Data.cd = [];
+            step3Data.ccm = [];
+            step3Data.ccl = [];
+            document.getElementById('display-cd').innerText = "---";
+            document.getElementById('display-ccm').innerText = "---";
+            document.getElementById('display-ccl').innerText = "---";
+            clearVisualSelection();
+            hideFeedback();
+        }
+
+        function verifyStep3() {
+            const correctCD = [3, 4]; // "las pistas"
+            const correctCCM = [5, 6]; // "con paciencia"
+            const correctCCL = [7, 8, 9]; // "en el despacho"
+
+            const cdCorrect = JSON.stringify(step3Data.cd) === JSON.stringify(correctCD);
+            const ccmCorrect = JSON.stringify(step3Data.ccm) === JSON.stringify(correctCCM);
+            const cclCorrect = JSON.stringify(step3Data.ccl) === JSON.stringify(correctCCL);
+
+            if (cdCorrect && ccmCorrect && cclCorrect) {
+                showFeedback("¡Sensacional! Estás desentrañando el caso a la perfección. Ahora examinemos la morfología.", "success");
+                setTimeout(() => {
+                    transitionToStep(4);
+                }, 1500);
+            } else {
+                showFeedback("Algo falla en las casillas circunstanciales. Revisa el Modo o el Lugar.", "error");
+            }
+        }
+
+        // ==========================================
+        // LÓGICA DEL PASO 4 (MORFOLOGÍA)
+        // ==========================================
+        function renderMorfologia() {
+            const container = document.getElementById('morfologia-container');
+            container.innerHTML = '';
+
+            const options = [
+                { val: "", text: "[ Selecciona... ]" },
+                { val: "sustantivo", text: "Sustantivo / Nombre" },
+                { val: "verbo", text: "Verbo" },
+                { val: "articulo", text: "Artículo / Det." },
+                { val: "preposicion", text: "Preposición" },
+                { val: "adjetivo", text: "Adjetivo" }
+            ];
+
+            correctMorphology.forEach((item, index) => {
+                const cleanWord = item.word.replace('.', '');
+                const itemDiv = document.createElement('div');
+                itemDiv.className = "p-4 bg-white/50 rounded-xl border border-slate-900/10 shadow-sm flex flex-col justify-between";
+
+                itemDiv.innerHTML = `
+                    <div class="mb-2">
+                        <span class="text-xs uppercase font-bold text-slate-700 tracking-wider">Palabra ${index + 1}:</span>
+                        <p class="text-xl font-bold text-slate-900">${cleanWord}</p>
+                    </div>
+                    <select id="morf-select-${index}" class="p-2 border border-slate-900/30 rounded bg-white text-sm focus:outline-none focus:border-slate-800">
+                        ${options.map(o => `<option value="${o.val}">${o.text}</option>`).join('')}
+                    </select>
+                `;
+                container.appendChild(itemDiv);
+            });
+        }
+
+        function verifyStep4() {
+            let correctCount = 0;
+
+            correctMorphology.forEach((item, index) => {
+                const select = document.getElementById(`morf-select-${index}`);
+                if (select.value === item.answer) {
+                    select.classList.remove('border-red-500', 'bg-red-50');
+                    select.classList.add('border-green-500', 'bg-green-50');
+                    correctCount++;
+                } else {
+                    select.classList.remove('border-green-500', 'bg-green-50');
+                    select.classList.add('border-red-500', 'bg-red-50');
+                }
+            });
+
+            if (correctCount === correctMorphology.length) {
+                showFeedback("¡Felicidades! Todo tu análisis morfológico está contrastado químicamente.", "success");
+                setTimeout(() => {
+                    transitionToStep(5);
+                }, 1500);
+            } else {
+                showFeedback(`Hay incoherencias. Te quedan ${correctMorphology.length - correctCount} elementos que rectificar.`, "error");
+            }
+        }
+
+        // ==========================================
+        // SISTEMA DE CAMBIO DE FASE
+        // ==========================================
+        function transitionToStep(step) {
+            currentStep = step;
+            hideFeedback();
+            clearVisualSelection();
+
+            document.querySelectorAll('.step-pane').forEach(pane => pane.classList.add('hidden'));
+
+            if (step === 5) {
+                document.getElementById('pane-victory').classList.remove('hidden');
+                document.getElementById('pane-victory').scrollIntoView({ behavior: 'smooth' });
+                updateNavigation(true);
+                return;
+            }
+
+            document.getElementById(`pane-step${step}`).classList.remove('hidden');
+            document.getElementById(`pane-step${step}`).scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            updateNavigation();
+        }
+
+        function updateNavigation(victory = false) {
+            const mapText = document.getElementById('map-text');
+            
+            for (let i = 1; i <= 4; i++) {
+                const nav = document.getElementById(`nav-step${i}`);
+                nav.classList.remove('bg-slate-900', 'text-white', 'opacity-100');
+                nav.classList.add('bg-slate-100', 'text-slate-900', 'opacity-50');
+            }
+            document.getElementById('nav-victory').classList.remove('bg-yellow-400', 'text-slate-900', 'opacity-100');
+            document.getElementById('nav-victory').classList.add('bg-slate-100', 'text-slate-900', 'opacity-50');
+
+            if (victory) {
+                const navV = document.getElementById('nav-victory');
+                navV.classList.remove('bg-slate-100', 'opacity-50');
+                navV.classList.add('bg-yellow-400', 'text-slate-900', 'opacity-100', 'correct-pulse');
+                mapText.innerText = "¡Caso de la Niebla completamente resuelto!";
+                return;
+            }
+
+            const currentNav = document.getElementById(`nav-step${currentStep}`);
+            currentNav.classList.remove('bg-slate-100', 'opacity-50');
+            currentNav.classList.add('bg-slate-900', 'text-white', 'opacity-100');
+
+            const stepNames = {
+                1: "Fase actual: Análisis de la Escena (Sujeto y Predicado) 🔍",
+                2: "Fase actual: Los Núcleos del Caso (N y NP) 📂",
+                3: "Fase actual: Búsqueda de Complementos (CD, CCM, CCL) 🕰️",
+                4: "Fase actual: Prueba Química Morfológica 🧪"
+            };
+            mapText.innerText = stepNames[currentStep];
+        }
+
+        function resetApp() {
+            step1Data = { sujeto: [], predicado: [] };
+            step2Data = { sujeto: null, predicado: null };
+            step3Data = { cd: [], ccm: [], ccl: [] };
+            
+            clearStep1();
+            clearStep2();
+            clearStep3();
+            
+            renderSentence();
+            renderMorfologia();
+            
+            transitionToStep(1);
+        }
+    </script>
+</body>
+</html>
