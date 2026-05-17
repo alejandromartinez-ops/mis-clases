@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Great Grammar Quest 🌍</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-bg: #1e293b;
+            --text-color: #334155;
+            --white: #ffffff;
+            --success: #22c55e;
+            --error: #ef4444;
+            --bg-color: #f1f5f9;
+            --teacher: #0ea5e9;
+            
+            /* Level Colors */
+            --c-level1: #3b82f6; /* Blue - Routines */
+            --c-level2: #f59e0b; /* Orange - Summer */
+            --c-level3: #8b5cf6; /* Purple - Travel */
+            --c-level4: #10b981; /* Green - Environment */
+            --c-level5: #e11d48; /* Red - Theatre */
+            --c-level6: #14b8a6; /* Teal - Countryside */
+            --c-level7: #fbbf24; /* Gold - Final */
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* --- TEACHER CONTROL BAR --- */
+        #teacher-bar {
+            display: none;
+            width: 100%;
+            background: var(--teacher);
+            color: white;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 150;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .teacher-tools {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-teacher-action {
+            background: white;
+            color: var(--teacher);
+            border: none;
+            padding: 5px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 800;
+            transition: all 0.2s;
+        }
+
+        .btn-teacher-action:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Top Progress Bar */
+        .progress-container {
+            width: 100%;
+            background: var(--dark-bg);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: top 0.3s ease;
+        }
+
+        /* Offset if teacher bar is active */
+        body.teacher-mode-active .progress-container {
+            top: 45px;
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .step {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #475569;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-family: 'Poppins', sans-serif;
+            border: 3px solid #334155;
+            transition: all 0.3s;
+            cursor: not-allowed;
+        }
+
+        .step.unlocked {
+            cursor: pointer;
+        }
+
+        .step.active {
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(255,255,255,0.5);
+        }
+
+        .step.completed {
+            background: var(--success);
+            border-color: #16a34a;
+        }
+
+        /* Main Game Container */
+        .game-container {
+            max-width: 850px;
+            width: 90%;
+            margin: 30px auto;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Level Panels */
+        .level-panel {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .level-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Level Headers */
+        .level-header {
+            padding: 30px;
+            color: white;
+            text-align: center;
+        }
+
+        .level-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            margin: 0 0 10px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .level-header p {
+            font-size: 1.2rem;
+            margin: 0;
+            opacity: 0.9;
+            font-weight: 600;
+        }
+
+        /* Level Specific Colors */
+        #panel-1 .level-header { background: linear-gradient(135deg, var(--c-level1), #1d4ed8); }
+        #panel-2 .level-header { background: linear-gradient(135deg, var(--c-level2), #d97706); }
+        #panel-3 .level-header { background: linear-gradient(135deg, var(--c-level3), #6d28d9); }
+        #panel-4 .level-header { background: linear-gradient(135deg, var(--c-level4), #047857); }
+        #panel-5 .level-header { background: linear-gradient(135deg, var(--c-level5), #be123c); }
+        #panel-6 .level-header { background: linear-gradient(135deg, var(--c-level6), #0f766e); }
+        #panel-7 .level-header { background: linear-gradient(135deg, var(--c-level7), #b45309); }
+
+        /* Content Area */
+        .content-area {
+            padding: 30px;
+        }
+
+        /* Visual Theory Boxes */
+        .theory-box {
+            background-color: #f8fafc;
+            border: 2px solid #cbd5e1;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .theory-box h3 {
+            margin-top: 0;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed #cbd5e1;
+        }
+
+        /* Tags and Visual Formulas */
+        .formula {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            font-family: 'Poppins', sans-serif;
+            font-weight: bold;
+        }
+
+        .tag {
+            padding: 5px 12px;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .tag-subj { background-color: #64748b; }
+        .tag-verb { background-color: #3b82f6; }
+        .tag-aux { background-color: #ef4444; }
+        .tag-time { background-color: #f59e0b; }
+
+        .vs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .vs-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .vs-card h4 {
+            margin: 0 0 10px 0;
+            font-size: 1.2rem;
+        }
+
+        /* Example Row */
+        .example-row {
+            background-color: #fffbeb;
+            border-left: 5px solid #f59e0b;
+            padding: 12px 15px;
+            margin-bottom: 25px;
+            border-radius: 0 8px 8px 0;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            color: #78350f;
+        }
+
+        /* Questions */
+        .question-box {
+            margin-bottom: 20px;
+            font-size: 1.15rem;
+            line-height: 2;
+            background: #fff;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .hint-text {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: bold;
+            background: #f1f5f9;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .key-word {
+            color: var(--c-level5);
+            font-weight: 900;
+            text-decoration: underline;
+            text-decoration-color: #fca5a5;
+            text-decoration-thickness: 3px;
+        }
+
+        /* Inputs */
+        input[type="text"] {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.1rem;
+            padding: 6px 12px;
+            border: 2px solid #94a3b8;
+            border-radius: 8px;
+            outline: none;
+            font-weight: bold;
+            color: var(--dark-bg);
+            transition: all 0.3s;
+            min-width: 140px;
+            text-align: center;
+            background: #f8fafc;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--c-level1);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Enhanced Feedback */
+        .correct {
+            background-color: #dcfce7 !important;
+            border: 3px solid var(--success) !important;
+            color: #166534 !important;
+            animation: pulse-correct 0.4s ease-in-out;
+        }
+
+        .incorrect {
+            background-color: #fee2e2 !important;
+            border: 3px solid var(--error) !important;
+            color: #991b1b !important;
+            animation: shake-incorrect 0.4s ease-in-out;
+        }
+
+        @keyframes pulse-correct {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake-incorrect {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Buttons */
+        .btn-check {
+            display: block;
+            width: 100%;
+            background-color: var(--dark-bg);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .btn-check:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.2);
+        }
+
+        .feedback-msg {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 15px;
+            min-height: 30px;
+        }
+
+        /* Next Level Overlay */
+        .next-level-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f0fdf4;
+            border: 3px dashed var(--success);
+            border-radius: 12px;
+            animation: fadeIn 0.5s;
+        }
+
+        .btn-next {
+            background-color: var(--success);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3rem;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(34, 197, 94, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .btn-next:hover { transform: scale(1.05); }
+
+        /* Final Screen */
+        .final-screen {
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .final-screen h1 { font-size: 3rem; color: var(--c-level7); margin-bottom: 10px; }
+        .final-screen p { font-size: 1.5rem; }
+        .trophy { font-size: 6rem; margin: 20px 0; }
+
+        .profe-pista {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin: 20px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .vs-grid { grid-template-columns: 1fr; }
+            .question-box { flex-direction: column; align-items: flex-start; }
+            input[type="text"] { width: 100%; box-sizing: border-box; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- BARRA DE PROFESOR (Oculta por defecto) -->
+    <div id="teacher-bar">
+        <div class="teacher-tools">
+            <span>🎓 MODO PROFESOR ACTIVO</span>
+            <button class="btn-teacher-action" onclick="unlockAllLevels()">🔓 Desbloquear Fases</button>
+            <button class="btn-teacher-action" onclick="revealAnswers()">👁️ Ver Soluciones</button>
+            <button class="btn-teacher-action" onclick="toggleTeacherMode()">❌ Desactivar</button>
+        </div>
+    </div>
+
+    <!-- Top Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar">
+            <div class="step active unlocked" id="step-1" style="border-color: var(--c-level1);" onclick="goToLevel(1)">1</div>
+            <div class="step" id="step-2" style="border-color: var(--c-level2);" onclick="goToLevel(2)">2</div>
+            <div class="step" id="step-3" style="border-color: var(--c-level3);" onclick="goToLevel(3)">3</div>
+            <div class="step" id="step-4" style="border-color: var(--c-level4);" onclick="goToLevel(4)">4</div>
+            <div class="step" id="step-5" style="border-color: var(--c-level5);" onclick="goToLevel(5)">5</div>
+            <div class="step" id="step-6" style="border-color: var(--c-level6);" onclick="goToLevel(6)">6</div>
+            <div class="step" id="step-7" style="border-color: var(--c-level7);" onclick="goToLevel(7)">7</div>
+        </div>
+    </div>
+
+    <div class="game-container">
+
+        <!-- ================= PHASE 1: MODALS VS NON-MODALS ================= -->
+        <div class="level-panel active" id="panel-1">
+            <div class="level-header">
+                <h1>Phase 1: Routine Village ⏰</h1>
+                <p>Verbos Superhéroes vs Normales</p>
+            </div>
+            <div class="content-area">
+                <div class="theory-box" style="border-color: var(--c-level1);">
+                    <h3 style="color: var(--c-level1);">🦸‍♂️ ¡No mezcles sus poderes!</h3>
+                    <p>En inglés, hay dos tipos de verbos. Unos se niegan y preguntan solos (Superhéroes), y otros necesitan la ayuda de auxiliares (Normales).</p>
+                    
+                    <div class="vs-grid">
+                        <div class="vs-card">
+                            <h4 style="color: #ef4444;">1. Verbos Superhéroes</h4>
+                            <p style="font-size: 0.85rem;">Se defienden solos. ¡No usan don't/doesn't!</p>
+                            <span class="tag tag-aux">(+) is / are / can / has got</span><br><br>
+                            <span class="tag tag-aux">(-) isn't / aren't / can't / hasn't got</span><br><br>
+                            <span class="tag tag-aux">(?) Is / Are / Can / Has + Sujeto ...?</span>
+                        </div>
+                        <div class="vs-card">
+                            <h4 style="color: #3b82f6;">2. Verbos Normales</h4>
+                            <p style="font-size: 0.85rem;">Necesitan ayuda de los auxiliares en negativo y pregunta.</p>
+                            <span class="tag tag-verb">(+) Verb / Verb-s</span><br><br>
+                            <span class="tag tag-verb">(-) don't / doesn't + Verb</span><br><br>
+                            <span class="tag tag-verb">(?) Do / Does + Sujeto + Verb ...?</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-row">
+                    <strong>[Ejemplo]</strong> I am very tired, but I <input type="text" value="don't sleep" disabled style="width: 100px; padding:2px;"> <i>(not / sleep)</i> in class.
+                </div>
+
+                <p><strong>Misión:</strong> Lee la pista en el paréntesis y escribe el verbo en la forma correcta.</p>
+
+                <div class="question-box">1. On Sundays, I <input type="text" class="input-lvl1" data-answer="don't wake up,do not wake up"> <span class="hint-text">(not / wake up)</span> early.</div>
+                <div class="question-box">2. She is my friend, but she <input type="text" class="input-lvl1" data-answer="isn't,is not"> <span class="hint-text">(not / be)</span> in my class.</div>
+                <div class="question-box">3. My brother <input type="text" class="input-lvl1" data-answer="hasn't got,has not got"> <span class="hint-text">(not / have got)</span> a pet dragon.</div>
+                <div class="question-box">4. We <input type="text" class="input-lvl1" data-answer="aren't,are not"> <span class="hint-text">(not / be)</span> ready for school yet.</div>
+                <div class="question-box">5. They <input type="text" class="input-lvl1" data-answer="can't play,cannot play"> <span class="hint-text">(not / can play)</span> tennis today.</div>
+
+                <button class="btn-check" onclick="checkLevel(1)">🔍 Check Answers</button>
+                <div class="feedback-msg" id="feedback-1"></div>
+                
+                <div class="next-level-container" id="next-1">
+                    <h3 style="color: var(--success); margin-top:0;">🌟 Level 1 Cleared!</h3>
+                    <button class="btn-next" onclick="goToLevel(2)">Travel to Phase 2 ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PHASE 2: PAST SIMPLE ================= -->
+        <div class="level-panel" id="panel-2">
+            <div class="level-header">
+                <h1>Phase 2: Summer Beach 🏖️</h1>
+                <p>La Máquina del Tiempo (Past Simple)</p>
+            </div>
+            <div class="content-area">
+                <div class="theory-box" style="border-color: var(--c-level2);">
+                    <h3 style="color: var(--c-level2);">⏪ Recuerdos de Verano</h3>
+                    <p>Usamos el <strong>Past Simple</strong> para acciones que ya terminaron. ¡Ojo a los verbos irregulares!</p>
+                    
+                    <div class="formula" style="margin-bottom:10px;">
+                        <span style="color: #22c55e; font-size:1.2rem;">(+)</span> 
+                        <span class="tag tag-subj">Sujeto</span> + 
+                        <span class="tag tag-verb">Verbo en Pasado (-ed / 2ª Columna)</span>
+                    </div>
+                    <div class="formula" style="margin-bottom:10px;">
+                        <span style="color: #ef4444; font-size:1.2rem;">(-)</span> 
+                        <span class="tag tag-subj">Sujeto</span> + 
+                        <span class="tag tag-aux">didn't</span> + 
+                        <span class="tag tag-verb">Verbo normal</span>
+                    </div>
+                    <div class="formula">
+                        <span style="color: #3b82f6; font-size:1.2rem;">(?)</span> 
+                        <span class="tag tag-aux">Did</span> + 
+                        <span class="tag tag-subj">Sujeto</span> + 
+                        <span class="tag tag-verb">Verbo normal</span> ?
+                    </div>
+                </div>
+
+                <div class="example-row">
+                    <strong>[Ejemplo]</strong> (-) I <input type="text" value="didn't go" disabled style="width: 80px; padding:2px;"> <i>(not / go)</i> to the cinema yesterday.
+                </div>
+
+                <p><strong>Misión:</strong> Completa las frases sobre el verano pasado.</p>
+
+                <div class="question-box">1. <span style="color: #22c55e; font-weight:bold;">(+)</span> We <input type="text" class="input-lvl2" data-answer="went"> <span class="hint-text">(go)</span> to Italy last summer.</div>
+                <div class="question-box">2. <span style="color: #ef4444; font-weight:bold;">(-)</span> I <input type="text" class="input-lvl2" data-answer="didn't swim,did not swim"> <span class="hint-text">(not / swim)</span> in the sea.</div>
+                <div class="question-box">3. <span style="color: #3b82f6; font-weight:bold;">(?)</span> <input type="text" class="input-lvl2" data-answer="did"> you <input type="text" class="input-lvl2" data-answer="visit"> <span class="hint-text">(visit)</span> the museum?</div>
+                <div class="question-box">4. <span style="color: #22c55e; font-weight:bold;">(+)</span> They <input type="text" class="input-lvl2" data-answer="played"> <span class="hint-text">(play)</span> volleyball on the sand.</div>
+                <div class="question-box">5. <span style="color: #ef4444; font-weight:bold;">(-)</span> She <input type="text" class="input-lvl2" data-answer="didn't make,did not make"> <span class="hint-text">(not / make)</span> a sandcastle.</div>
+
+                <button class="btn-check" onclick="checkLevel(2)">🔍 Check Answers</button>
+                <div class="feedback-msg" id="feedback-2"></div>
+                
+                <div class="next-level-container" id="next-2">
+                    <h3 style="color: var(--success); margin-top:0;">🌟 Level 2 Cleared!</h3>
+                    <button class="btn-next" onclick="goToLevel(3)">Travel to Phase 3 ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PHASE 3: FUTURE SIMPLE ================= -->
+        <div class="level-panel" id="panel-3">
+            <div class="level-header">
+                <h1>Phase 3: Future Airport ✈️</h1>
+                <p>La Bola de Cristal (Future Simple)</p>
+            </div>
+            <div class="content-area">
+                <div class="theory-box" style="border-color: var(--c-level3);">
+                    <h3 style="color: var(--c-level3);">🔮 El Futuro con "Will"</h3>
+                    <p>Utilizamos <strong>will</strong> para hacer predicciones, promesas o decisiones rápidas al planear un viaje.</p>
+                    
+                    <div class="formula" style="margin-bottom:10px;">
+                        <span style="color: #22c55e; font-size:1.2rem;">(+)</span> 
+                        <span class="tag tag-subj">Sujeto</span> + 
+                        <span class="tag tag-aux">will</span> + 
+                        <span class="tag tag-verb">Verbo normal</span>
+                    </div>
+                    <div class="formula" style="margin-bottom:10px;">
+                        <span style="color: #ef4444; font-size:1.2rem;">(-)</span> 
+                        <span class="tag tag-subj">Sujeto</span> + 
+                        <span class="tag tag-aux">won't</span> + 
+                        <span class="tag tag-verb">Verbo normal</span>
+                    </div>
+                    <div class="formula">
+                        <span style="color: #3b82f6; font-size:1.2rem;">(?)</span> 
+                        <span class="tag tag-aux">Will</span> + 
+                        <span class="tag tag-subj">Sujeto</span> + 
+                        <span class="tag tag-verb">Verbo normal</span> ?
+                    </div>
+                </div>
+
+                <div class="example-row">
+                    <strong>[Ejemplo]</strong> (+) I promise I <input type="text" value="will help" disabled style="width: 80px; padding:2px;"> <i>(help)</i> you pack the suitcase.
+                </div>
+
+                <p><strong>Misión:</strong> Prepara el próximo viaje usando <em>will / won't</em> o la estructura interrogativa.</p>
+
+                <div class="question-box">1. <span style="color: #22c55e; font-weight:bold;">(+)</span> We <input type="text" class="input-lvl3" data-answer="will travel,'ll travel"> <span class="hint-text">(travel)</span> to Japan next year.</div>
+                <div class="question-box">2. <span style="color: #ef4444; font-weight:bold;">(-)</span> I promise I <input type="text" class="input-lvl3" data-answer="won't forget,will not forget"> <span class="hint-text">(not / forget)</span> my passport.</div>
+                <div class="question-box">3. <span style="color: #3b82f6; font-weight:bold;">(?)</span> <input type="text" class="input-lvl3" data-answer="will"> she <input type="text" class="input-lvl3" data-answer="take"> <span class="hint-text">(take)</span> a big suitcase?</div>
+                <div class="question-box">4. <span style="color: #22c55e; font-weight:bold;">(+)</span> They <input type="text" class="input-lvl3" data-answer="will stay,'ll stay"> <span class="hint-text">(stay)</span> in a modern hotel.</div>
+                <div class="question-box">5. <span style="color: #ef4444; font-weight:bold;">(-)</span> The flight <input type="text" class="input-lvl3" data-answer="won't be,will not be"> <span class="hint-text">(not / be)</span> delayed.</div>
+
+                <button class="btn-check" onclick="checkLevel(3)">🔍 Check Answers</button>
+                <div class="feedback-msg" id="feedback-3"></div>
+                
+                <div class="next-level-container" id="next-3">
+                    <h3 style="color: var(--success); margin-top:0;">🌟 Level 3 Cleared!</h3>
+                    <button class="btn-next" onclick="goToLevel(4)">Travel to Phase 4 ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PHASE 4: PRESENT PERFECT ================= -->
+        <div class="level-panel" id="panel-4">
+            <div class="level-header">
+                <h1>Phase 4: Eco Forest 🌲</h1>
+                <p>Palabras Clave del Present Perfect</p>
+            </div>
+            <div class="content-area">
+                <div class="theory-box" style="border-color: var(--c-level4);">
+                    <h3 style="color: var(--c-level4);">♻️ Experiencias y Tiempo</h3>
+                    <p>En el <strong>Present Perfect</strong> usamos palabras especiales para dar más información sobre cuándo ocurre la acción.</p>
+                    
+                    <div class="formula" style="margin-bottom:20px;">
+                        <span style="color: #22c55e; font-size:1.2rem;">(+)</span> 
+                        <span class="tag tag-subj">Subject</span> + 
+                        <span class="tag tag-aux">have / has</span> + 
+                        <span class="tag tag-verb">Past Participle (3rd Col / -ed)</span>
+                    </div>
+                    <div class="formula" style="margin-bottom:20px;">
+                        <span style="color: #ef4444; font-size:1.2rem;">(-)</span> 
+                        <span class="tag tag-subj">Subject</span> + 
+                        <span class="tag tag-aux">haven't / hasn't</span> + 
+                        <span class="tag tag-verb">Past Participle</span>
+                    </div>
+                    <div class="formula" style="margin-bottom:20px;">
+                        <span style="color: #3b82f6; font-size:1.2rem;">(?)</span> 
+                        <span class="tag tag-aux">Have / Has</span> + 
+                        <span class="tag tag-subj">Subject</span> + 
+                        <span class="tag tag-verb">Past Participle</span> ?
+                    </div>
+
+                    <div style="background-color: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                        <p style="font-weight: 800; margin-top:0; color: var(--c-level4);">💡 Usos de las Palabras Temporales (Keywords):</p>
+                        <ul style="line-height: 1.8; margin-bottom: 0;">
+                            <li><b>JUST</b> ➡️ Significa "acabar de". Lo usamos en frases afirmativas para acciones completadas hace poquísimos segundos. Va entre el auxiliar y el participio.<br><small style="color: #64748b;">Ejemplo: <i>We have <b>just</b> planted a flower.</i> (Acabamos de plantar una flor).</small></li>
+                            <li><b>ALREADY</b> ➡️ Significa "ya". Lo usamos en frases afirmativas para indicar que una acción se ha realizado antes de lo esperado. Va entre el auxiliar y el participio.<br><small style="color: #64748b;">Ejemplo: <i>They have <b>already</b> recycled the paper.</i> (Ellos ya han reciclado el papel).</small></li>
+                            <li><b>YET</b> ➡️ Significa "aún" o "todavía" (en negativas) y "ya" (en preguntas). Va <b>siempre al final de la oración</b>.<br><small style="color: #64748b;">Ejemplo: <i>The solar panels haven't arrived <b>yet</b>.</i> (Los paneles solares no han llegado aún).</small></li>
+                            <li><b>FOR</b> ➡️ Significa "durante". Introduce un período o cantidad de tiempo (un número de horas, días, años...).<br><small style="color: #64748b;">Ejemplo: <i>He has worked here <b>for</b> five years.</i> (Él ha trabajado aquí durante cinco años).</small></li>
+                            <li><b>SINCE</b> ➡️ Significa "desde". Introduce un momento específico del pasado en el que comenzó la acción (un año, un día, una fecha...).<br><small style="color: #64748b;">Ejemplo: <i>The air has been cleaner <b>since</b> last Monday.</i> (El aire ha estado más limpio desde el lunes pasado).</small></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="example-row">
+                    <strong>[Ejemplo]</strong> I haven't finished my project <input type="text" value="yet" disabled style="width: 50px; padding:2px;"> <i>(negative sentence, at the end)</i>.
+                </div>
+
+                <p><strong>Misión:</strong> Completa las frases escribiendo la palabra temporal o la forma de Present Perfect adecuada utilizando las pistas en inglés.</p>
+
+                <div class="question-box">1. We have <input type="text" class="input-lvl4" data-answer="already"> planted three trees in the park! <span class="hint-text">hint: earlier than expected</span></div>
+                <div class="question-box">2. Have they cleaned the polluted river <input type="text" class="input-lvl4" data-answer="yet">? <span class="hint-text">hint: question, at the very end</span></div>
+                <div class="question-box">3. Look! I have <input type="text" class="input-lvl4" data-answer="just"> recycled all the plastic bottles. <span class="hint-text">hint: happened a very short time ago</span></div>
+                <div class="question-box">4. She has worked to protect animals <input type="text" class="input-lvl4" data-answer="for"> ten years. <span class="hint-text">hint: duration / amount of time</span></div>
+                <div class="question-box">5. The factory hasn't polluted the air <input type="text" class="input-lvl4" data-answer="since"> 2020. <span class="hint-text">hint: a specific starting point in past</span></div>
+                <div class="question-box">6. We <input type="text" class="input-lvl4" data-answer="haven't collected,have not collected"> <span class="hint-text">(not / collect)</span> all the rubbish from the forest yet. <span class="hint-text">hint: negative sentence with "yet"</span></div>
+                <div class="question-box">7. Has the scientist <input type="text" class="input-lvl4" data-answer="arrived"> <span class="hint-text">(arrive)</span> at the green zone yet? <span class="hint-text">hint: question structure</span></div>
+                <div class="question-box">8. The air has been cleaner <input type="text" class="input-lvl4" data-answer="since"> last Monday. <span class="hint-text">hint: specific starting day</span></div>
+                <div class="question-box">9. They have protected this endangered forest <input type="text" class="input-lvl4" data-answer="for"> five months. <span class="hint-text">hint: duration of five months</span></div>
+                <div class="question-box">10. Oh! The sun has <input type="text" class="input-lvl4" data-answer="just"> come out after the heavy rain. <span class="hint-text">hint: action finished a second ago</span></div>
+
+                <button class="btn-check" onclick="checkLevel(4)">🔍 Check Answers</button>
+                <div class="feedback-msg" id="feedback-4"></div>
+                
+                <div class="next-level-container" id="next-4">
+                    <h3 style="color: var(--success); margin-top:0;">🌟 Level 4 Cleared!</h3>
+                    <button class="btn-next" onclick="goToLevel(5)">Travel to Phase 5 ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PHASE 5: PAST CONTINUOUS ================= -->
+        <div class="level-panel" id="panel-5">
+            <div class="level-header">
+                <h1>Phase 5: Theatre City 🎭</h1>
+                <p>En Medio de la Acción (Past Continuous)</p>
+            </div>
+            <div class="content-area">
+                <div class="theory-box" style="border-color: var(--c-level5);">
+                    <h3 style="color: var(--c-level5);">🎬 ¡Corten! ¿Qué estabas haciendo?</h3>
+                    <p>El <strong>Past Continuous</strong> sirve para describir acciones que estaban ocurriendo en un momento exacto del pasado.</p>
+                    
+                    <div class="formula" style="margin-bottom:15px;">
+                        <span style="color: #22c55e; font-size:1.2rem;">(+)</span> 
+                        <span class="tag tag-subj">Sujeto</span> + 
+                        <span class="tag tag-aux">was / were</span> + 
+                        <span class="tag tag-verb">Verbo+ing</span>
+                    </div>
+                    <div class="formula" style="margin-bottom:15px;">
+                        <span style="color: #ef4444; font-size:1.2rem;">(-)</span> 
+                        <span class="tag tag-subj">Sujeto</span> + 
+                        <span class="tag tag-aux">wasn't / weren't</span> + 
+                        <span class="tag tag-verb">Verbo+ing</span>
+                    </div>
+                    <div class="formula">
+                        <span style="color: #3b82f6; font-size:1.2rem;">(?)</span> 
+                        <span class="tag tag-aux">Was / Were</span> + 
+                        <span class="tag tag-subj">Sujeto</span> + 
+                        <span class="tag tag-verb">Verbo+ing</span> ?
+                    </div>
+                </div>
+
+                <div class="example-row">
+                    <strong>[Ejemplo]</strong> At 5 o'clock yesterday, I <input type="text" value="was reading" disabled style="width: 110px; padding:2px;"> <i>(read)</i> the script.
+                </div>
+
+                <p><strong>Misión:</strong> Completa las frases sobre el ensayo general en el teatro.</p>
+
+                <div class="question-box">1. <span style="color: #22c55e; font-weight:bold;">(+)</span> The actors <input type="text" class="input-lvl5" data-answer="were wearing"> <span class="hint-text">(wear)</span> their colourful costumes.</div>
+                <div class="question-box">2. <span style="color: #ef4444; font-weight:bold;">(-)</span> I <input type="text" class="input-lvl5" data-answer="wasn't acting,was not acting"> <span class="hint-text">(not / act)</span> on the stage.</div>
+                <div class="question-box">3. <span style="color: #3b82f6; font-weight:bold;">(?)</span> <input type="text" class="input-lvl5" data-answer="was"> the director <input type="text" class="input-lvl5" data-answer="shouting"> <span class="hint-text">(shout)</span> instructions?</div>
+                <div class="question-box">4. <span style="color: #22c55e; font-weight:bold;">(+)</span> The audience <input type="text" class="input-lvl5" data-answer="was waiting"> <span class="hint-text">(wait)</span> outside the curtains.</div>
+                <div class="question-box">5. <span style="color: #ef4444; font-weight:bold;">(-)</span> We <input type="text" class="input-lvl5" data-answer="weren't practicing,were not practicing"> <span class="hint-text">(not / practice)</span> the script at 8 o'clock.</div>
+
+                <button class="btn-check" onclick="checkLevel(5)">🔍 Check Answers</button>
+                <div class="feedback-msg" id="feedback-5"></div>
+                
+                <div class="next-level-container" id="next-5">
+                    <h3 style="color: var(--success); margin-top:0;">🌟 Level 5 Cleared!</h3>
+                    <button class="btn-next" onclick="goToLevel(6)">Travel to Phase 6 ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PHASE 6: CONDITIONALS ================= -->
+        <div class="level-panel" id="panel-6">
+            <div class="level-header">
+                <h1>Phase 6: Camping Mountain ⛺</h1>
+                <p>Zero & First Conditional</p>
+            </div>
+            <div class="content-area">
+                <div class="theory-box" style="border-color: var(--c-level6);">
+                    <h3 style="color: var(--c-level6);">🧭 Causa y Efecto</h3>
+                    
+                    <p style="font-weight: 800; color: #0f766e; margin-bottom: 5px;">🧬 Zero Conditional (Verdades científicas, reglas fijas y leyes de la naturaleza):</p>
+                    <div class="formula" style="justify-content: flex-start; margin-bottom: 10px;">
+                        <span style="color: #22c55e; font-weight:bold;">(+)</span> <span class="tag" style="background:#0f766e;">If + Subject + Present Simple</span> , <span class="tag" style="background:#0f766e;">Subject + Present Simple</span>
+                    </div>
+                    <div class="formula" style="justify-content: flex-start; margin-bottom: 10px;">
+                        <span style="color: #ef4444; font-weight:bold;">(-)</span> <span class="tag" style="background:#0f766e;">If + Subject + don't/doesn't + Verb</span> , <span class="tag" style="background:#0f766e;">Subject + don't/doesn't + Verb</span>
+                    </div>
+                    <div class="formula" style="justify-content: flex-start; margin-bottom: 20px;">
+                        <span style="color: #3b82f6; font-weight:bold;">(?)</span> <span class="tag" style="background:#0f766e;">Do / Does + Subject + Verb</span> + if + <span class="tag" style="background:#0f766e;">Subject + Present Simple ?</span>
+                    </div>
+
+                    <p style="font-weight: 800; color: #2563eb; margin-bottom: 5px;">🔮 First Conditional (Situaciones futuras posibles y sus consecuencias reales):</p>
+                    <div class="formula" style="justify-content: flex-start; margin-bottom: 10px;">
+                        <span style="color: #22c55e; font-weight:bold;">(+)</span> <span class="tag" style="background:#2563eb;">If + Subject + Present Simple</span> , <span class="tag" style="background:#2563eb;">Subject + will + Verb (inf)</span>
+                    </div>
+                    <div class="formula" style="justify-content: flex-start; margin-bottom: 10px;">
+                        <span style="color: #ef4444; font-weight:bold;">(-)</span> <span class="tag" style="background:#2563eb;">If + Subject + don't/doesn't + Verb</span> , <span class="tag" style="background:#2563eb;">Subject + won't + Verb (inf)</span>
+                    </div>
+                    <div class="formula" style="justify-content: flex-start; margin-bottom: 10px;">
+                        <span style="color: #3b82f6; font-weight:bold;">(?)</span> <span class="tag" style="background:#2563eb;">Will + Subject + Verb (inf)</span> + if + <span class="tag" style="background:#2563eb;">Subject + Present Simple ?</span>
+                    </div>
+                </div>
+
+                <div class="example-row">
+                    <strong>[Ejemplo Zero]</strong> If it rains, the ground <input type="text" value="gets" disabled style="width: 50px; padding:2px;"> <i>(get)</i> wet.<br>
+                    <strong>[Ejemplo First]</strong> If we bring a tent, we <input type="text" value="will sleep" disabled style="width: 80px; padding:2px;"> <i>(sleep)</i> outside.
+                </div>
+
+                <p><strong>Misión:</strong> Fíjate si la etiqueta dice <em>Zero</em> (Presente) o <em>First</em> (Futuro) y escribe el verbo.</p>
+
+                <div class="question-box"><span class="tag" style="background:#0f766e;">ZERO</span> If you mix blue and yellow, you <input type="text" class="input-lvl6" data-answer="get"> <span class="hint-text">(get)</span> green.</div>
+                <div class="question-box"><span class="tag" style="background:#2563eb;">FIRST</span> If she finds the map, we <input type="text" class="input-lvl6" data-answer="will explore,'ll explore"> <span class="hint-text">(explore)</span> the cave tomorrow.</div>
+                <div class="question-box"><span class="tag" style="background:#2563eb;">FIRST</span> She <input type="text" class="input-lvl6" data-answer="won't hike,will not hike"> <span class="hint-text">(not / hike)</span> later if she doesn't find her boots.</div>
+                <div class="question-box"><span class="tag" style="background:#0f766e;">ZERO</span> If you walk in the dark without a torch, you <input type="text" class="input-lvl6" data-answer="don't see,do not see"> <span class="hint-text">(not / see)</span> the path.</div>
+                <div class="question-box"><span class="tag" style="background:#2563eb;">FIRST</span> If we forget the compass today, we <input type="text" class="input-lvl6" data-answer="will get,'ll get"> <span class="hint-text">(get)</span> lost.</div>
+
+                <button class="btn-check" onclick="checkLevel(6)">🔍 Check Answers</button>
+                <div class="feedback-msg" id="feedback-6"></div>
+                
+                <div class="next-level-container" id="next-6">
+                    <h3 style="color: var(--success); margin-top:0;">🌟 Level 6 Cleared!</h3>
+                    <button class="btn-next" onclick="goToLevel(7)">Enter Final Boss ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PHASE 7: FINAL BOSS ================= -->
+        <div class="level-panel" id="panel-7">
+            <div class="level-header">
+                <h1>Phase 7: Grammar Castle 🏰</h1>
+                <p>The Ultimate Mixed Test</p>
+            </div>
+            <div class="content-area">
+                <div class="theory-box" style="border-color: var(--c-level7); background-color: #fef3c7;">
+                    <h3 style="color: var(--c-level7);">🛡️ El Desafío Final</h3>
+                    <p>Has viajado por todas las tierras de la gramática. Ahora todo está mezclado. ¡Busca la <strong>palabra clave subrayada</strong> en la frase para saber qué tiempo verbal usar!</p>
+                </div>
+
+                <div class="example-row">
+                    <strong>[Ejemplo]</strong> <u class="key-word">Yesterday</u>, I <input type="text" value="played" disabled style="width: 70px; padding:2px;"> <i>(play)</i> football.
+                </div>
+
+                <p><strong>Misión:</strong> Identifica el tiempo y escribe el verbo correcto. ¡A por el Boss!</p>
+
+                <div class="question-box">1. <u class="key-word">Last summer</u>, I <input type="text" class="input-lvl7" data-answer="went"> <span class="hint-text">(go)</span> to the beach.</div>
+                <div class="question-box">2. I think robots <input type="text" class="input-lvl7" data-answer="will do,'ll do"> <span class="hint-text">(do)</span> our homework <u class="key-word">in the future</u>.</div>
+                <div class="question-box">3. She has <u class="key-word">already</u> <input type="text" class="input-lvl7" data-answer="finished"> <span class="hint-text">(finish)</span> her environmental project.</div>
+                <div class="question-box">4. <u class="key-word">If</u> it <input type="text" class="input-lvl7" data-answer="rains"> <span class="hint-text">(rain)</span> tomorrow, we will stay at home.</div>
+                <div class="question-box">5. <u class="key-word">While</u> the actors <input type="text" class="input-lvl7" data-answer="were practicing"> <span class="hint-text">(practice)</span>, the lights went out.</div>
+                <div class="question-box">6. We <input type="text" class="input-lvl7" data-answer="haven't finished,have not finished"> <span class="hint-text">(not / finish)</span> our big nature project <u class="key-word">yet</u>.</div>
+                <div class="question-box">7. <u class="key-word">At 8 o'clock</u> last night, I <input type="text" class="input-lvl7" data-answer="was studying"> <span class="hint-text">(study)</span> for my English exam.</div>
+                <div class="question-box">8. <u class="key-word">Did you see</u> that beautiful shooting star <u class="key-word">yesterday</u>? <input type="text" class="input-lvl7" data-answer="did"> you <input type="text" class="input-lvl7" data-answer="see">?</div>
+                <div class="question-box">9. <u class="key-word">Usually</u>, they <input type="text" class="input-lvl7" data-answer="don't like,do not like"> <span class="hint-text">(not / like)</span> drinking cold tea.</div>
+                <div class="question-box">10. <u class="key-word">If</u> you heat ice, it <input type="text" class="input-lvl7" data-answer="melts"> <span class="hint-text">(melt)</span>.</div>
+
+                <button class="btn-check" onclick="checkLevel(7)">🗡️ Defeat Boss</button>
+                <div class="feedback-msg" id="feedback-7"></div>
+                
+                <div class="next-level-container" id="next-7">
+                    <h3 style="color: var(--success); margin-top:0;">🌟 YOU DEFEATED THE BOSS!</h3>
+                    <button class="btn-next" onclick="showVictory()">Claim Reward 🏆</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= VICTORY SCREEN ================= -->
+        <div class="level-panel" id="panel-victory">
+            <div class="final-screen">
+                <h1>VICTORY!</h1>
+                <div class="trophy">🏆</div>
+                <p>Congratulations, Grammar Master!</p>
+                <p>You have successfully completed the Great Grammar Quest.</p>
+                <button class="btn-next" style="margin-top: 30px;" onclick="location.reload()">Play Again</button>
+            </div>
+        </div>
+
+    </div>
+
+    <p class="profe-pista">🤫 <i>Pista para profesores: Pulsa la tecla <b>T</b> tres veces seguidas para abrir el Panel de Control.</i></p>
+
+    <script>
+        // --- Core Gamification Logic ---
+        let isTeacherMode = false;
+        let tPressCount = 0;
+
+        // Keystroke detection for Teacher Mode (Press 'T' 3 times)
+        window.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 't') {
+                tPressCount++;
+                if (tPressCount === 3) {
+                    toggleTeacherMode();
+                    tPressCount = 0;
+                }
+            } else {
+                tPressCount = 0;
+            }
+        });
+
+        function toggleTeacherMode() {
+            isTeacherMode = !isTeacherMode;
+            const bar = document.getElementById('teacher-bar');
+            const body = document.body;
+            
+            if (isTeacherMode) {
+                bar.style.display = 'block';
+                body.classList.add('teacher-mode-active');
+                unlockAllLevels();
+            } else {
+                bar.style.display = 'none';
+                body.classList.remove('teacher-mode-active');
+                // Lock steps that aren't naturally completed
+                lockUnauthorizedLevels();
+            }
+        }
+
+        function unlockAllLevels() {
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.add('unlocked');
+            });
+        }
+
+        function lockUnauthorizedLevels() {
+            document.querySelectorAll('.step').forEach((step, idx) => {
+                if (idx === 0) return; // Keep step 1 clickable
+                const previousStep = document.getElementById('step-' + idx);
+                if (previousStep && !previousStep.classList.contains('completed')) {
+                    step.classList.remove('unlocked');
+                }
+            });
+        }
+
+        function revealAnswers() {
+            const activePanel = document.querySelector('.level-panel.active');
+            if (!activePanel) return;
+
+            const activeLvlId = activePanel.id.replace('panel-', '');
+            const inputs = activePanel.querySelectorAll('.input-lvl' + activeLvlId);
+            
+            inputs.forEach(input => {
+                const firstCorrectAnswer = input.getAttribute('data-answer').split(',')[0];
+                input.value = firstCorrectAnswer;
+                input.classList.add('correct');
+                input.classList.remove('incorrect');
+            });
+        }
+
+        function checkLevel(level) {
+            const inputs = document.querySelectorAll('.input-lvl' + level);
+            const feedbackDiv = document.getElementById('feedback-' + level);
+            const nextBtnDiv = document.getElementById('next-' + level);
+            let correctCount = 0;
+            const total = inputs.length;
+
+            inputs.forEach(input => {
+                let userAnswer = input.value.trim().toLowerCase();
+                // Handle basic apostrophe differences
+                userAnswer = userAnswer.replace(/[’´`]/g, "'").replace(/\s+/g, ' ');
+
+                const correctAnswers = input.getAttribute('data-answer').toLowerCase().split(',');
+
+                if (userAnswer !== "" && correctAnswers.includes(userAnswer)) {
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                    correctCount++;
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+
+            if (correctCount === total) {
+                feedbackDiv.style.color = 'var(--success)';
+                feedbackDiv.innerHTML = `¡Excelente! 100% Correcto.`;
+                nextBtnDiv.style.display = 'block';
+                // Mark step as completed in top bar
+                document.getElementById('step-' + level).classList.add('completed');
+                
+                // Naturally unlock the next step for students
+                if (level < 7) {
+                    document.getElementById('step-' + (level + 1)).classList.add('unlocked');
+                }
+            } else {
+                feedbackDiv.style.color = 'var(--error)';
+                feedbackDiv.innerHTML = `Oh no... Tienes ${correctCount} correctas de ${total}. ¡Revisa las rojas y vuelve a intentar!`;
+                nextBtnDiv.style.display = 'none';
+            }
+        }
+
+        function goToLevel(nextLevel) {
+            const stepBtn = document.getElementById('step-' + nextLevel);
+            // Verify if unlocked (or if teacher mode is bypass active)
+            if (!isTeacherMode && !stepBtn.classList.contains('unlocked')) {
+                return;
+            }
+
+            // Hide all panels
+            document.querySelectorAll('.level-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+
+            // Show next panel
+            const nextPanel = document.getElementById('panel-' + nextLevel);
+            if (nextPanel) {
+                nextPanel.classList.add('active');
+            }
+
+            // Update top progress bar active state
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active');
+            });
+            stepBtn.classList.add('active');
+
+            // Scroll to top of the content area
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showVictory() {
+            document.querySelectorAll('.level-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.getElementById('panel-victory').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Clean styles when typing again
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            input.addEventListener('input', function() {
+                this.classList.remove('correct');
+                this.classList.remove('incorrect');
+            });
+        });
+    </script>
+</body>
+</html>
