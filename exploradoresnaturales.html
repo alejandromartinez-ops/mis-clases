@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exploradores de la Naturaleza: Ecosistemas y Relaciones</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Quicksand:wght@400;600;700&display=swap');
+        
+        body {
+            background-color: #f0fdf4;
+            font-family: 'Quicksand', sans-serif;
+        }
+        .comic-title {
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 1px;
+        }
+        .notebook-lines {
+            background-image: linear-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 100% 2rem;
+            line-height: 2rem;
+            min-height: 6rem;
+            margin-top: 0.5rem;
+        }
+        .tab-btn {
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            background-color: #059669;
+            color: white;
+            transform: scale(1.05);
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating-element {
+            animation: float 4s ease-in-out infinite;
+        }
+        .printable-card {
+            background: white;
+            border: 3px dashed #cbd5e1;
+            position: relative;
+            margin-bottom: 3rem;
+            page-break-inside: avoid;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+        .cut-mark {
+            position: absolute;
+            top: -14px;
+            left: 20px;
+            background: white;
+            padding: 0 10px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        .quiz-option {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 3px solid #334155;
+            background-color: #1e293b;
+            color: white;
+            padding: 1rem;
+            border-radius: 1rem;
+            text-align: center;
+            font-weight: bold;
+        }
+        .quiz-option.selected {
+            border-color: #38bdf8;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+        .quiz-option.correct {
+            border-color: #22c55e !important;
+            border-width: 5px !important;
+        }
+        .quiz-option.incorrect {
+            border-color: #ef4444 !important;
+            border-width: 5px !important;
+        }
+        .english-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #64748b;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            font-style: italic;
+        }
+        .input-correct {
+            border-color: #22c55e !important;
+            background-color: #f0fdf4 !important;
+        }
+        .input-incorrect {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+        }
+        @media print {
+            .no-print { display: none; }
+            body { background: white; }
+            .printable-card { border-color: black; margin-bottom: 4rem; border-width: 2px; }
+            .notebook-lines { background-image: linear-gradient(#ccc 1px, transparent 1px); }
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen pb-16">
+
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-md border-b-4 border-emerald-500 p-4 no-print">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <h1 class="text-2xl md:text-3xl comic-title text-emerald-600 flex items-center gap-2">
+                🌿 EXPLORADORES NATURALES
+            </h1>
+            <div class="flex bg-slate-100 p-1.5 rounded-2xl gap-1 w-full sm:w-auto">
+                <button id="btnTab1" onclick="switchTab(1)" class="tab-btn active flex-1 sm:flex-none text-sm font-bold px-5 py-2.5 rounded-xl">
+                    🌍 Los Ecosistemas
+                </button>
+                <button id="btnTab2" onclick="switchTab(2)" class="tab-btn flex-1 sm:flex-none text-sm font-bold px-5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-200">
+                    🤝 Relaciones Vivas
+                </button>
+                <button id="btnTab3" onclick="switchTab(3)" class="tab-btn flex-1 sm:flex-none text-sm font-bold px-5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-200">
+                    ✂️ Actividades
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 mt-8">
+
+        <!-- ================= PESTAÑA 1: ECOSISTEMAS ================= -->
+        <section id="tabEcosistemas" class="space-y-12 no-print">
+            
+            <div class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white p-10 rounded-3xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-4 max-w-xl">
+                    <h2 class="text-3xl md:text-5xl comic-title leading-tight">¿Qué es un Ecosistema?</h2>
+                    <p class="text-emerald-50 text-base md:text-lg leading-relaxed">
+                        Un ecosistema es un conjunto mágico formado por los <strong>seres vivos</strong>, el <strong>medio físico</strong> donde habitan, y todas las <strong>relaciones</strong> que se establecen entre ellos. ¡Todo en la Tierra está conectado!
+                    </p>
+                </div>
+                <div class="text-8xl floating-element hidden md:block">🏞️</div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Factores Bióticos -->
+                <div class="bg-white p-8 rounded-3xl shadow-lg border-b-8 border-emerald-500">
+                    <div class="flex items-center gap-4 mb-4">
+                        <span class="text-4xl">🦊</span>
+                        <h3 class="text-2xl font-black text-emerald-600">Factores Bióticos</h3>
+                    </div>
+                    <p class="text-slate-600 mb-6 leading-relaxed">
+                        Son todos los <strong>seres vivos</strong> (o factores bióticos) que habitan en el ecosistema. Desde los árboles más gigantescos hasta los animales, plantas y de paso todos los diminutos microbios, algas, hongos y bacterias.
+                    </p>
+                    <div class="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-white px-3 py-1 rounded-full text-xs font-bold shadow-sm">Peces 🐠</span>
+                            <span class="bg-white px-3 py-1 rounded-full text-xs font-bold shadow-sm">Ciervos 🦌</span>
+                            <span class="bg-white px-3 py-1 rounded-full text-xs font-bold shadow-sm">Algas 🌿</span>
+                            <span class="bg-white px-3 py-1 rounded-full text-xs font-bold shadow-sm">Árboles 🌳</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Factores Abióticos -->
+                <div class="bg-white p-8 rounded-3xl shadow-lg border-b-8 border-sky-500">
+                    <div class="flex items-center gap-4 mb-4">
+                        <span class="text-4xl">☀️</span>
+                        <h3 class="text-2xl font-black text-sky-600">Factores Abióticos</h3>
+                    </div>
+                    <p class="text-slate-600 mb-6 leading-relaxed">
+                        Es el <strong>medio físico</strong> (o factores abióticos) donde viven los seres vivos. Son las condiciones o factores sin vida pero que resultan totalmente <strong>imprescindibles</strong> para sobrevivir en nuestro planeta.
+                    </p>
+                    <div class="bg-sky-50 border border-sky-100 p-4 rounded-2xl">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-white px-3 py-1 rounded-full text-xs font-bold shadow-sm">Luz solar ☀️</span>
+                            <span class="bg-white px-3 py-1 rounded-full text-xs font-bold shadow-sm">Agua 💧</span>
+                            <span class="bg-white px-3 py-1 rounded-full text-xs font-bold shadow-sm">Temperatura 🌡️</span>
+                            <span class="bg-white px-3 py-1 rounded-full text-xs font-bold shadow-sm">Suelo ⛰️</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tipos de Ecosistemas: Clasificación completa del archivo adjunto 1 -->
+            <div class="space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="h-8 w-2 bg-emerald-500 rounded-full"></div>
+                    <h3 class="text-2xl font-bold text-slate-800">Tipos de Ecosistemas</h3>
+                </div>
+                <p class="text-sm text-slate-600 leading-relaxed max-w-4xl">
+                    Tal y como nos indica nuestro libro en la clasificación oficial, los ecosistemas se dividen principalmente en dos grandes grupos dependiendo de si en ellos ha intervenido el ser humano o se han desarrollado de forma natural en la Tierra:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- 1. Ecosistemas Naturales -->
+                    <div class="bg-white p-8 rounded-3xl shadow-md border-t-8 border-emerald-500 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="text-3xl">🌿</span>
+                                <h4 class="text-xl font-bold text-emerald-700">Ecosistemas Naturales</h4>
+                            </div>
+                            <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+                                Son aquellos en los que **no ha intervenido el ser humano** en su formación y que se clasifican en función del medio físico en el que se desarrollan:
+                            </p>
+                            <div class="space-y-3">
+                                <div class="bg-emerald-50 p-4 rounded-xl text-xs">
+                                    <p class="font-bold text-emerald-800 flex items-center gap-1">🌳 Ecosistemas Terrestres</p>
+                                    <p class="text-slate-600 mt-1">Los seres vivos viven en el suelo o en el aire. Dependen directamente de la luz, el agua y la temperatura de cada zona.</p>
+                                    <ul class="list-disc pl-4 mt-2 space-y-1 text-slate-500 text-[10px]">
+                                        <li><strong>Bosques:</strong> Tienen una gran cantidad de árboles densos que sirven de refugio a animales (ej: <em>bosque templado</em> o <em>selva húmeda</em>).</li>
+                                        <li><strong>Desiertos:</strong> Zonas extremas donde casi no llueve. Hay <em>desiertos cálidos</em> (como el Sahara) y <em>desiertos fríos</em> (como el Gobi).</li>
+                                        <li><strong>Praderas o Sabanas:</strong> Grandes y anchas llanuras cubiertas de hierbas con pocos árboles dispersos.</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-sky-50 p-4 rounded-xl text-xs">
+                                    <p class="font-bold text-sky-800 flex items-center gap-1">🌊 Ecosistemas Acuáticos</p>
+                                    <p class="text-slate-600 mt-1">Los seres vivos habitan y se desarrollan dentro del agua. Es el medio más abundante del planeta y se divide según la cantidad de sal en el agua:</p>
+                                    <ul class="list-disc pl-4 mt-2 space-y-1 text-slate-500 text-[10px]">
+                                        <li><strong>Ecosistemas de Agua Dulce:</strong> Agua sin sal que puede estar estancada o corriendo (ej: <em>ríos</em>, <em>arroyos</em>, <em>lagos</em> y <em>lagunas</em>).</li>
+                                        <li><strong>Ecosistemas de Agua Salada:</strong> Masas de agua marina ricas en sal, donde habita una enorme variedad de vida (ej: <em>mares</em>, <em>océanos</em> y <em>arrecifes de coral</em>).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Ecosistemas Artificiales -->
+                    <div class="bg-white p-8 rounded-3xl shadow-md border-t-8 border-amber-500 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="text-3xl">🏡</span>
+                                <h4 class="text-xl font-bold text-amber-700">Ecosistemas Artificiales</h4>
+                            </div>
+                            <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+                                Son aquellos que **han sido modificados o creados activamente por las personas** para obtener alimentos, recursos, o construir un lugar donde vivir:
+                            </p>
+                            <div class="space-y-3">
+                                <div class="bg-amber-50 p-4 rounded-xl text-xs">
+                                    <p class="font-bold text-amber-800">🚜 Cultivos</p>
+                                    <p class="text-slate-600 mt-1">Campos y terrenos agrícolas creados por el ser humano para cultivar plantas alimenticias como cereales, frutas, legumbres y hortalizas.</p>
+                                </div>
+                                <div class="bg-amber-50 p-4 rounded-xl text-xs">
+                                    <p class="font-bold text-amber-800">🏙️ Ciudades y Pueblos</p>
+                                    <p class="text-slate-600 mt-1">Zonas urbanas construidas por las personas para vivir de forma organizada, compuestas por carreteras, casas, edificios públicos, plazas y alcantarillado.</p>
+                                </div>
+                                <div class="bg-amber-50 p-4 rounded-xl text-xs">
+                                    <p class="font-bold text-amber-800">🐠 Estanques y Jardines</p>
+                                    <p class="text-slate-600 mt-1">Pequeños rincones artificiales decorativos y controlados donde las personas introducen agua, plantas ornamentales y pequeños animales para el ocio.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Laboratorio -->
+            <div class="bg-slate-900 text-white p-8 rounded-3xl shadow-xl space-y-6">
+                <div class="text-center space-y-2">
+                    <h3 class="text-2xl md:text-3xl comic-title text-amber-400">🎮 LABORATORIO: Clasifica los Elementos</h3>
+                    <p class="text-slate-300 text-sm">Haz clic en los elementos para situarlos en el saco correcto.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div id="elementContainer" class="flex flex-wrap gap-2 justify-center bg-slate-800 p-4 rounded-2xl border border-slate-700">
+                        <button onclick="classifyElement('pez', 'biotico')" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-xl text-sm font-bold border border-slate-600 transition">Pez 🐠</button>
+                        <button onclick="classifyElement('agua', 'abiotico')" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-xl text-sm font-bold border border-slate-600 transition">Agua 💧</button>
+                        <button onclick="classifyElement('alga', 'biotico')" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-xl text-sm font-bold border border-slate-600 transition">Alga Marina 🌿</button>
+                        <button onclick="classifyElement('luz', 'abiotico')" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-xl text-sm font-bold border border-slate-600 transition">Luz Solar ☀️</button>
+                        <button onclick="classifyElement('bacteria', 'biotico')" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-xl text-sm font-bold border border-slate-600 transition">Bacteria 🧫</button>
+                        <button onclick="classifyElement('suelo', 'abiotico')" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-xl text-sm font-bold border border-slate-600 transition">Suelo Arcilloso ⛰️</button>
+                        <button onclick="classifyElement('temperatura', 'abiotico')" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-xl text-sm font-bold border border-slate-600 transition">Temperatura 🌡️</button>
+                        <button onclick="classifyElement('ciervo', 'biotico')" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-xl text-sm font-bold border border-slate-600 transition">Ciervo 🦌</button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-emerald-950/50 border-2 border-dashed border-emerald-500 p-4 rounded-2xl text-center">
+                            <span class="text-3xl">🌿</span>
+                            <p class="font-bold text-[10px] text-emerald-400 uppercase mt-1">BIÓTICOS</p>
+                            <div id="listBioticos" class="mt-2 space-y-1 text-[10px]"></div>
+                        </div>
+                        <div class="bg-sky-950/50 border-2 border-dashed border-sky-500 p-4 rounded-2xl text-center">
+                            <span class="text-3xl">⛰️</span>
+                            <p class="font-bold text-[10px] text-sky-400 uppercase mt-1">ABIÓTICOS</p>
+                            <div id="listAbioticos" class="mt-2 space-y-1 text-[10px]"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="simulationFeedback" class="text-center text-sm font-bold text-amber-400 h-6"></div>
+            </div>
+        </section>
+
+        <!-- ================= PESTAÑA 2: RELACIONES VIVAS ================= -->
+        <section id="tabRelaciones" class="space-y-12 hidden no-print">
+            
+            <div class="bg-gradient-to-r from-orange-500 to-amber-600 text-white p-10 rounded-3xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-4 max-w-xl">
+                    <h2 class="text-3xl md:text-5xl comic-title leading-tight">Relaciones en la Naturaleza</h2>
+                    <p class="text-orange-50 text-base md:text-lg leading-relaxed font-semibold">
+                        Los animales no viven aislados. Vamos a dividir este estudio en dos grandes grupos: relaciones entre animales de la <span class="underline decoration-white/40">misma especie</span> y relaciones entre animales de <span class="underline decoration-white/40">diferentes especies</span>.
+                    </p>
+                </div>
+                <div class="text-8xl floating-element hidden md:block">🤝</div>
+            </div>
+
+            <!-- 1. MISMA ESPECIE -->
+            <div class="bg-white p-8 rounded-3xl shadow-md border-t-8 border-orange-500 space-y-6">
+                <div class="flex items-center gap-3">
+                    <span class="text-4xl">🐺</span>
+                    <h3 class="text-2xl font-bold text-orange-600">1. Misma especie: Las Manadas</h3>
+                </div>
+                <p class="text-slate-600 leading-relaxed">
+                    A veces, los animales de una misma especie viven y trabajan juntos para ayudarse en tareas diarias como cazar, defenderse o cuidar a sus pequeños.
+                </p>
+
+                <div class="english-box">
+                    <p class="text-xs font-bold text-slate-500 uppercase mb-1">🇬🇧 English Summary:</p>
+                    <p class="text-slate-700">"Animals of the same species live together in groups called <strong>herds</strong>. This helps them with protection, finding food, and caring for their <strong>offspring</strong>."</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-orange-50/50 p-5 rounded-2xl border border-orange-100 text-center">
+                        <span class="text-3xl block mb-2">🛡️</span>
+                        <p class="font-bold text-orange-800 text-sm">Protección</p>
+                    </div>
+                    <div class="bg-orange-50/50 p-5 rounded-2xl border border-orange-100 text-center">
+                        <span class="text-3xl block mb-2">🍖</span>
+                        <p class="font-bold text-orange-800 text-sm">Comida</p>
+                    </div>
+                    <div class="bg-orange-50/50 p-5 rounded-2xl border border-orange-100 text-center">
+                        <span class="text-3xl block mb-2">🐣</span>
+                        <p class="font-bold text-orange-800 text-sm">Cuidado</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. DIFERENTES ESPECIES -->
+            <div class="bg-white p-8 rounded-3xl shadow-md border-t-8 border-amber-500 space-y-6">
+                <div class="flex items-center gap-3">
+                    <span class="text-4xl">🦒</span>
+                    <h3 class="text-2xl font-bold text-amber-600">2. Diferentes especies: Aliados y Enemigos</h3>
+                </div>
+                <p class="text-slate-600 leading-relaxed font-semibold text-lg">
+                    En la naturaleza, animales de especies totalmente distintas interactúan todos los días. Estas relaciones pueden ser de ayuda, de beneficio para uno solo, de peligro o de lucha:
+                </p>
+
+                <div class="english-box">
+                    <p class="text-xs font-bold text-slate-500 uppercase mb-1">🇬🇧 English Summary:</p>
+                    <p class="text-slate-700">"Animals of different species interact in many ways. Some help each other (<strong>mutualism</strong>), some use others for transport (<strong>phoresis</strong>), and others fight for resources (<strong>competition</strong>)."</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Mutualismo -->
+                    <div class="bg-slate-50 p-6 rounded-2xl border-t-4 border-green-500 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-bold text-emerald-700 text-lg">Mutualismo 🤝</h4>
+                                <span class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-1 rounded">Ganamos los dos</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Es una relación de amistad total donde **las dos especies cooperan y salen ganando**. Consiguen comida, protección o limpieza ayudándose mutuamente.
+                            </p>
+                            <p class="text-xs text-slate-500 mt-3 italic font-semibold border-l-2 border-green-200 pl-2">
+                                <strong>Ejemplo:</strong> El pájaro chorlito limpia los dientes del cocodrilo. El pájaro come gratis sin peligro y el cocodrilo consigue un cepillado de dientes gratis.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Simbiosis -->
+                    <div class="bg-slate-50 p-6 rounded-2xl border-t-4 border-emerald-500 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-bold text-emerald-800 text-lg">Simbiosis 🔗</h4>
+                                <span class="bg-emerald-100 text-emerald-900 text-[10px] font-bold px-2 py-1 rounded">Dependencia Total</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Es un paso más allá del mutualismo. Es una **unión tan íntima, fuerte y duradera** que ambas especies dependen por completo de la otra; ¡no podrían sobrevivir por separado!
+                            </p>
+                            <p class="text-xs text-slate-500 mt-3 italic font-semibold border-l-2 border-emerald-200 pl-2">
+                                <strong>Ejemplo:</strong> Los líquenes. Son una alianza indestructible entre un alga (que fabrica comida con el sol) y un hongo (que le da humedad y protección).
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Comensalismo -->
+                    <div class="bg-slate-50 p-6 rounded-2xl border-t-4 border-sky-500 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-bold text-sky-700 text-lg">Comensalismo 🐟</h4>
+                                <span class="bg-sky-100 text-sky-800 text-[10px] font-bold px-2 py-1 rounded">A uno le da igual</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Se produce cuando **un ser vivo se beneficia** de otro (consigue comida o refugio), mientras que **al segundo no le afecta** para nada (ni le ayuda ni le perjudica).
+                            </p>
+                            <p class="text-xs text-slate-500 mt-3 italic font-semibold border-l-2 border-sky-200 pl-2">
+                                <strong>Ejemplo:</strong> El pez rémora que se pega al cuerpo del tiburón. Viaja sin cansarse y come las migajas que caen de la boca del tiburón sin molestarle en absoluto.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Foresis -->
+                    <div class="bg-slate-50 p-6 rounded-2xl border-t-4 border-teal-500 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-bold text-teal-700 text-lg">Foresis 🪲</h4>
+                                <span class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-1 rounded">Transporte gratis</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Es un tipo divertido de comensalismo donde **un animal utiliza a otro exclusivamente como medio de transporte** para viajar gratis sin gastar su propia energía.
+                            </p>
+                            <p class="text-xs text-slate-500 mt-3 italic font-semibold border-l-2 border-teal-200 pl-2">
+                                <strong>Ejemplo:</strong> Algunos ácaros diminutos que se suben al caparazón de los escarabajos para mudarse de planta de forma rápida y segura.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Parasitismo -->
+                    <div class="bg-slate-50 p-6 rounded-2xl border-t-4 border-purple-500 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-bold text-purple-700 text-lg">Parasitismo 🦟</h4>
+                                <span class="bg-purple-100 text-purple-800 text-[10px] font-bold px-2 py-1 rounded">Uno sale perdiendo</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Ocurre cuando un animal pequeño (el **parásito**) vive a costa de uno más grande (el **hospedador**). El parásito se beneficia pero **le causa daño o enfermedades** al otro.
+                            </p>
+                            <p class="text-xs text-slate-500 mt-3 italic font-semibold border-l-2 border-purple-200 pl-2">
+                                <strong>Ejemplo:</strong> Las garrapatas, pulgas o mosquitos que se pegan a la piel de los perros o humanos para alimentarse de su sangre y causarles picor y molestias.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Depredación -->
+                    <div class="bg-slate-50 p-6 rounded-2xl border-t-4 border-red-500 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-bold text-red-700 text-lg">Depredación 🐆</h4>
+                                <span class="bg-red-100 text-red-800 text-[10px] font-bold px-2 py-1 rounded">Cazador y presa</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Es una relación directa de caza. Un animal (el **depredador**) tiene que perseguir, atrapar y **matar a otro animal (la presa)** para poder alimentarse y sobrevivir.
+                            </p>
+                            <p class="text-xs text-slate-500 mt-3 italic font-semibold border-l-2 border-red-200 pl-2">
+                                <strong>Ejemplo:</strong> Un leopardo que corre a gran velocidad por la sabana para cazar a una gacela, o un camaleón atrapando una mosca con su lengua.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Competencia -->
+                    <div class="bg-slate-50 p-6 rounded-2xl border-t-4 border-amber-600 flex flex-col justify-between md:col-span-2">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-bold text-amber-700 text-lg">Competencia ⚔️</h4>
+                                <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-1 rounded">Lucha por recursos</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Ocurre cuando dos seres vivos de especies distintas **luchan por conseguir el mismo recurso limitado** en el ecosistema, como la comida, el agua, el territorio o la luz solar. Al competir, ambos sufren un desgaste de energía.
+                            </p>
+                            <p class="text-xs text-slate-500 mt-3 italic font-semibold border-l-2 border-amber-200 pl-2">
+                                <strong>Ejemplo:</strong> Leones e hienas que compiten por cazar a las mismas cebras en su territorio, o diferentes árboles en un bosque que crecen muy alto compitiendo por captar la luz del sol.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 text-white p-8 rounded-3xl shadow-xl space-y-6">
+                <div class="text-center space-y-2">
+                    <h3 class="text-2xl md:text-3xl comic-title text-amber-400">🍂 La Cadena Alimentaria</h3>
+                    <p class="text-slate-300 text-sm">El ciclo energético donde se transfiere la vida en la naturaleza.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+                    <div class="bg-slate-700/50 border border-slate-600 p-6 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <span class="text-4xl block mb-3">🌳</span>
+                            <h4 class="text-lg font-bold text-emerald-400 mb-2">1. Productores</h4>
+                            <p class="text-xs text-slate-300">¡Los cocineros de la naturaleza! Plantas y algas que fabrican su propio alimento usando tierra, agua y sol.</p>
+                        </div>
+                        <span class="text-xs font-bold text-emerald-200 mt-4 block">Base de la vida</span>
+                    </div>
+
+                    <div class="bg-slate-700/50 border border-slate-600 p-6 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <span class="text-4xl block mb-3">🐇</span>
+                            <h4 class="text-lg font-bold text-sky-400 mb-2">2. Consumidores</h4>
+                            <p class="text-xs text-slate-300">Animales que necesitan comer a otros. Se dividen en primarios (herbívoros), secundarios (carnívoros) y terciarios (superdepredadores).</p>
+                        </div>
+                        <span class="text-xs font-bold text-sky-200 mt-4 block">Buscan el restaurante</span>
+                    </div>
+
+                    <div class="bg-slate-700/50 border border-slate-600 p-6 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <span class="text-4xl block mb-3">🍄</span>
+                            <h4 class="text-lg font-bold text-purple-400 mb-2">3. Descomponedores</h4>
+                            <p class="text-xs text-slate-300">Hongos, bacterias y pequeños insectos del suelo. Limpian los restos de hojas y animales muertos transformándolos de nuevo en minerales fértiles.</p>
+                        </div>
+                        <span class="text-xs font-bold text-purple-200 mt-4 block">El equipo de limpieza</span>
+                    </div>
+                </div>
+            </div>
+
+            <section class="bg-slate-900 rounded-3xl p-8 text-white">
+                <h2 class="comic-title text-3xl text-amber-400 text-center mb-8 uppercase">⚡ DESAFÍO DE REINOS Y RELACIONES</h2>
+                <div id="quiz" class="space-y-8 max-w-2xl mx-auto text-sm"></div>
+                <div class="text-center mt-10">
+                    <button id="check" class="bg-amber-500 text-slate-900 font-black px-10 py-4 rounded-2xl hover:scale-105 transition">VERIFICAR RESPUESTAS</button>
+                </div>
+            </section>
+
+        </section>
+
+        <!-- ================= PESTAÑA 3: ACTIVIDADES ================= -->
+        <section id="tabActividades" class="space-y-12 hidden">
+            
+            <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-900 p-5 rounded-xl no-print text-sm font-semibold">
+                📌 Estas actividades son totalmente realizables en versión web. Rellena los campos y haz clic en corregir para ver tus resultados de forma individual.
+            </div>
+
+            <!-- Ficha 1 -->
+            <div class="printable-card p-8 rounded-3xl border-2 border-dashed border-slate-300">
+                <div class="inline-block bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4">Ecosistemas Web</div>
+                <h3 class="text-2xl font-black text-slate-800 mb-6">🔍 Clasificación rápida</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                        <p class="font-bold mb-4 text-emerald-800 text-sm">Escribe "B" (Biótico) o "A" (Abiótico):</p>
+                        <div class="space-y-4">
+                            <div class="flex justify-between"><span>Un oso 🐻</span> <input type="text" id="f1_a1" class="w-12 text-center border-2 rounded font-bold" maxlength="1"></div>
+                            <div class="flex justify-between"><span>Luz del sol ☀️</span> <input type="text" id="f1_a2" class="w-12 text-center border-2 rounded font-bold" maxlength="1"></div>
+                            <div class="flex justify-between"><span>El suelo ⛰️</span> <input type="text" id="f1_a3" class="w-12 text-center border-2 rounded font-bold" maxlength="1"></div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                        <p class="font-bold mb-4 text-emerald-800 text-sm">Continúa la serie:</p>
+                        <div class="space-y-4">
+                            <div class="flex justify-between"><span>Musgo 🌿</span> <input type="text" id="f1_a4" class="w-12 text-center border-2 rounded font-bold" maxlength="1"></div>
+                            <div class="flex justify-between"><span>Agua de lluvia 💧</span> <input type="text" id="f1_a5" class="w-12 text-center border-2 rounded font-bold" maxlength="1"></div>
+                            <div class="flex justify-between"><span>Bacteria 🧫</span> <input type="text" id="f1_a6" class="w-12 text-center border-2 rounded font-bold" maxlength="1"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex items-center gap-4">
+                    <button onclick="checkFicha1()" class="bg-emerald-600 text-white font-bold px-6 py-2 rounded-xl">Corregir Clasificación</button>
+                    <p id="resF1" class="font-bold text-emerald-600 text-sm"></p>
+                </div>
+            </div>
+
+            <!-- Ficha 2 -->
+            <div class="printable-card p-8 rounded-3xl border-2 border-dashed border-slate-300">
+                <div class="inline-block bg-orange-100 text-orange-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4">Relaciones Web</div>
+                <h3 class="text-2xl font-black text-slate-800 mb-6">🤝 Parejas en la naturaleza</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div id="c1" class="p-4 border-2 rounded-xl bg-white">
+                        <p class="font-bold text-sm">Cocodrilo y Pájaro:</p>
+                        <select id="s1" class="mt-2 w-full p-2 border rounded text-xs">
+                            <option value="">¿Relación?</option>
+                            <option value="m">Mutualismo</option>
+                            <option value="p">Parasitismo</option>
+                        </select>
+                    </div>
+                    <div id="c2" class="p-4 border-2 rounded-xl bg-white">
+                        <p class="font-bold text-sm">Garrapata y Perro:</p>
+                        <select id="s2" class="mt-2 w-full p-2 border rounded text-xs">
+                            <option value="">¿Relación?</option>
+                            <option value="m">Mutualismo</option>
+                            <option value="p">Parasitismo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-6 flex items-center gap-4">
+                    <button onclick="checkFicha2()" class="bg-orange-600 text-white font-bold px-6 py-2 rounded-xl">Corregir Relaciones</button>
+                    <p id="resF2" class="font-bold text-orange-600 text-sm"></p>
+                </div>
+            </div>
+
+            <!-- Ficha 3: English -->
+            <div class="printable-card p-8 rounded-3xl border-2 border-dashed border-slate-300">
+                <div class="inline-block bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4">English Practice 🇬🇧</div>
+                <h3 class="text-2xl font-black text-slate-800 mb-4">Present Perfect Ecosystem</h3>
+                <div class="space-y-6">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <p class="text-slate-800 font-bold text-sm">1. Our class <span class="text-teal-600">[discover]</span> a wonderful artificial ecosystem.</p>
+                        <input type="text" id="eng1" class="mt-2 w-full p-2 border-2 rounded font-bold text-xs" placeholder="Write your answer here...">
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <p class="text-slate-800 font-bold text-sm">2. Spring rain <span class="text-teal-600">[help]</span> the flowers grow tall.</p>
+                        <input type="text" id="eng2" class="mt-2 w-full p-2 border-2 rounded font-bold text-xs" placeholder="Write your answer here...">
+                    </div>
+                </div>
+                <div class="mt-6 flex items-center gap-4">
+                    <button onclick="checkFicha3()" class="bg-teal-600 text-white font-bold px-6 py-2 rounded-xl">Correct Grammar</button>
+                    <p id="resF3" class="font-bold text-teal-600 text-sm"></p>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        function switchTab(t) {
+            const tabs = ['tabEcosistemas', 'tabRelaciones', 'tabActividades'];
+            const btns = ['btnTab1', 'btnTab2', 'btnTab3'];
+            tabs.forEach((id, i) => {
+                document.getElementById(id).classList.toggle('hidden', i + 1 !== t);
+                document.getElementById(btns[i]).classList.toggle('active', i + 1 === t);
+            });
+        }
+
+        function classifyElement(id, type) {
+            const fb = document.getElementById('simulationFeedback');
+            const targetList = type === 'biotico' ? 'listBioticos' : 'listAbioticos';
+            const item = document.createElement('span');
+            item.className = "block bg-slate-700 px-2 py-1 rounded mt-1 border border-slate-600 text-white font-bold";
+            item.innerText = id.toUpperCase();
+            document.getElementById(targetList).appendChild(item);
+            fb.innerText = `¡Correcto! ${id.toUpperCase()} es ${type.toUpperCase()}. 🎉`;
+            event.target.classList.add('opacity-30', 'pointer-events-none');
+        }
+
+        window.checkFicha1 = function() {
+            const ans = { f1_a1:'b', f1_a2:'a', f1_a3:'a', f1_a4:'b', f1_a5:'a', f1_a6:'b' };
+            let score = 0;
+            for(let id in ans) {
+                const el = document.getElementById(id);
+                if(el.value.trim().toLowerCase() === ans[id]) {
+                    el.className = "w-12 text-center border-2 rounded font-bold input-correct";
+                    score++;
+                } else {
+                    el.className = "w-12 text-center border-2 rounded font-bold input-incorrect";
+                }
+            }
+            document.getElementById('resF1').innerText = `${score}/6 correctas!`;
+        }
+
+        window.checkFicha2 = function() {
+            const s1 = document.getElementById('s1'), s2 = document.getElementById('s2');
+            const c1 = document.getElementById('c1'), c2 = document.getElementById('c2');
+            let score = 0;
+            if(s1.value === 'm') { c1.className = "p-4 border-2 rounded-xl bg-emerald-50 border-emerald-500"; score++; }
+            else { c1.className = "p-4 border-2 rounded-xl bg-red-50 border-red-500"; }
+            if(s2.value === 'p') { c2.className = "p-4 border-2 rounded-xl bg-emerald-50 border-emerald-500"; score++; }
+            else { c2.className = "p-4 border-2 rounded-xl bg-red-50 border-red-500"; }
+            document.getElementById('resF2').innerText = `${score}/2 correctas!`;
+        }
+
+        window.checkFicha3 = function() {
+            const ans = { eng1: 'has discovered', eng2: 'has helped' };
+            let score = 0;
+            for(let id in ans) {
+                const el = document.getElementById(id);
+                if(el.value.trim().toLowerCase() === ans[id]) {
+                    el.className = "mt-2 w-full p-2 border-2 rounded font-bold text-xs input-correct";
+                    score++;
+                } else {
+                    el.className = "mt-2 w-full p-2 border-2 rounded font-bold text-xs input-incorrect";
+                }
+            }
+            document.getElementById('resF3').innerText = `${score}/2 score!`;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const q = [
+                { q: "¿Relación estrecha entre hongo y alga?", o: ["Parasitismo", "Simbiosis", "Comensalismo"], a: 1 },
+                { q: "¿Cómo se llaman las plantas en la cadena alimentaria?", o: ["Productores", "Consumidores", "Descomponedores"], a: 0 },
+                { q: "¿Dos especies que luchan por comida?", o: ["Competencia", "Foresis", "Mutualismo"], a: 0 }
+            ];
+            const qBox = document.getElementById('quiz');
+            const uAns = new Array(q.length).fill(null);
+
+            if (qBox) {
+                q.forEach((item, qi) => {
+                    const div = document.createElement('div');
+                    div.className = "bg-slate-800 p-6 rounded-2xl border border-slate-700";
+                    div.innerHTML = `<p class="font-bold text-amber-300 mb-4">${qi+1}. ${item.q}</p><div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        ${item.o.map((o, oi) => `<div class="quiz-option" id="q${qi}o${oi}" onclick="pick(${qi},${oi})">${o}</div>`).join('')}
+                    </div>`;
+                    qBox.appendChild(div);
+                });
+            }
+
+            window.pick = (qi, oi) => {
+                for(let i=0; i<3; i++) document.getElementById(`q${qi}o${i}`).classList.remove('selected');
+                document.getElementById(`q${qi}o${oi}`).classList.add('selected');
+                uAns[qi] = oi;
+            };
+
+            const checkBtn = document.getElementById('check');
+            if (checkBtn) {
+                checkBtn.onclick = () => {
+                    if(uAns.includes(null)) return alert("¡Responde todo!");
+                    q.forEach((item, qi) => {
+                        for(let i=0; i<3; i++) {
+                            const el = document.getElementById(`q${qi}o${i}`);
+                            if (el) {
+                                el.className = "quiz-option";
+                                if(i === item.a) el.classList.add('correct');
+                                else if(i === uAns[qi]) el.classList.add('incorrect');
+                            }
+                        }
+                    });
+                };
+            }
+        });
+    </script>
+</body>
+</html>
