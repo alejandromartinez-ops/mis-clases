@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exploradores de la Naturaleza: Animales y Plantas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Quicksand:wght@400;600;700&display=swap');
+        
+        body {
+            background-color: #f0fdf4;
+            font-family: 'Quicksand', sans-serif;
+        }
+        .comic-title {
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 1px;
+        }
+        .notebook-lines {
+            background-image: linear-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 100% 2rem;
+            line-height: 2rem;
+            min-height: 6rem;
+            margin-top: 0.5rem;
+        }
+        .tab-btn {
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            background-color: #059669;
+            color: white;
+            transform: scale(1.05);
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating-element {
+            animation: float 4s ease-in-out infinite;
+        }
+        .printable-card {
+            background: white;
+            border: 3px dashed #cbd5e1;
+            position: relative;
+            margin-bottom: 3rem;
+            page-break-inside: avoid;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+        .cut-mark {
+            position: absolute;
+            top: -14px;
+            left: 20px;
+            background: white;
+            padding: 0 10px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        .quiz-option {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 3px solid #334155;
+            background-color: #1e293b;
+            color: white;
+            padding: 1rem;
+            border-radius: 1rem;
+            text-align: center;
+            font-weight: bold;
+        }
+        .quiz-option.selected {
+            border-color: #38bdf8;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+        .quiz-option.correct {
+            border-color: #22c55e !important;
+            border-width: 5px !important;
+        }
+        .quiz-option.incorrect {
+            border-color: #ef4444 !important;
+            border-width: 5px !important;
+        }
+        .english-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #64748b;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            font-style: italic;
+        }
+        .input-correct {
+            border-color: #22c55e !important;
+            background-color: #f0fdf4 !important;
+        }
+        .input-incorrect {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+        }
+        @media print {
+            .no-print { display: none; }
+            body { background: white; }
+            .printable-card { border-color: black; margin-bottom: 4rem; border-width: 2px; }
+            .notebook-lines { background-image: linear-gradient(#ccc 1px, transparent 1px); }
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen pb-16">
+
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-md border-b-4 border-emerald-500 p-4 no-print">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <h1 class="text-2xl md:text-3xl comic-title text-emerald-600 flex items-center gap-2">
+                🌿 EXPLORADORES NATURALES
+            </h1>
+            <div class="flex bg-slate-100 p-1.5 rounded-2xl gap-1 w-full sm:w-auto">
+                <button id="btnTab1" onclick="switchTab(1)" class="tab-btn active flex-1 sm:flex-none text-sm font-bold px-5 py-2.5 rounded-xl">
+                    🦁 El Reino Animal
+                </button>
+                <button id="btnTab2" onclick="switchTab(2)" class="tab-btn flex-1 sm:flex-none text-sm font-bold px-5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-200">
+                    🌿 El Reino Vegetal
+                </button>
+                <button id="btnTab3" onclick="switchTab(3)" class="tab-btn flex-1 sm:flex-none text-sm font-bold px-5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-200">
+                    ✂️ Actividades
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 mt-8">
+
+        <!-- ================= PESTAÑA 1: REINO ANIMAL ================= -->
+        <section id="tabEcosistemas" class="space-y-12 no-print">
+            
+            <div class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white p-10 rounded-3xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-4 max-w-xl">
+                    <h2 class="text-3xl md:text-5xl comic-title leading-tight">El Reino Animal</h2>
+                    <p class="text-emerald-50 text-base md:text-lg leading-relaxed">
+                        Los animales son seres vivos fascinantes que dividimos en dos grandes grupos dependiendo de si poseen un esqueleto interno articulado o no. ¡Vamos a explorarlos!
+                    </p>
+                </div>
+                <div class="text-8xl floating-element hidden md:block">🦁</div>
+            </div>
+
+            <!-- Vertebrados -->
+            <div class="bg-white p-8 rounded-3xl shadow-lg border-b-8 border-emerald-500">
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="text-4xl">🦴</span>
+                    <h3 class="text-2xl font-black text-emerald-600">Animales Vertebrados (Con Esqueleto)</h3>
+                </div>
+                <p class="text-slate-600 mb-6 leading-relaxed">
+                    Los vertebrados cuentan con una <strong>espina dorsal</strong> que protege la médula espinal y da <strong>soporte</strong> a su cuerpo. Se clasifican en <strong>cinco clases principales</strong>:
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Mamíferos -->
+                    <div class="bg-emerald-50 p-4 rounded-2xl text-xs space-y-1 border border-emerald-100">
+                        <p class="font-bold text-emerald-800 text-sm">🍼 Mamíferos</p>
+                        <p class="text-slate-600">Tienen <strong>pelo en el cuerpo</strong>, respiran por <strong>pulmones</strong> y las hembras alimentan a sus crías con <strong>leche materna</strong>.</p>
+                        <p class="text-slate-700 font-semibold mt-1">Son vivíparos <span class="text-emerald-600 text-[10px] italic">(excepto el ornitorrinco)</span>.</p>
+                        <p class="text-slate-500 italic mt-1">Ejemplos: perro, ballena, ser humano.</p>
+                    </div>
+                    <!-- Aves -->
+                    <div class="bg-emerald-50 p-4 rounded-2xl text-xs space-y-1 border border-emerald-100">
+                        <p class="font-bold text-emerald-800 text-sm">🦅 Aves</p>
+                        <p class="text-slate-600">Tienen el cuerpo cubierto de <strong>plumas</strong>, poseen <strong>dos alas</strong> y un <strong>pico</strong>.</p>
+                        <p class="text-slate-700 font-semibold mt-1">Son animales ovíparos <span class="text-emerald-600 text-[10px] italic">(ponen huevos)</span>.</p>
+                        <p class="text-slate-500 italic mt-1">Ejemplos: águila, pingüino, colibrí.</p>
+                    </div>
+                    <!-- Reptiles -->
+                    <div class="bg-emerald-50 p-4 rounded-2xl text-xs space-y-1 border border-emerald-100">
+                        <p class="font-bold text-emerald-800 text-sm">🦎 Reptiles</p>
+                        <p class="text-slate-600">Su piel está cubierta de <strong>escamas duras y ásperas</strong>. La mayoría tiene patas cortas o carece de ellas, y respiran por <strong>pulmones</strong>.</p>
+                        <p class="text-slate-500 italic mt-1">Ejemplos: serpiente, cocodrilo, tortuga.</p>
+                    </div>
+                    <!-- Anfibios -->
+                    <div class="bg-emerald-50 p-4 rounded-2xl text-xs space-y-1 border border-emerald-100">
+                        <p class="font-bold text-emerald-800 text-sm">🐸 Anfibios</p>
+                        <p class="text-slate-600">Tienen la <strong>piel húmeda y desnuda</strong>. Sufren <strong>metamorfosis</strong>: nacen en el agua (respiran por branquias) y de adultos viven en la tierra (respiran por pulmones y piel).</p>
+                        <p class="text-slate-500 italic mt-1">Ejemplos: rana, sapo, salamandra.</p>
+                    </div>
+                    <!-- Peces -->
+                    <div class="bg-emerald-50 p-4 rounded-2xl text-xs space-y-1 border border-emerald-100 md:col-span-2 lg:col-span-1">
+                        <p class="font-bold text-emerald-800 text-sm">🐟 Peces</p>
+                        <p class="text-slate-600">Animales completamente acuáticos de agua dulce o salada. Tienen el cuerpo cubierto de <strong>escamas</strong>, <strong>aletas</strong> para nadar y respiran por <strong>branquias</strong>.</p>
+                        <p class="text-slate-500 italic mt-1">Ejemplos: tiburón, salmón, pez payaso.</p>
+                    </div>
+                </div>
+
+                <div class="english-box mt-4">
+                    <p class="text-xs font-bold text-slate-500 uppercase mb-1">🇬🇧 English Connection:</p>
+                    <p class="text-slate-700 text-xs">"Vertebrate animals have a <strong>backbone</strong> (spinal column) to protect their spinal cord and support their body. They include mammals, birds, reptiles, amphibians, and fish."</p>
+                </div>
+            </div>
+
+            <!-- Invertebrados (Con lenguaje super accesible para 4º de primaria) -->
+            <div class="bg-white p-8 rounded-3xl shadow-lg border-b-8 border-sky-500">
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="text-4xl">🕷️</span>
+                    <h3 class="text-2xl font-black text-sky-600">Animales Invertebrados (¡Sin Huesos!)</h3>
+                </div>
+                <p class="text-slate-600 mb-6 leading-relaxed text-sm">
+                    Los animales invertebrados son geniales porque <strong>no tienen columna vertebral ni huesos por dentro</strong>. ¡Son el grupo más grande del planeta entero! Mira cómo se dividen según su cuerpecito:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+                    <!-- Artrópodos -->
+                    <div class="bg-sky-50 p-4 rounded-xl border border-sky-100 lg:col-span-2 space-y-3">
+                        <div>
+                            <p class="font-bold text-sky-800 text-sm">🕷️ Los Artrópodos</p>
+                            <p class="text-slate-600 mt-1">Tienen <strong>patas que se doblan</strong> (articuladas) y una especie de "armadura" por fuera llamada <strong>exoesqueleto</strong> para protegerse. ¡Tienen cuatro súper grupos!</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px]">
+                            <div class="bg-white/90 p-2.5 rounded-lg border border-sky-100/50 shadow-sm">
+                                <p class="font-bold text-emerald-800 flex items-center gap-1">🐜 Insectos</p>
+                                <p class="text-slate-500">Tienen <strong>6 patas</strong> y antenas. <br><span class="italic font-semibold">Ej: Hormiga, mariposa.</span></p>
+                            </div>
+                            <div class="bg-white/90 p-2.5 rounded-lg border border-sky-100/50 shadow-sm">
+                                <p class="font-bold text-amber-800 flex items-center gap-1">🕷️ Arácnidos</p>
+                                <p class="text-slate-500">Tienen <strong>8 patas</strong> y no tienen antenas. <br><span class="italic font-semibold">Ej: Araña, escorpión.</span></p>
+                            </div>
+                            <div class="bg-white/90 p-2.5 rounded-lg border border-sky-100/50 shadow-sm">
+                                <p class="font-bold text-blue-800 flex items-center gap-1">🦀 Crustáceos</p>
+                                <p class="text-slate-500">Tienen <strong>10 patas</strong> y cuatro antenas. <br><span class="italic font-semibold">Ej: Cangrejo, camarón.</span></p>
+                            </div>
+                            <div class="bg-white/90 p-2.5 rounded-lg border border-sky-100/50 shadow-sm">
+                                <p class="font-bold text-purple-800 flex items-center gap-1">🐛 Miriápodos</p>
+                                <p class="text-slate-500">¡Tienen un cuerpo largo lleno de patas! <br><span class="italic font-semibold">Ej: Ciempiés.</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Moluscos -->
+                    <div class="bg-sky-50 p-4 rounded-xl border border-sky-100 flex flex-col justify-between">
+                        <div>
+                            <p class="font-bold text-sky-800 text-sm">🐚 Los Moluscos</p>
+                            <p class="text-slate-600 mt-1">Tienen el <strong>cuerpo súper blandito</strong>. Muchos se meten dentro de una <strong>concha dura</strong> para esconderse, y otros tienen tentáculos.</p>
+                        </div>
+                        <p class="text-slate-500 italic mt-2 font-semibold text-[10px]">Ejemplos: caracol, pulpo, almeja.</p>
+                    </div>
+                    
+                    <!-- Anélidos -->
+                    <div class="bg-sky-50 p-4 rounded-xl border border-sky-100 flex flex-col justify-between">
+                        <div>
+                            <p class="font-bold text-sky-800 text-sm">🪱 Los Anélidos (Gusanos con anillos)</p>
+                            <p class="text-slate-600 mt-1">Son gusanos de cuerpo blando y largo que está dividido en un montón de <strong>anillos redondos</strong> (como si llevaran pulseras).</p>
+                        </div>
+                        <p class="text-slate-500 italic mt-2 font-semibold text-[10px]">Ejemplos: lombriz de tierra, sanguijuela.</p>
+                    </div>
+                    
+                    <!-- Equinodermos -->
+                    <div class="bg-sky-50 p-4 rounded-xl border border-sky-100 flex flex-col justify-between">
+                        <div>
+                            <p class="font-bold text-sky-800 text-sm">⭐ Los Equinodermos</p>
+                            <p class="text-slate-600 mt-1">Son animales marinos con un cuerpo simétrico (en forma de estrella o globo) cubierto por placas duras y a veces con <strong>espinas</strong>.</p>
+                        </div>
+                        <p class="text-slate-500 italic mt-2 font-semibold text-[10px]">Ejemplos: estrella de mar, erizo de mar.</p>
+                    </div>
+                    
+                    <!-- Cnidarios -->
+                    <div class="bg-sky-50 p-4 rounded-xl border border-sky-100 flex flex-col justify-between">
+                        <div>
+                            <p class="font-bold text-sky-800 text-sm">🪼 Los Cnidarios</p>
+                            <p class="text-slate-600 mt-1">Viven en el agua y tienen <strong>cuerpos gelatinosos</strong> (parecidos al Blandiblú). ¡Ojo! Sus tentáculos pueden soltar un líquido que pica.</p>
+                        </div>
+                        <p class="text-slate-500 italic mt-2 font-semibold text-[10px]">Ejemplos: medusa, coral, anémona.</p>
+                    </div>
+                    
+                    <!-- Poríferos -->
+                    <div class="bg-sky-50 p-4 rounded-xl border border-sky-100 flex flex-col justify-between">
+                        <div>
+                            <p class="font-bold text-sky-800 text-sm">🧽 Los Poríferos (Esponjas)</p>
+                            <p class="text-slate-600 mt-1">¡Los más sencillos del mundo marino! Viven pegados a las rocas quietecitos y <strong>beben filtrando agua por sus pequeños agujeritos</strong> (poros).</p>
+                        </div>
+                        <p class="text-slate-500 italic mt-2 font-semibold text-[10px]">Ejemplos: esponja de mar.</p>
+                    </div>
+                    
+                    <!-- Platelmintos y Nematodos -->
+                    <div class="bg-sky-50 p-4 rounded-xl border border-sky-100 md:col-span-2 lg:col-span-3 flex flex-col justify-between">
+                        <div>
+                            <p class="font-bold text-sky-800 text-sm">🪱 Los Platelmintos y Nematodos (Gusanos simples)</p>
+                            <p class="text-slate-600 mt-1">Son otros tipos de gusanos más sencillos que los de anillos. Pueden ser completamente planos (como una cinta de pelo) o cilíndricos (redondos como un espagueti). Algunos viven libres y otros viven como parásitos dentro de otros animales.</p>
+                        </div>
+                        <p class="text-slate-500 italic mt-2 font-semibold text-[10px]">Ejemplos: tenia (solitaria), lombriz intestinal.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Laboratorio de Clasificación Real (Drag & Drop y Selección Touch) -->
+            <div class="bg-slate-900 text-white p-8 rounded-3xl shadow-xl space-y-6">
+                <div class="text-center space-y-2">
+                    <h3 class="text-2xl md:text-3xl comic-title text-amber-400">🎮 LABORATORIO: Clasifica los Animales</h3>
+                    <p class="text-slate-300 text-sm">
+                        ¡Demuestra lo que sabes! <strong class="text-amber-300">Arrastra</strong> los animales a sus cubos correspondientes, o <strong class="text-amber-300">pulsa uno</strong> y luego toca el cubo de destino de abajo.
+                    </p>
+                </div>
+                
+                <!-- Pool de Animales a clasificar -->
+                <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700">
+                    <p class="text-xs text-slate-400 mb-3 uppercase tracking-wider font-bold text-center">👇 Elige un animal de la caja de arena 👇</p>
+                    <div id="elementContainer" class="flex flex-wrap gap-3 justify-center">
+                        <div draggable="true" ondragstart="drag(event)" onclick="selectCard(this)" data-name="Perro" data-group="vertebrado" class="cursor-grab active:cursor-grabbing bg-slate-700 hover:bg-slate-600 px-4 py-2.5 rounded-2xl text-xs font-bold border border-slate-600 transition-all select-none text-white flex items-center gap-1.5 shadow-sm hover:shadow-md">Perro 🐶</div>
+                        <div draggable="true" ondragstart="drag(event)" onclick="selectCard(this)" data-name="Medusa" data-group="invertebrado" class="cursor-grab active:cursor-grabbing bg-slate-700 hover:bg-slate-600 px-4 py-2.5 rounded-2xl text-xs font-bold border border-slate-600 transition-all select-none text-white flex items-center gap-1.5 shadow-sm hover:shadow-md">Medusa 🪼</div>
+                        <div draggable="true" ondragstart="drag(event)" onclick="selectCard(this)" data-name="Estrella de Mar" data-group="invertebrado" class="cursor-grab active:cursor-grabbing bg-slate-700 hover:bg-slate-600 px-4 py-2.5 rounded-2xl text-xs font-bold border border-slate-600 transition-all select-none text-white flex items-center gap-1.5 shadow-sm hover:shadow-md">Estrella de Mar ⭐</div>
+                        <div draggable="true" ondragstart="drag(event)" onclick="selectCard(this)" data-name="Tiburón" data-group="vertebrado" class="cursor-grab active:cursor-grabbing bg-slate-700 hover:bg-slate-600 px-4 py-2.5 rounded-2xl text-xs font-bold border border-slate-600 transition-all select-none text-white flex items-center gap-1.5 shadow-sm hover:shadow-md">Tiburón 🦈</div>
+                        <div draggable="true" ondragstart="drag(event)" onclick="selectCard(this)" data-name="Caracol" data-group="invertebrado" class="cursor-grab active:cursor-grabbing bg-slate-700 hover:bg-slate-600 px-4 py-2.5 rounded-2xl text-xs font-bold border border-slate-600 transition-all select-none text-white flex items-center gap-1.5 shadow-sm hover:shadow-md">Caracol 🐚</div>
+                        <div draggable="true" ondragstart="drag(event)" onclick="selectCard(this)" data-name="Salamandra" data-group="vertebrado" class="cursor-grab active:cursor-grabbing bg-slate-700 hover:bg-slate-600 px-4 py-2.5 rounded-2xl text-xs font-bold border border-slate-600 transition-all select-none text-white flex items-center gap-1.5 shadow-sm hover:shadow-md">Salamandra 🦎</div>
+                        <div draggable="true" ondragstart="drag(event)" onclick="selectCard(this)" data-name="Lombriz" data-group="invertebrado" class="cursor-grab active:cursor-grabbing bg-slate-700 hover:bg-slate-600 px-4 py-2.5 rounded-2xl text-xs font-bold border border-slate-600 transition-all select-none text-white flex items-center gap-1.5 shadow-sm hover:shadow-md">Lombriz 🪱</div>
+                        <div draggable="true" ondragstart="drag(event)" onclick="selectCard(this)" data-name="Águila" data-group="vertebrado" class="cursor-grab active:cursor-grabbing bg-slate-700 hover:bg-slate-600 px-4 py-2.5 rounded-2xl text-xs font-bold border border-slate-600 transition-all select-none text-white flex items-center gap-1.5 shadow-sm hover:shadow-md">Águila 🦅</div>
+                    </div>
+                </div>
+
+                <!-- Zonas de Destino -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Vertebrados Dropzone -->
+                    <div id="zoneVertebrados" ondragover="allowDrop(event)" ondrop="drop(event, 'vertebrado')" onclick="clickTargetZone('vertebrado')" class="bg-emerald-950/40 border-2 border-dashed border-emerald-500 p-6 rounded-3xl text-center cursor-pointer transition-all duration-300 hover:bg-emerald-900/50 hover:scale-[1.01]">
+                        <span class="text-4xl block">🦴</span>
+                        <p class="font-bold text-[11px] text-emerald-400 uppercase mt-2 tracking-widest">VERTEBRADOS</p>
+                        <p class="text-[9px] text-slate-500">Suelto o pulso aquí</p>
+                        <div id="listVertebrados" class="mt-4 flex flex-wrap justify-center gap-1.5 min-h-[50px] p-2 bg-emerald-950/20 rounded-xl"></div>
+                    </div>
+                    
+                    <!-- Invertebrados Dropzone -->
+                    <div id="zoneInvertebrados" ondragover="allowDrop(event)" ondrop="drop(event, 'invertebrado')" onclick="clickTargetZone('invertebrado')" class="bg-sky-950/40 border-2 border-dashed border-sky-500 p-6 rounded-3xl text-center cursor-pointer transition-all duration-300 hover:bg-sky-900/50 hover:scale-[1.01]">
+                        <span class="text-4xl block">🕷️</span>
+                        <p class="font-bold text-[11px] text-sky-400 uppercase mt-2 tracking-widest">INVERTEBRADOS</p>
+                        <p class="text-[9px] text-slate-500">Suelto o pulso aquí</p>
+                        <div id="listInvertebrados" class="mt-4 flex flex-wrap justify-center gap-1.5 min-h-[50px] p-2 bg-sky-950/20 rounded-xl"></div>
+                    </div>
+                </div>
+                
+                <!-- Feedback en vivo -->
+                <div id="simulationFeedback" class="text-center text-sm font-bold text-amber-400 min-h-[1.5rem] py-1">
+                    ¡Selecciona un animal para comenzar la clasificación!
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PESTAÑA 2: REINO VEGETAL ================= -->
+        <section id="tabRelaciones" class="space-y-12 hidden no-print">
+            
+            <div class="bg-gradient-to-r from-orange-500 to-amber-600 text-white p-10 rounded-3xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-4 max-w-xl">
+                    <h2 class="text-3xl md:text-5xl comic-title leading-tight">El Reino Vegetal</h2>
+                    <p class="text-orange-50 text-base md:text-lg leading-relaxed font-semibold">
+                        Las plantas son los productores de la Tierra. Fabrican su propio alimento y se reproducen de maneras asombrosas según su estructura.
+                    </p>
+                </div>
+                <div class="text-8xl floating-element hidden md:block">🌳</div>
+            </div>
+
+            <!-- Alimentación de las plantas -->
+            <div class="bg-white p-8 rounded-3xl shadow-md border-t-8 border-emerald-500 space-y-6">
+                <div class="flex items-center gap-3">
+                    <span class="text-4xl">☀️</span>
+                    <h3 class="text-2xl font-bold text-emerald-600">1. Alimentación: La Fotosíntesis</h3>
+                </div>
+                <p class="text-slate-600 leading-relaxed text-sm">
+                    Las plantas son seres vivos que crean su propio alimento. Para hacerlo necesitan agua, sales minerales, dióxido de carbono y luz del sol. Este proceso se llama <strong>fotosíntesis</strong>:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+                    <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100">
+                        <p class="font-bold text-emerald-800 text-sm">💧 Savia Bruta</p>
+                        <p class="text-slate-600 mt-1">Las raíces absorben el agua y las sales minerales de la tierra. Esta mezcla sube por el tallo hasta las hojas.</p>
+                    </div>
+                    <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100">
+                        <p class="font-bold text-emerald-800 text-sm">🍃 Clorofila</p>
+                        <p class="text-slate-600 mt-1">Es la sustancia que le da el color verde a las hojas. Está en las hojas y atrapa la luz del sol.</p>
+                    </div>
+                    <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100">
+                        <p class="font-bold text-emerald-800 text-sm font-bold">🧪 Savia Elaborada</p>
+                        <p class="text-slate-600 mt-1">Gracias a la clorofila y la luz del sol, la savia bruta se transforma en <strong>savia elaborada</strong>, que nutre a toda la planta.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Partes de la Flor -->
+            <div class="bg-white p-8 rounded-3xl shadow-md border-t-8 border-orange-500 space-y-6">
+                <div class="flex items-center gap-3">
+                    <span class="text-4xl">🌺</span>
+                    <h3 class="text-2xl font-bold text-orange-600">2. Estructura y Reproducción de las Flores</h3>
+                </div>
+                <p class="text-slate-600 leading-relaxed text-sm">
+                    Muchas plantas se reproducen mediante <strong>flores</strong>, que se transforman en <strong>frutos</strong> y en su interior contienen las <strong>semillas</strong>. Una flor tiene estas partes esenciales:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 text-xs">
+                    <div class="bg-orange-50/30 p-3 rounded-xl border border-orange-100">
+                        <p class="font-bold text-orange-800">Cáliz 🌸</p>
+                        <p class="text-slate-600 mt-1">Son las hojas de colores llamativos. Cada hoja se llama <strong>pétalo</strong>.</p>
+                    </div>
+                    <div class="bg-orange-50/30 p-3 rounded-xl border border-orange-100">
+                        <p class="font-bold text-orange-800">Corola 🍃</p>
+                        <p class="text-slate-600 mt-1">Son las hojitas verdes que envuelven la flor. Cada una se llama <strong>sépalo</strong>.</p>
+                    </div>
+                    <div class="bg-orange-50/30 p-3 rounded-xl border border-orange-100">
+                        <p class="font-bold text-orange-800">Pistilo 🍏</p>
+                        <p class="text-slate-600 mt-1">La parte femenina de la flor. En él se almacena el <strong>óvulo</strong>.</p>
+                    </div>
+                    <div class="bg-orange-50/30 p-3 rounded-xl border border-orange-100">
+                        <p class="font-bold text-orange-800">Estambre 🌾</p>
+                        <p class="text-slate-600 mt-1">La parte masculina de la flor. En él está el <strong>polen</strong>.</p>
+                    </div>
+                    <div class="bg-orange-50/30 p-3 rounded-xl border border-orange-100">
+                        <p class="font-bold text-orange-800">Tallo 🌱</p>
+                        <p class="text-slate-600 mt-1">Sujeta la flor a la planta.</p>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 p-4 rounded-xl border-l-4 border-amber-500 text-xs">
+                    <p class="font-bold text-amber-800">La Polinización:</p>
+                    <p class="text-slate-600 mt-1">El polen llega a otra flor transportado por los insectos o el viento. El polen se une al óvulo dentro del pistilo y tras esta unión se convierte en <strong>fruto</strong>.</p>
+                </div>
+            </div>
+
+            <!-- Clasificación de las Plantas -->
+            <div class="bg-white p-8 rounded-3xl shadow-md border-t-8 border-amber-500 space-y-6">
+                <div class="flex items-center gap-3">
+                    <span class="text-4xl">🌲</span>
+                    <h3 class="text-2xl font-bold text-amber-600">3. ¿Cómo clasificamos las plantas?</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+                    <div class="bg-slate-50 p-5 rounded-2xl">
+                        <p class="font-bold text-slate-800 text-sm mb-2">Según la presencia de flores:</p>
+                        <ul class="list-disc pl-4 space-y-2 text-slate-600">
+                            <li><strong>Sin Flores:</strong> No producen flores. Ejemplos: el <strong>helecho</strong> (se reproduce por esporas) o el <strong>musgo</strong>.</li>
+                            <li><strong>Con Flores:</strong> Tienen flores llamativas. Ejemplos: el <strong>rosal</strong> o el <strong>alcornoque</strong>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-2xl">
+                        <p class="font-bold text-slate-800 text-sm mb-2">Según su tallo:</p>
+                        <ul class="list-disc pl-4 space-y-2 text-slate-600">
+                            <li><strong>Árboles:</strong> Tienen un tallo grueso llamado <strong>tronco</strong> y sus ramas crecen lejos del suelo.</li>
+                            <li><strong>Arbustos:</strong> Tienen un tallo más delgado y se ramifican desde el mismo suelo.</li>
+                            <li><strong>Hierbas:</strong> Tienen un tallo flexible y delgado. Se usan para la <strong>alimentación</strong> o como plantas <strong>aromáticas</strong> (ej: albahaca, césped, perejil).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desafío final del tema -->
+            <section class="bg-slate-900 rounded-3xl p-8 text-white">
+                <h2 class="comic-title text-3xl text-amber-400 text-center mb-8 uppercase">⚡ DESAFÍO DE REINOS Y RELACIONES</h2>
+                <div id="quiz" class="space-y-8 max-w-2xl mx-auto text-sm"></div>
+                <div class="text-center mt-10">
+                    <button id="check" class="bg-amber-500 text-slate-900 font-black px-10 py-4 rounded-2xl hover:scale-105 transition">VERIFICAR RESPUESTAS</button>
+                </div>
+            </section>
+
+        </section>
+
+        <!-- ================= PESTAÑA 3: ACTIVIDADES ================= -->
+        <section id="tabActividades" class="space-y-12 hidden">
+            
+            <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-900 p-5 rounded-xl no-print text-sm font-semibold">
+                📌 Estas actividades se basan de forma estricta en el temario. Rellena los campos y pulsa "corregir" para autoevaluarte.
+            </div>
+
+            <!-- Ficha 1 -->
+            <div class="printable-card p-8 rounded-3xl border-2 border-dashed border-slate-300">
+                <div class="inline-block bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4">Reino Animal</div>
+                <h3 class="text-2xl font-black text-slate-800 mb-6">🔍 Clasificación rápida de Invertebrados</h3>
+                <p class="text-xs text-slate-500 mb-4">Indica el grupo de Invertebrados correcto según su estructura corporal (Escribe exactamente: "Artrópodo", "Molusco", "Anélido", "Equinodermo", "Cnidario", "Porífero"):</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span>Esponja de mar (Filtra agua por poros):</span>
+                            <input type="text" id="f1_a1" class="w-32 text-center p-1 border-2 rounded font-bold text-xs" placeholder="Escribe aquí...">
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Lombriz de tierra (Cuerpo blando y dividido en anillos):</span>
+                            <input type="text" id="f1_a2" class="w-32 text-center p-1 border-2 rounded font-bold text-xs" placeholder="Escribe aquí...">
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span>Medusa (Cuerpo gelatinoso con células urticantes):</span>
+                            <input type="text" id="f1_a3" class="w-32 text-center p-1 border-2 rounded font-bold text-xs" placeholder="Escribe aquí...">
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Caracol (Cuerpo blando protegido por concha):</span>
+                            <input type="text" id="f1_a4" class="w-32 text-center p-1 border-2 rounded font-bold text-xs" placeholder="Escribe aquí...">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex items-center gap-4">
+                    <button onclick="checkFicha1()" class="bg-emerald-600 text-white font-bold px-6 py-2 rounded-xl text-xs hover:bg-emerald-700">Corregir Invertebrados</button>
+                    <p id="resF1" class="font-bold text-emerald-600 text-sm"></p>
+                </div>
+            </div>
+
+            <!-- Ficha 2 -->
+            <div class="printable-card p-8 rounded-3xl border-2 border-dashed border-slate-300">
+                <div class="inline-block bg-orange-100 text-orange-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4">Reino Vegetal</div>
+                <h3 class="text-2xl font-black text-slate-800 mb-6">🤝 Las partes de la Flor y la Savia</h3>
+                <p class="text-xs text-slate-500 mb-4">Selecciona el término que define correctamente cada parte:</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                    <div id="c1" class="p-4 border-2 rounded-xl bg-white flex justify-between items-center">
+                        <span>Hojas de colores llamativos, cada hoja es un pétalo:</span>
+                        <select id="s1" class="p-2 border rounded text-xs">
+                            <option value="">¿Qué parte es?</option>
+                            <option value="caliz">Cáliz</option>
+                            <option value="corola">Corola</option>
+                            <option value="pistilo">Pistilo</option>
+                        </select>
+                    </div>
+                    <div id="c2" class="p-4 border-2 rounded-xl bg-white flex justify-between items-center">
+                        <span>Hojitas verdes que envuelven la flor, cada una es un sépalo:</span>
+                        <select id="s2" class="p-2 border rounded text-xs">
+                            <option value="">¿Qué parte es?</option>
+                            <option value="caliz">Cáliz</option>
+                            <option value="corola">Corola</option>
+                            <option value="estambre">Estambre</option>
+                        </select>
+                    </div>
+                    <div id="c3" class="p-4 border-2 rounded-xl bg-white flex justify-between items-center">
+                        <span>Mezcla de agua y sales absorbidas por las raíces:</span>
+                        <select id="s3" class="p-2 border rounded text-xs">
+                            <option value="">¿Qué savia es?</option>
+                            <option value="bruta">Savia Bruta</option>
+                            <option value="elaborada">Savia Elaborada</option>
+                        </select>
+                    </div>
+                    <div id="c4" class="p-4 border-2 rounded-xl bg-white flex justify-between items-center">
+                        <span>Sustancia que da el color verde a las hojas:</span>
+                        <select id="s4" class="p-2 border rounded text-xs">
+                            <option value="">¿Qué es?</option>
+                            <option value="clorofila">Clorofila</option>
+                            <option value="savia">Savia</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-6 flex items-center gap-4">
+                    <button onclick="checkFicha2()" class="bg-orange-600 text-white font-bold px-6 py-2 rounded-xl text-xs hover:bg-orange-700">Corregir Flor y Nutrición</button>
+                    <p id="resF2" class="font-bold text-orange-600 text-sm"></p>
+                </div>
+            </div>
+
+            <!-- Ficha 3: English Challenge -->
+            <div class="printable-card p-8 rounded-3xl border-2 border-dashed border-slate-300">
+                <div class="inline-block bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4">English Practice 🇬🇧</div>
+                <h3 class="text-2xl font-black text-slate-800 mb-4">Present Perfect Ecosystem Grammar</h3>
+                <p class="text-xs text-slate-500 mb-4">Complete the sentences using Present Perfect tense <em>(has/have + past participle of verb in brackets)</em>.</p>
+                
+                <div class="space-y-6">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <p class="text-slate-800 font-bold text-xs">1. Our science teacher <span class="text-teal-600">[explain]</span> the parts of the flower.</p>
+                        <input type="text" id="eng1" class="mt-2 w-full p-2 border-2 rounded font-bold text-xs" placeholder="Write your answer here...">
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <p class="text-slate-800 font-bold text-xs">2. The spring rain <span class="text-teal-600">[help]</span> the grass grow green.</p>
+                        <input type="text" id="eng2" class="mt-2 w-full p-2 border-2 rounded font-bold text-xs" placeholder="Write your answer here...">
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <p class="text-slate-800 font-bold text-xs">3. The students <span class="text-teal-600">[classify]</span> the groups of invertebrates.</p>
+                        <input type="text" id="eng3" class="mt-2 w-full p-2 border-2 rounded font-bold text-xs" placeholder="Write your answer here...">
+                    </div>
+                </div>
+                <div class="mt-6 flex items-center gap-4">
+                    <button onclick="checkFicha3()" class="bg-teal-600 text-white font-bold px-6 py-2 rounded-xl text-xs hover:bg-teal-700">Correct Grammar</button>
+                    <p id="resF3" class="font-bold text-teal-600 text-sm"></p>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="max-w-6xl mx-auto px-4 mt-8 pb-12 border-t border-slate-200 pt-6 text-center text-xs text-slate-400">
+        <p>Fuentes curriculares de Ciencias de la Naturaleza adaptadas para Primaria.</p>
+    </footer>
+
+    <script>
+        function switchTab(t) {
+            const tabs = ['tabEcosistemas', 'tabRelaciones', 'tabActividades'];
+            const btns = ['btnTab1', 'btnTab2', 'btnTab3'];
+            tabs.forEach((id, i) => {
+                document.getElementById(id).classList.toggle('hidden', i + 1 !== t);
+                document.getElementById(btns[i]).classList.toggle('active', i + 1 === t);
+            });
+        }
+
+        // --- SISTEMA DRAG & DROP Y SELECCIÓN TOUCH TOTALMENTE COMPROBADO ---
+        let selectedCard = null;
+
+        // Soporte para escritorio (Drag)
+        window.drag = function(ev) {
+            ev.dataTransfer.setData("name", ev.target.getAttribute("data-name"));
+            ev.dataTransfer.setData("group", ev.target.getAttribute("data-group"));
+            ev.target.id = "drag-" + Date.now();
+            ev.dataTransfer.setData("elementId", ev.target.id);
+        }
+
+        window.allowDrop = function(ev) {
+            ev.preventDefault();
+        }
+
+        window.drop = function(ev, targetGroup) {
+            ev.preventDefault();
+            const name = ev.dataTransfer.getData("name");
+            const group = ev.dataTransfer.getData("group");
+            const elementId = ev.dataTransfer.getData("elementId");
+            const draggedElement = document.getElementById(elementId);
+
+            processClassification(draggedElement, name, group, targetGroup);
+        }
+
+        // Soporte para dispositivos móviles / touch (Seleccionar y pulsar)
+        window.selectCard = function(el) {
+            if (selectedCard) {
+                selectedCard.classList.remove('ring-4', 'ring-amber-400', 'bg-slate-600');
+                selectedCard.classList.add('bg-slate-700');
+            }
+            selectedCard = el;
+            selectedCard.classList.remove('bg-slate-700');
+            selectedCard.classList.add('ring-4', 'ring-amber-400', 'bg-slate-600');
+            
+            const fb = document.getElementById('simulationFeedback');
+            fb.innerHTML = `👉 Has seleccionado <span class="font-bold text-amber-300">${el.getAttribute('data-name')}</span>. ¡Pulsa el cubo de abajo para clasificarlo!`;
+        }
+
+        window.clickTargetZone = function(targetGroup) {
+            if (!selectedCard) return;
+            
+            const name = selectedCard.getAttribute("data-name");
+            const group = selectedCard.getAttribute("data-group");
+            
+            processClassification(selectedCard, name, group, targetGroup);
+            
+            // Limpiar selección tras procesar
+            selectedCard.classList.remove('ring-4', 'ring-amber-400', 'bg-slate-600');
+            selectedCard.classList.add('bg-slate-700');
+            selectedCard = null;
+        }
+
+        function processClassification(element, name, group, targetGroup) {
+            const fb = document.getElementById('simulationFeedback');
+            
+            if (group === targetGroup) {
+                // Colocación correcta
+                const targetListId = targetGroup === 'vertebrado' ? 'listVertebrados' : 'listInvertebrados';
+                const targetList = document.getElementById(targetListId);
+                
+                const item = document.createElement('span');
+                item.className = "block bg-slate-700 px-2 py-1.5 rounded-xl mt-1 border border-slate-600 text-white font-bold text-[10px] animate-bounce";
+                item.innerText = element.innerText;
+                targetList.appendChild(item);
+                
+                // Borrar del pool de arriba
+                element.remove();
+                
+                fb.innerHTML = `🎉 ¡Correcto! El <span class="text-emerald-400 font-bold">${name}</span> es un animal <span class="text-emerald-400 font-bold">${targetGroup}</span>.`;
+                
+                // Verificar si se han clasificado todos
+                const remaining = document.querySelectorAll('#elementContainer [data-group]');
+                if (remaining.length === 0) {
+                    fb.innerHTML = "🏆 ¡Felicidades, pequeño explorador! Has clasificado correctamente a todos los animales.";
+                }
+            } else {
+                // Error de colocación
+                fb.innerHTML = `❌ ¡Oh, no! El <span class="text-red-400 font-bold">${name}</span> no es un animal ${targetGroup}. ¡Vuelve a intentarlo!`;
+                
+                // Efecto visual de sacudida roja en el cubo erróneo
+                const zoneId = targetGroup === 'vertebrado' ? 'zoneVertebrados' : 'zoneInvertebrados';
+                const zone = document.getElementById(zoneId);
+                zone.classList.add('bg-red-950/40', 'border-red-500');
+                setTimeout(() => {
+                    zone.classList.remove('bg-red-950/40', 'border-red-500');
+                }, 800);
+            }
+        }
+
+        // --- SISTEMAS DE AUTOEVALUACIÓN DE FICHAS ---
+        window.checkFicha1 = function() {
+            const ans = { f1_a1:'porifero', f1_a2:'anelido', f1_a3:'cnidario', f1_a4:'molusco' };
+            let score = 0;
+            for(let id in ans) {
+                const el = document.getElementById(id);
+                const userVal = el.value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const correctVal = ans[id].normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if(userVal === correctVal || userVal + 's' === correctVal || userVal === correctVal + 's') {
+                    el.className = "w-32 text-center p-1 border-2 rounded font-bold text-xs input-correct";
+                    score++;
+                } else {
+                    el.className = "w-32 text-center p-1 border-2 rounded font-bold text-xs input-incorrect";
+                }
+            }
+            document.getElementById('resF1').innerText = `${score}/4 correctas!`;
+        }
+
+        window.checkFicha2 = function() {
+            const s1 = document.getElementById('s1'), s2 = document.getElementById('s2');
+            const s3 = document.getElementById('s3'), s4 = document.getElementById('s4');
+            const c1 = document.getElementById('c1'), c2 = document.getElementById('c2');
+            const c3 = document.getElementById('c3'), c4 = document.getElementById('c4');
+            let score = 0;
+            
+            if(s1.value === 'caliz') { c1.className = "p-4 border-2 rounded-xl bg-emerald-50 border-emerald-500 flex justify-between items-center"; score++; }
+            else { c1.className = "p-4 border-2 rounded-xl bg-red-50 border-red-500 flex justify-between items-center"; }
+            
+            if(s2.value === 'corola') { c2.className = "p-4 border-2 rounded-xl bg-emerald-50 border-emerald-500 flex justify-between items-center"; score++; }
+            else { c2.className = "p-4 border-2 rounded-xl bg-red-50 border-red-500 flex justify-between items-center"; }
+            
+            if(s3.value === 'bruta') { c3.className = "p-4 border-2 rounded-xl bg-emerald-50 border-emerald-500 flex justify-between items-center"; score++; }
+            else { c3.className = "p-4 border-2 rounded-xl bg-red-50 border-red-500 flex justify-between items-center"; }
+
+            if(s4.value === 'clorofila') { c4.className = "p-4 border-2 rounded-xl bg-emerald-50 border-emerald-500 flex justify-between items-center"; score++; }
+            else { c4.className = "p-4 border-2 rounded-xl bg-red-50 border-red-500 flex justify-between items-center"; }
+
+            document.getElementById('resF2').innerText = `${score}/4 correctas!`;
+        }
+
+        window.checkFicha3 = function() {
+            const ans = { eng1: 'has explained', eng2: 'has helped', eng3: 'have classified' };
+            let score = 0;
+            for(let id in ans) {
+                const el = document.getElementById(id);
+                if(el.value.trim().toLowerCase() === ans[id]) {
+                    el.className = "mt-2 w-full p-2 border-2 rounded font-bold text-xs input-correct";
+                    score++;
+                } else {
+                    el.className = "mt-2 w-full p-2 border-2 rounded font-bold text-xs input-incorrect";
+                }
+            }
+            document.getElementById('resF3').innerText = `${score}/3 score!`;
+        }
+
+        // --- CARGA DE LA SECCIÓN DE PREGUNTAS AUTOEVALUABLES ---
+        window.addEventListener('DOMContentLoaded', () => {
+            const q = [
+                { q: "¿Para qué sirve el esqueleto interno de los animales vertebrados?", o: ["Para sostener el cuerpo y proteger sus órganos", "Únicamente para digerir la comida", "Para absorber luz solar"], a: 0 },
+                { q: "¿Qué invertebrados destacan por su cuerpo gelatinoso y tentáculos que pican?", o: ["Los Poríferos", "Los Cnidarios", "Los Artrópodos"], a: 1 },
+                { q: "¿En qué se transforma el polen cuando se junta con el óvulo de la flor?", o: ["En una raíz", "En savia elaborada", "En un fruto"], a: 2 }
+            ];
+            const qBox = document.getElementById('quiz');
+            const uAns = new Array(q.length).fill(null);
+
+            if (qBox) {
+                q.forEach((item, qi) => {
+                    const div = document.createElement('div');
+                    div.className = "bg-slate-800 p-6 rounded-2xl border border-slate-700";
+                    div.innerHTML = `<p class="font-bold text-amber-300 mb-4">${qi+1}. ${item.q}</p><div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        ${item.o.map((o, oi) => `<div class="quiz-option text-xs" id="q${qi}o${oi}" onclick="pick(${qi},${oi})">${o}</div>`).join('')}
+                    </div>`;
+                    qBox.appendChild(div);
+                });
+            }
+
+            window.pick = (qi, oi) => {
+                for(let i=0; i<3; i++) document.getElementById(`q${qi}o${i}`).classList.remove('selected');
+                document.getElementById(`q${qi}o${oi}`).classList.add('selected');
+                uAns[qi] = oi;
+            };
+
+            const checkBtn = document.getElementById('check');
+            if (checkBtn) {
+                checkBtn.onclick = () => {
+                    if(uAns.includes(null)) {
+                        alert("⚠️ ¡Por favor, responde a todas las preguntas del desafío antes de corregir!");
+                        return;
+                    }
+                    q.forEach((item, qi) => {
+                        for(let i=0; i<3; i++) {
+                            const el = document.getElementById(`q${qi}o${i}`);
+                            if (el) {
+                                el.className = "quiz-option text-xs";
+                                if(i === item.a) el.classList.add('correct');
+                                else if(i === uAns[qi]) el.classList.add('incorrect');
+                            }
+                        }
+                    });
+                };
+            }
+        });
+    </script>
+</body>
+</html>
