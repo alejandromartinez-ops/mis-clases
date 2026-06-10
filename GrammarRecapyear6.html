@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Grammar Hub - Práctica Interactiva</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0071e3;
+            --primary-hover: #005bb5;
+            --bg-body: #f5f5f7;
+            --bg-card: #ffffff;
+            --text-main: #1d1d1f;
+            --text-muted: #86868b;
+            --accent-orange: #ff9f0a;
+            --accent-pink: #ff375f;
+            --success: #34c759;
+            --error: #ff3b30;
+            --border-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #42a5f5);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: var(--bg-card);
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            padding: 12px 20px;
+            margin: 0 5px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all 0.2s ease;
+        }
+
+        nav button.active, nav button:hover {
+            background-color: rgba(0, 113, 211, 0.1);
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .grammar-section {
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .grammar-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            margin-bottom: 25px;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin: 20px 0 10px 0;
+            color: #3a3a3c;
+        }
+
+        ul {
+            list-style-type: none;
+            margin-bottom: 20px;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+        }
+
+        ul li::before {
+            content: "•";
+            color: var(--primary);
+            font-size: 1.5rem;
+            position: absolute;
+            left: 5px;
+            top: -4px;
+        }
+
+        .highlight-box {
+            background-color: #f2f2f7;
+            border-left: 5px solid var(--accent-orange);
+            padding: 15px 20px;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            margin: 20px 0;
+        }
+
+        .highlight-box strong {
+            color: #e67e22;
+        }
+
+        .example-list li {
+            font-style: italic;
+            color: #48484a;
+        }
+
+        .example-list li strong {
+            color: var(--accent-pink);
+            font-style: normal;
+        }
+
+        /* Simulator Styles */
+        .simulator-area {
+            background: #f8f9fa;
+            border: 2px dashed #cbd5e1;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .sentence-display {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            min-height: 40px;
+        }
+
+        .comma {
+            color: var(--error);
+            font-weight: 800;
+            background: #ffe5e5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .btn-action {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-action:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Interactive Quiz Styles */
+        .quiz-container {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #f2f2f7;
+        }
+
+        .quiz-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #1c1c1e;
+        }
+
+        .quiz-item {
+            margin-bottom: 20px;
+        }
+
+        .quiz-question {
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+        }
+
+        select, input[type="text"] {
+            padding: 8px 14px;
+            font-size: 1rem;
+            border: 2px solid #d1d1d6;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.2s;
+            background-color: white;
+        }
+
+        select:focus, input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-check {
+            background-color: #24292e;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 0.95rem;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .feedback {
+            display: inline-block;
+            margin-left: 15px;
+            font-weight: 700;
+        }
+
+        .feedback.correct { color: var(--success); }
+        .feedback.incorrect { color: var(--error); }
+
+        /* Table Design */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid #e5e5ea;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f7;
+            font-weight: 700;
+        }
+
+        /* Game Option Buttons */
+        .game-options {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .btn-opt {
+            background-color: #e5e5ea;
+            color: var(--text-main);
+            border: none;
+            padding: 10px 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-opt:hover {
+            background-color: #d1d1d6;
+        }
+
+        .btn-opt.selected-had { background-color: #5856d6; color: white; }
+        .btn-opt.selected-would { background-color: #007aff; color: white; }
+
+        @media (max-width: 600px) {
+            nav button { padding: 10px 12px; font-size: 0.9rem; }
+            .card { padding: 20px; }
+            .game-options { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>English Grammar Interactive Hub</h1>
+        <p>Estudia y practica las estructuras clave desde casa de forma autónoma</p>
+    </header>
+
+    <nav>
+        <button class="active" onclick="switchTab('passive')">Passive Voice</button>
+        <button onclick="switchTab('future-past')">Future in the Past</button>
+        <button onclick="switchTab('second-cond')">Second Conditional</button>
+        <button onclick="switchTab('third-cond')">Third Conditional</button>
+        <button onclick="switchTab('reported')">Reported Speech</button>
+    </nav>
+
+    <div class="container">
+
+        <!-- SECTION 1: PASSIVE VOICE -->
+        <!-- Basado en: Captura de pantalla 2026-06-10 a las 17.13.22.png y 17.13.32.png -->
+        <section id="passive" class="grammar-section active">
+            <div class="card">
+                <h2>The Passive Voice (Voz Pasiva)</h2>
+                <p>Utilizamos la voz pasiva cuando no sabemos quién realiza una acción o cuando el agente ejecutor carece de importancia en el contexto.</p>
+                
+                <h3>Present Simple Passive</h3>
+                <ul>
+                    <li><strong>Estructura:</strong> <code>is / isn't</code> o <code>are / aren't</code> + participio pasado del verbo.</li>
+                </ul>
+                <ul class="example-list">
+                    <li>Is honey <strong>made</strong> by birds?</li>
+                    <li>No, honey isn't <strong>made</strong> by birds. It's <strong>made</strong> by bees!</li>
+                </ul>
+
+                <h3>Past Simple Passive</h3>
+                <ul>
+                    <li><strong>Estructura:</strong> <code>was / wasn't</code> o <code>were / weren't</code> + participio pasado del verbo.</li>
+                </ul>
+                <ul class="example-list">
+                    <li>An egg <strong>was added</strong> to the water.</li>
+                    <li>The salt water and the fresh water <strong>weren't stirred</strong>.</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <strong>Look!</strong> Si necesitas indicar explícitamente quién ha realizado la acción, añade la preposición <strong>by</strong> justo después del participio pasado.
+                </div>
+
+                <!-- AUTONOMOUS PRACTICE -->
+                <div class="quiz-container">
+                    <div class="quiz-title">✏️ Practica desde casa: Completa las frases en pasiva</div>
+                    
+                    <div class="quiz-item">
+                        <div class="quiz-question">1. Jetpacks (present simple passive / use) ________ for short flights.</div>
+                        <select id="pass-q1">
+                            <option value="">-- Elige una opción --</option>
+                            <option value="incorrect">is used</option>
+                            <option value="correct">are used</option>
+                            <option value="incorrect">was used</option>
+                        </select>
+                        <button class="btn-check" onclick="checkSelect('pass-q1')">Comprobar</button>
+                        <span id="pass-q1-fb" class="feedback"></span>
+                    </div>
+
+                    <div class="quiz-item">
+                        <div class="quiz-question">2. Yesterday, the water (past simple passive / heat) ________ to 100°C.</div>
+                        <select id="pass-q2">
+                            <option value="">-- Elige una opción --</option>
+                            <option value="incorrect">were heated</option>
+                            <option value="incorrect">is heated</option>
+                            <option value="correct">was heated</option>
+                        </select>
+                        <button class="btn-check" onclick="checkSelect('pass-q2')">Comprobar</button>
+                        <span id="pass-q2-fb" class="feedback"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: FUTURE IN THE PAST -->
+        <!-- Basado en: Captura de pantalla 2026-06-10 a las 17.12.29.png y 17.12.43.png -->
+        <section id="future-past" class="grammar-section">
+            <div class="card">
+                <h2>Future in the Past (Was / Were going to)</h2>
+                <p>Usamos estas estructuras para referirnos a planes organizados en el pasado que cambiaron radicalmente o no se llegaron a cumplir.</p>
+                
+                <h3>Was / Were going to (Afirmativo)</h3>
+                <ul class="example-list">
+                    <li>I <strong>was going to</strong> get you a board game, but I remembered you love making things.</li>
+                </ul>
+
+                <h3>Wasn't / Weren't going to (Negativo)</h3>
+                <p>Explica algo del pasado que no tenías la intención de hacer originalmente, pero cambiaste de parecer.</p>
+                <ul class="example-list">
+                    <li>I <strong>wasn't going to</strong> learn to play the saxophone, but I loved the sound of it.</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <strong>Look!</strong> Recuerda situar siempre una coma ortográfica antes de la conjunción <strong>but</strong>. Además, el verbo posterior a "but" puede ir en presente o pasado según el contexto.
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-title">✏️ Elige la opción correcta:</div>
+                    <div class="quiz-item">
+                        <div class="quiz-question">We ________ go to the beach, but it started raining heavily.</div>
+                        <select id="fut-q1">
+                            <option value="">-- Elige una opción --</option>
+                            <option value="incorrect">was going to</option>
+                            <option value="correct">were going to</option>
+                            <option value="incorrect">wasn't going to</option>
+                        </select>
+                        <button class="btn-check" onclick="checkSelect('fut-q1')">Comprobar</button>
+                        <span id="fut-q1-fb" class="feedback"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: SECOND CONDITIONAL -->
+        <!-- Basado en: Captura de pantalla 2026-06-09 a las 19.52.15.png y 20.03.47.png -->
+        <section id="second-cond" class="grammar-section">
+            <div class="card">
+                <h2>Second Conditional (Segundo Condicional)</h2>
+                <p>Sirve para proyectar escenarios imaginarios, hipotéticos o improbables en el tiempo presente o futuro.</p>
+                
+                <ul>
+                    <li><strong>Estructura:</strong> <code>If + past simple</code>, junto con <code>would / wouldn't + verbo infinitivo</code>.</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <strong>Look!</strong> ¡Puedes cambiar libremente el orden de las cláusulas! Si la condición con <strong>If</strong> aparece al inicio de la oración, debes poner una coma de separación. Si se invierte el orden, la coma desaparece por completo.
+                </div>
+
+                <!-- LIVE INTERACTIVE SIMULATOR -->
+                <h3>🔄 Simulador Dinámico de Cláusulas y Comas</h3>
+                <p>Pulsa el botón inferior para ver cómo muta el orden de la estructura y cómo actúa la coma automáticamente:</p>
+                
+                <div class="simulator-area">
+                    <div id="cond2-sentence" class="sentence-display">
+                        <span style="color:#007aff; font-weight:700;">If I met this artist</span><span class="comma">,</span> <span style="color:#ff375f; font-weight:700;">I would ask him questions</span>.
+                    </div>
+                    <button class="btn-action" onclick="toggleSecondConditional()">Invertir Orden de la Frase</button>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-title">✏️ Completa en base a la captura negativa:</div>
+                    <div class="quiz-item">
+                        <div class="quiz-question">"If we ________ school tomorrow, I wouldn't go to an art gallery."</div>
+                        <select id="cond2-q1">
+                            <option value="">-- Elige una opción --</option>
+                            <option value="incorrect">don't have</option>
+                            <option value="correct">didn't have</option>
+                            <option value="incorrect">wouldn't have</option>
+                        </select>
+                        <button class="btn-check" onclick="checkSelect('cond2-q1')">Comprobar</button>
+                        <span id="cond2-q1-fb" class="feedback"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: THIRD CONDITIONAL -->
+        <!-- Basado en: Captura de pantalla 2026-06-10 a las 17.11.39.png y 17.11.51.png -->
+        <section id="third-cond" class="grammar-section">
+            <div class="card">
+                <h2>Third Conditional (Tercer Condicional)</h2>
+                <p>Habla sobre situaciones hipotéticas pasadas. Es decir, sucesos imaginarios del pasado que <strong>nunca ocurrieron</strong>.</p>
+                
+                <ul>
+                    <li><strong>Estructura:</strong> <code>If + past perfect (had + part.)</code>, junto con <code>would / wouldn't have + participio pasado</code>.</li>
+                </ul>
+                <ul class="example-list">
+                    <li>If you <strong>had come</strong>, you <strong>would have seen</strong> the fireworks.</li>
+                    <li>I <strong>wouldn't have had</strong> my face painted if I'<strong>d gone</strong>.</li>
+                </ul>
+
+                <!-- DECODER MINI-GAME -->
+                <h3>🕵️ El Desafío del Decodificador de la contracción "'d"</h3>
+                <p>En el Tercer Condicional, la contracción <strong>'d</strong> puede significar tanto <strong>HAD</strong> como <strong>WOULD</strong>. Haz clic en la opción correcta para cada marcador:</p>
+                
+                <div class="simulator-area">
+                    <p style="margin-bottom: 15px; font-size:1.1rem;">"If I'<strong>d</strong> known there were acrobats, I'<strong>d</strong> have bought a ticket."</p>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <strong>¿Qué significa el primer 'd? (I'd known)</strong>
+                        <div class="game-options">
+                            <button id="d1-had" class="btn-opt" onclick="decodeD(1, 'had', true)">HAD</button>
+                            <button id="d1-would" class="btn-opt" onclick="decodeD(1, 'would', false)">WOULD</button>
+                        </div>
+                        <span id="d1-fb" class="feedback"></span>
+                    </div>
+
+                    <div>
+                        <strong>¿Qué significa el segundo 'd? (I'd have bought)</strong>
+                        <div class="game-options">
+                            <button id="d2-had" class="btn-opt" onclick="decodeD(2, 'had', false)">HAD</button>
+                            <button id="d2-would" class="btn-opt" onclick="decodeD(2, 'would', true)">WOULD</button>
+                        </div>
+                        <span id="d2-fb" class="feedback"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: REPORTED SPEECH -->
+        <!-- Basado en: Captura de pantalla 2026-06-09 a las 19.50.08.png -->
+        <section id="reported" class="grammar-section">
+            <div class="card">
+                <h2>Reported Speech (Estilo Indirecto)</h2>
+                <p>Transformamos los tiempos verbales dando "un paso atrás" hacia el pasado para reproducir fielmente lo expuesto por otra persona.</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Direct Speech</th>
+                            <th>Reported Speech</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>"I'<strong>m going to</strong> the park."</td>
+                            <td>He said he <strong>was going to</strong> the park.</td>
+                        </tr>
+                        <tr>
+                            <td>"I <strong>saw</strong> a leopard."</td>
+                            <td>She said she <strong>had seen</strong> a leopard.</td>
+                        </tr>
+                        <tr>
+                            <td>"I'<strong>ve read</strong> a book."</td>
+                            <td>He said he <strong>had read</strong> a book.</td>
+                        </tr>
+                        <tr>
+                            <td>"I <strong>will</strong> take photos."</td>
+                            <td>She said she <strong>would</strong> take photos.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Uso Correcto de: Said vs Told</h3>
+                <ul>
+                    <li>Usamos <strong>said</strong> para reportar diálogos sin especificar a quién nos dirigimos. No lleva objeto directo inmediato detrás.</li>
+                    <li>Usamos <strong>told</strong> para transmitir mandatos directos o instrucciones. Requiere obligatoriamente un pronombre u objeto directo detrás (e.g., <em>told us, told him</em>).</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <strong>Look!</strong> Al reportar órdenes de carácter negativo, incrustamos la partícula <strong>not</strong> justo antes del infinitivo con to.<br>
+                    <em>"Don't be noisy!"</em> $\rightarrow$ <em>The teacher told us <strong>not to be</strong> noisy.</em>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-title">✏️ Transforma esta orden al estilo indirecto:</div>
+                    <div class="quiz-item">
+                        <div class="quiz-question">"Be very quiet," the guide said. <br><strong>Reported:</strong> The tour guide ________ us to be very quiet.</div>
+                        <input type="text" id="rep-q1" placeholder="Escribe la palabra aquí...">
+                        <button class="btn-check" onclick="checkInput('rep-q1', 'told')">Comprobar</button>
+                        <span id="rep-q1-fb" class="feedback"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // Tab switching logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.grammar-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('nav button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Quiz checking for select dropdowns
+        function checkSelect(elemId) {
+            const selectEl = document.getElementById(elemId);
+            const feedbackEl = document.getElementById(elemId + '-fb');
+            
+            if (selectEl.value === 'correct') {
+                feedbackEl.textContent = '¡Correcto! 🎉';
+                feedbackEl.className = 'feedback correct';
+            } else if (selectEl.value === 'incorrect') {
+                feedbackEl.textContent = 'Inténtalo de nuevo ❌';
+                feedbackEl.className = 'feedback incorrect';
+            } else {
+                feedbackEl.textContent = 'Elige una respuesta';
+                feedbackEl.className = 'feedback';
+            }
+        }
+
+        // Quiz checking for inputs
+        function checkInput(elemId, correctAnswers) {
+            const inputEl = document.getElementById(elemId);
+            const feedbackEl = document.getElementById(elemId + '-fb');
+            const userAnswer = inputEl.value.trim().toLowerCase();
+
+            if (userAnswer === correctAnswers.toLowerCase()) {
+                feedbackEl.textContent = '¡Excelente! 🎉';
+                feedbackEl.className = 'feedback correct';
+            } else {
+                feedbackEl.textContent = 'Revisa la teoría e inténtalo ❌';
+                feedbackEl.className = 'feedback incorrect';
+            }
+        }
+
+        // Second conditional rotation simulation logic
+        let isOriginalOrder = true;
+        function toggleSecondConditional() {
+            const display = document.getElementById('cond2-sentence');
+            if (isOriginalOrder) {
+                display.innerHTML = `<span style="color:#ff375f; font-weight:700;">I would ask him questions</span> <span style="color:#007aff; font-weight:700;">if I met this artist</span>.`;
+                isOriginalOrder = false;
+            } else {
+                display.innerHTML = `<span style="color:#007aff; font-weight:700;">If I met this artist</span><span class="comma">,</span> <span style="color:#ff375f; font-weight:700;">I would ask him questions</span>.`;
+                isOriginalOrder = true;
+            }
+        }
+
+        // Third conditional game decoder logic
+        function decodeD(questionNum, type, isCorrect) {
+            const fb = document.getElementById(`d${questionNum}-fb`);
+            const btnHad = document.getElementById(`d${questionNum}-had`);
+            const btnWould = document.getElementById(`d${questionNum}-would`);
+
+            // Reset classes
+            btnHad.className = 'btn-opt';
+            btnWould.className = 'btn-opt';
+
+            if(type === 'had') {
+                btnHad.classList.add('selected-had');
+            } else {
+                btnWould.classList.add('selected-would');
+            }
+
+            if (isCorrect) {
+                fb.textContent = '¡Correcto! ✨';
+                fb.className = 'feedback correct';
+            } else {
+                fb.textContent = 'Incorrecto ❌ Mira la estructura.';
+                fb.className = 'feedback incorrect';
+            }
+        }
+    </script>
+</body>
+</html>
